@@ -1,8 +1,10 @@
 ﻿@page "/"
 @using AlignItems = Radzen.AlignItems
+@*@using System.Net.Http.Json*@
+@*@inject HttpClient httpClient*@
 
 
-<PageTitle>Index</PageTitle>
+<PageTitle>صفحه اصلی</PageTitle>
 
 <h1>صفحه اصلی</h1>
 
@@ -15,15 +17,51 @@
     <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ورود ماشین" Icon="arrow_back" ButtonStyle="ButtonStyle.Success" Size="ButtonSize.Large" />
 </RadzenRow>
 <MudDivider/>
+<br />
+<br />
+<br />
 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-
+    <RadzenDataGrid Data="@Elements" TItem="HomePageReportModel" AllowVirtualization="false" Style="height:400px"
+                    AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
+                    AllowSorting="true">
+        <Columns>
+            <RadzenDataGridColumn TItem="HomePageReportModel" Property="RowNumber" Title="ردیف" />
+            <RadzenDataGridColumn TItem="HomePageReportModel" Property="CustomerName" Title="نام مشتری" />
+            <RadzenDataGridColumn TItem="HomePageReportModel" Property="CarName" Title="نام خودرو" />
+            <RadzenDataGridColumn TItem="HomePageReportModel" Property="ItemName" Title="نام سرویس/کالا" />
+            <RadzenDataGridColumn TItem="HomePageReportModel" Property="UnitPrice" Title="قیمت واحد" />
+            <RadzenDataGridColumn TItem="HomePageReportModel" Property="Count" Title="تعداد" />
+            <RadzenDataGridColumn TItem="HomePageReportModel" Property="TotalPrice" Title="قیمت کل" />
+        </Columns>
+    </RadzenDataGrid>
+   
 </RadzenRow>
 
-
-@code
-{
+@code {
     private void OnClick(string text)
     {
-        //
+    //
     }
+    public class HomePageReportModel
+    {
+        public int RowNumber { get; set; }
+        public string CustomerName { get; set; }
+        public string ItemName { get; set; }
+        public string CarName { get; set; }
+        public string? UnitPrice { get; set; }
+        public string TotalPrice { get; set; }
+        public string? Count { get; set; }
+    }
+    private List<HomePageReportModel> Elements = new()
+    {
+        new (){RowNumber = 1,CarName="تیبا تیپ 2 نوک مدادی",CustomerName = "محمد یوسفیان",ItemName = "صافکاری" , UnitPrice = "-" , TotalPrice = "15,000,000 ریال"},
+        new (){RowNumber = 2,CarName="پراید E131 زرشکی",CustomerName = "بردیا یغمایی",ItemName = "روغن موتور ماهان (2142) " , UnitPrice = "2,000,000ریال",Count="2" , TotalPrice = "4,000,000 ریال"},
+    };
+
+
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    Elements = await httpClient.GetFromJsonAsync<List<HomePageReportModel>>("webapi/periodictable");
+    //}
 }

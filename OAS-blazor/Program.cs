@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using OAS_blazor.Data;
 using MudBlazor.Services;
 using Radzen.Blazor;
-
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +12,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddMudServices();
+builder.Services.AddRadzenComponents();
 
 var app = builder.Build();
 

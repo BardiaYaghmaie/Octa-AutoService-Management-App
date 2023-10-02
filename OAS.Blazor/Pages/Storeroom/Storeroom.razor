@@ -1,0 +1,41 @@
+@page "/storeroom"
+@using AlignItems = Radzen.AlignItems
+
+
+
+
+<h3>انبار</h3>
+
+<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+    فاکتورهای روز
+</RadzenRow>
+<br/>
+<MudDivider/>
+<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+    <RadzenColumn>
+        <RadzenButton Click="@(args => OnClick("Large button with text and icon"))" Text="ثبت کالای جدید" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+    </RadzenColumn>
+    <RadzenColumn>
+        <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="خرید کالا " Icon="payments" ButtonStyle="ButtonStyle.Success" Size="ButtonSize.Large"/>
+    </RadzenColumn>
+
+</RadzenRow>
+<br/>
+<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+    <RadzenColumn>   
+        <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ثبت خدمت جدید" Icon="add" ButtonStyle="ButtonStyle.Secondary" Size="ButtonSize.Large"/>
+    </RadzenColumn>
+    <RadzenColumn></RadzenColumn>
+    
+</RadzenRow>
+<MudDivider/>
+
+@code {
+    private void OnClick(string text)
+    {
+    //
+    }
+    
+   
+
+}

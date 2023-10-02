@@ -7,6 +7,8 @@
         <RootNamespace>OAS.Blazor</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
     <ItemGroup>
       <PackageReference Include="MudBlazor" Version="6.10.0" />
       <PackageReference Include="Radzen.Blazor" Version="4.16.3" />

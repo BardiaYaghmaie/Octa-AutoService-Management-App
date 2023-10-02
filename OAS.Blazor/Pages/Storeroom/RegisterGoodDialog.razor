@@ -1,5 +1,5 @@
 @page "/testform"
-
+@inject IDialogService DialogService
 <div class="container-fluid" dir="rtl">
     <div class="row px-3">
         <div class="col-md-6 col-lg-4 p-3">
@@ -29,20 +29,29 @@
     </div>
 </div>
 
+<MudButton @onclick="OpenDialog" Variant="MudBlazor.Variant.Filled" Color="Color.Primary">
+    Open Simple Dialog
+</MudButton>
 
-@* <MudDialog> *@
-@*     <DialogContent> *@
-@*         Dialog Content *@
-@*     </DialogContent> *@
-@*     <DialogActions> *@
-@*         <MudButton OnClick="Cancel">Cancel</MudButton> *@
-@*         <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton> *@
-@*     </DialogActions> *@
-@* </MudDialog> *@
+
+ <MudDialog> 
+     <DialogContent> 
+         Dialog Content 
+     </DialogContent> 
+     <DialogActions> 
+         <MudButton>Cancel</MudButton> 
+         <MudButton Color="Color.Primary" >Ok</MudButton> 
+     </DialogActions> 
+ </MudDialog> 
 @code {
     string value;
 
 
+    private void OpenDialog()
+    {
+        var options = new MudBlazor.DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<MyDialog>("Simple Dialog", options);
+    }
     void OnChange(string value, string name)
     {
         //

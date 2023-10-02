@@ -3,5 +3,16 @@
 ################################################################################
 
 /.vs
-/OAS-blazor/bin
-/OAS-blazor/obj
+/OAS.Blazor/bin
+/OAS.Blazor/obj
+
+OAS.Application/bin/
+OAS.Application/obj/
+OAS.Domain/bin/
+OAS.Domain/obj/
+OAS.UnitTest/bin/
+OAS.UnitTest/obj/
+OAS.Utility/bin/
+OAS.Utility/obj/
+OAS.Persistence/bin/
+OAS.Persistence/obj/

@@ -1,5 +1,9 @@
 @page "/storeroom"
 @using AlignItems = Radzen.AlignItems
+@using DialogOptions = MudBlazor.DialogOptions
+@inject IDialogService DialogService
+
+
 
 
 
@@ -13,7 +17,7 @@
 <MudDivider/>
 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
     <RadzenColumn>
-        <RadzenButton Click="@(args => OnClick("Large button with text and icon"))" Text="ثبت کالای جدید" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+        <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ثبت کالای جدید" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
     </RadzenColumn>
     <RadzenColumn>
         <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="خرید کالا " Icon="payments" ButtonStyle="ButtonStyle.Success" Size="ButtonSize.Large"/>
@@ -36,6 +40,6 @@
     //
     }
     
-   
 
 }
+

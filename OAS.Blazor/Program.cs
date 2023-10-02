@@ -13,7 +13,6 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddMudServices();
 builder.Services.AddRadzenComponents();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

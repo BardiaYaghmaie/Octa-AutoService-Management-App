@@ -1,0 +1,14 @@
+﻿namespace OAS.Domain.Models;
+
+public class Vehicle
+{
+    public Guid Id { get; set; }
+    public int Code { get; set; }
+    public string Name { get; set; }
+    public string Color { get; set; }
+    public string Plate { get; set; }
+    public DateTime RegisterDate { get; set; }
+    public bool IsActive { get; set; }
+}
+
+

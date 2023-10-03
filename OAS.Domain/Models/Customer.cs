@@ -14,4 +14,7 @@ public class Customer
     public string PhoneNumber { get; set; }
     public DateTime RegisterDate { get; set; }
     public bool IsActive { get; set; }
+
+
+    public virtual ICollection<CustomerHistory> CustomerHistories { get; set; }
 }

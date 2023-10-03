@@ -1,6 +1,6 @@
 ﻿namespace OAS.Domain.Models;
 
-public class InvoiceServiceItem
+public class InvoiceService
 {
     public Guid Id { get; set; }
     public Guid InvoiceId { get; set; }

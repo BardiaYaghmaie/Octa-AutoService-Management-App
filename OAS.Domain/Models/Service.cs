@@ -6,6 +6,9 @@ public class Service
     public string Name{ get; set; }
     public DateTime RegisterDate { get; set; }
     public bool IsActive { get; set; }
+    public virtual ICollection<InvoiceService>  InvoiceServices{ get; set; }
+    public virtual ICollection<ServiceHistory> ServiceHistories{ get; set; }
+
 
 
 }

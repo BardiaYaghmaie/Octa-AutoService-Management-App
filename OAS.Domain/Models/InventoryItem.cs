@@ -3,6 +3,7 @@
 public class InventoryItem
 {
     public Guid Id { get; set; }
+    public int Code { get; set; }
     public string Name{ get; set; }
     public long BuyPrice { get; set; }
     public long SellPrice { get; set; }
@@ -14,4 +15,7 @@ public class InventoryItem
     public string SellerName { get; set; }
 
     public float CountLowerBound { get; set; }
+
+    public virtual ICollection<InventoryItemHistory>  InventoryItemHistories{ get; set; }
+    public virtual ICollection<InvoiceInventoryItem>   InvoiceInventoryItems{ get; set; }
 }

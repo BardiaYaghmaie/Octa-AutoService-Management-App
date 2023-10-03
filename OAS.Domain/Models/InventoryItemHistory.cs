@@ -4,6 +4,7 @@ public class InventoryItemHistory
 {
     public Guid Id { get; set; }
     public Guid InventoryItemId { get; set; }
+    public int Code { get; set; }
     public string Name { get; set; }
     public long BuyPrice { get; set; }
     public long SellPrice { get; set; }

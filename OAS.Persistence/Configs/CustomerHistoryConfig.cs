@@ -7,7 +7,8 @@ namespace OAS.Persistence.Configs;
 public class CustomerHistoryConfig : IEntityTypeConfiguration<CustomerHistory>
 {
     public void Configure(EntityTypeBuilder<CustomerHistory> builder)
-    {        
+    {
+        builder.ToTable("CustomerHistory");
         builder.HasKey(a => a.Id);
         builder.Property(a => a.CustomerId).IsRequired(true);
         builder.Property(a => a.FirstName).HasMaxLength(255).IsRequired(true);

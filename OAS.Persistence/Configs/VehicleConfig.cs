@@ -8,6 +8,7 @@ public class VehicleConfig : IEntityTypeConfiguration<Vehicle>
 {
     public void Configure(EntityTypeBuilder<Vehicle> builder)
     {
+        builder.ToTable("Vehicle");
         builder.HasKey(a => a.Id);
         builder.Property(a => a.Name).HasMaxLength(255).IsRequired(true);
         builder.Property(a => a.Plate).HasMaxLength(15).IsRequired(true);

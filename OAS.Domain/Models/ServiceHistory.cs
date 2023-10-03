@@ -3,7 +3,7 @@
 public class ServiceHistory
 {
     public Guid Id { get; set; }
-    public string ServiceId{ get; set; }
+    public Guid ServiceId{ get; set; }
     public string Name { get; set; }
 
     public DateTime UpdateDate { get; set; }

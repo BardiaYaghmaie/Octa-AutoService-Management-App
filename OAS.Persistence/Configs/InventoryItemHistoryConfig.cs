@@ -8,6 +8,7 @@ public class InventoryItemHistoryConfig : IEntityTypeConfiguration<InventoryItem
 {
     public void Configure(EntityTypeBuilder<InventoryItemHistory> builder)
     {
+        builder.ToTable("InventoryItemHistory");
         builder.HasKey(a => a.Id);
         builder.Property(a => a.InventoryItemId).IsRequired(true);
         builder.Property(a => a.IsActive).IsRequired(true);

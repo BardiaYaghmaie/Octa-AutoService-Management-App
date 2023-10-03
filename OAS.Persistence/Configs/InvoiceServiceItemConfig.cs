@@ -8,6 +8,7 @@ public class InvoiceServiceItemConfig : IEntityTypeConfiguration<InvoiceService>
 {
     public void Configure(EntityTypeBuilder<InvoiceService> builder)
     {
+        builder.ToTable("InvoiceServiceItem");
         builder.HasKey(a => a.Id);
         builder.Property(a => a.InvoiceId).IsRequired(true);
         builder.Property(a => a.ServiceId).IsRequired(true);

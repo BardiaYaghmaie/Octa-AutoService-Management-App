@@ -8,6 +8,7 @@ public class InventoryItemConfig : IEntityTypeConfiguration<InventoryItem>
 {
     public void Configure(EntityTypeBuilder<InventoryItem> builder)
     {
+        builder.ToTable("InventoryItem");
         builder.HasKey(a => a.Id);
         builder.Property(a => a.IsActive).IsRequired(true);
         builder.Property(a => a.Name).HasMaxLength(255).IsRequired(true);

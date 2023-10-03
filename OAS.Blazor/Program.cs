@@ -4,6 +4,7 @@ using OAS.Blazor.Data;
 using MudBlazor.Services;
 using Radzen.Blazor;
 using Radzen;
+using OAS.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddMudServices();
 builder.Services.AddRadzenComponents();
+
+builder.Services.ConfigurePersistence(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

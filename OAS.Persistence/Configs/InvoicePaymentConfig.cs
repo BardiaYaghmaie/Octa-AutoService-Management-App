@@ -8,6 +8,7 @@ public class InvoicePaymentConfig : IEntityTypeConfiguration<InvoicePayment>
 {
     public void Configure(EntityTypeBuilder<InvoicePayment> builder)
     {
+        builder.ToTable("InvoicePayment");
         builder.HasKey(a => a.Id);
         builder.Property(a => a.InvoiceId).IsRequired(true);
         builder.Property(a => a.LastPaymentDate).IsRequired(true);

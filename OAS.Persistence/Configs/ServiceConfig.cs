@@ -8,6 +8,7 @@ public class ServiceConfig : IEntityTypeConfiguration<Service>
 {
     public void Configure(EntityTypeBuilder<Service> builder)
     {
+        builder.ToTable("Service");
         builder.HasKey(a => a.Id);
         builder.Property(a => a.Name).HasMaxLength(255).IsRequired(true);
         builder.Property(a => a.IsActive).IsRequired(true);

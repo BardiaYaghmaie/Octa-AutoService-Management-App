@@ -13,7 +13,7 @@ public static class ServiceExtentions
 {
     public static void ConfigurePersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        string connectionString = configuration.GetConnectionString("OSA");
+        string connectionString = configuration.GetConnectionString("OAS");
 
         services.AddDbContext<ApplicationDbContext>(opt => opt.UseNpgsql(connectionString));
 

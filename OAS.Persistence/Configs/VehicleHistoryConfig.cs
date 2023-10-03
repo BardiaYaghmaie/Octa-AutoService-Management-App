@@ -8,6 +8,7 @@ public class VehicleHistoryConfig : IEntityTypeConfiguration<VehicleHistory>
 {
     public void Configure(EntityTypeBuilder<VehicleHistory> builder)
     {
+        builder.ToTable("VehicleHistory");
         builder.HasKey(a => a.Id);
         builder.Property(a => a.VehicleId).IsRequired(true);
 

@@ -8,6 +8,7 @@ public class InvoiceConfig : IEntityTypeConfiguration<Invoice>
 {
     public void Configure(EntityTypeBuilder<Invoice> builder)
     {
+        builder.ToTable("Invoice");
         builder.HasKey(a => a.Id);
         builder.Property(a => a.IssueDate).IsRequired(true);
         builder.Property(a => a.RegisterDate).IsRequired(true);

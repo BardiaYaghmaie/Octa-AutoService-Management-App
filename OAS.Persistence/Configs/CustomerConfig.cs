@@ -12,6 +12,7 @@ public class CustomerConfig : IEntityTypeConfiguration<Customer>
 {
     public void Configure(EntityTypeBuilder<Customer> builder)
     {
+        builder.ToTable("Customer");
         builder.HasKey(a => a.Id);
         builder.Property(a => a.FirstName).HasMaxLength(255).IsRequired(true);
         builder.Property(a => a.LastName).HasMaxLength(255).IsRequired(true);

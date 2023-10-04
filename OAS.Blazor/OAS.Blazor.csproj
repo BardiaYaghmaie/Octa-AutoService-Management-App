@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <Folder Include="Pages\Accounting\" />
+      <Folder Include="Wireframes\" />
       <Folder Include="wwwroot\css\fonts\VazirMatn\" />
     </ItemGroup>
 

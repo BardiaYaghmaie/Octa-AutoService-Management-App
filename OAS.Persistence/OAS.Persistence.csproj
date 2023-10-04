@@ -9,8 +9,17 @@
   <ItemGroup>
     <Folder Include="Contexts\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Configs\" />
     <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OAS.Domain\OAS.Domain.csproj" />
   </ItemGroup>
 
 </Project>

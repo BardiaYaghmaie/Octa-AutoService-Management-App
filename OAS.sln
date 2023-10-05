@@ -23,8 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAS.Utility", "OAS.Utility\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OAS.Blazor", "OAS.Blazor\OAS.Blazor.csproj", "{5F5AA3CD-D544-4019-B3CD-DD630ACE25A1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{4CD21754-A215-4D04-B690-29A8F20DF229}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

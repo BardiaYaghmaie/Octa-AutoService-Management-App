@@ -1,0 +1,80 @@
+@page "/inventory"
+@using AlignItems = Radzen.AlignItems
+@using DialogOptions = MudBlazor.DialogOptions
+@inject IDialogService DialogService
+
+<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+    <RadzenColumn>
+        <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="خرید کالا" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+    </RadzenColumn>
+    <RadzenColumn>
+        <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ویرایش کالا" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+    </RadzenColumn>
+
+</RadzenRow>
+<br/>
+<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+    <RadzenColumn>   
+        <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ثبت خدمت جدید" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+    </RadzenColumn>
+    <RadzenColumn>
+        <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ویرایش خدمت" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+    </RadzenColumn>
+</RadzenRow>
+<br/>
+<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+    <RadzenDataGrid  TItem="InventoryPageItemsReportModel" AllowVirtualization="false" Style="height:400px"
+                     AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
+                     AllowSorting="true">
+        <Columns>
+            <RadzenDataGridColumn TItem="InventoryPageItemsReportModel" Property="RowNumber" Title="ردیف" />
+            <RadzenDataGridColumn TItem="InventoryPageItemsReportModel" Property="ItemCode" Title="کد" />
+            <RadzenDataGridColumn TItem="InventoryPageItemsReportModel" Property="RemainedCount" Title="تعداد" />
+            <RadzenDataGridColumn TItem="InventoryPageItemsReportModel" Property="BuyPrice" Title="قیمت خرید" />
+            <RadzenDataGridColumn TItem="InventoryPageItemsReportModel" Property="SellPrice" Title="قیمت فروش" />
+            <RadzenDataGridColumn TItem="InventoryPageItemsReportModel" Property="SellPrice" Title="عملیات" />
+
+        </Columns>
+    </RadzenDataGrid>
+</RadzenRow>
+<br/>
+<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+    <RadzenDataGrid  TItem="InventoryPageServicesReportModel" AllowVirtualization="false" Style="height:400px"
+                     AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
+                     AllowSorting="true">
+        <Columns>
+            <RadzenDataGridColumn TItem="InventoryPageServicesReportModel" Property="RowNumber" Title="ردیف" />
+            <RadzenDataGridColumn TItem="InventoryPageServicesReportModel" Property="ItemCode" Title="کد" />
+            <RadzenDataGridColumn TItem="InventoryPageServicesReportModel" Property="Price" Title="قیمت خرید" />
+            <RadzenDataGridColumn TItem="InventoryPageServicesReportModel" Property="Price" Title="عملیات" />
+        </Columns>
+    </RadzenDataGrid>
+</RadzenRow>
+<MudDivider/>
+
+@code {
+    private void OnClick(string text)
+    {
+    //
+    }
+    public class InventoryPageItemsReportModel
+    {
+        public int RowNumber { get; set; }
+        public int ItemCode { get; set; }
+        public int RemainedCount { get; set; }
+        public int BuyPrice { get; set; }
+        public int SellPrice { get; set; }
+    }
+    public class InventoryPageServicesReportModel
+    {
+        public int RowNumber { get; set; }
+        public int ItemCode { get; set; }
+        public int Price { get; set; }
+    }
+    
+
+
+
+    
+}
+

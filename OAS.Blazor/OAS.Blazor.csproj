@@ -19,7 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Pages\Accounting\" />
       <Folder Include="wwwroot\css\fonts\VazirMatn\" />
     </ItemGroup>
 

@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Contexts\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OAS.Application\OAS.Application.csproj" />
     <ProjectReference Include="..\OAS.Domain\OAS.Domain.csproj" />
   </ItemGroup>
 

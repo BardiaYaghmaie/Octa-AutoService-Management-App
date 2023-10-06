@@ -10,7 +10,10 @@
     <Folder Include="Features\" />
     <Folder Include="Common\" />
     <Folder Include="DomainModels\" />
-    <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OAS.Domain\OAS.Domain.csproj" />
   </ItemGroup>
 
 </Project>

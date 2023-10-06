@@ -22,6 +22,9 @@
     </RadzenColumn>
 </RadzenRow>
 <br/>
+<RadzenRow>
+    <RadzenText Text="لیست موجودی انبار" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif"/>
+</RadzenRow>
 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
     <RadzenDataGrid  TItem="InventoryPageItemsReportModel" AllowVirtualization="false" Style="height:400px"
                      AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
@@ -38,6 +41,9 @@
     </RadzenDataGrid>
 </RadzenRow>
 <br/>
+<RadzenRow>
+    <RadzenText Text="لیست خدمات" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif"/>
+</RadzenRow>
 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
     <RadzenDataGrid  TItem="InventoryPageServicesReportModel" AllowVirtualization="false" Style="height:400px"
                      AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
@@ -50,7 +56,6 @@
         </Columns>
     </RadzenDataGrid>
 </RadzenRow>
-<MudDivider/>
 
 @code {
     private void OnClick(string text)

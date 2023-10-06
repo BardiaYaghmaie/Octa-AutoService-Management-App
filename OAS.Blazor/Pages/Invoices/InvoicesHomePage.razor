@@ -1,6 +1,68 @@
-@page "/InvoicesHomePage"
-<h3>InvoicesHomePage</h3>
+@page "/invoices"
+@using AlignItems = Radzen.AlignItems
 
+<RadzenRow>
+    <RadzenText Text="لیست فاکتورهای فروش" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif"/>
+</RadzenRow>
+<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+    <RadzenDataGrid  TItem="InvoicesPageSellReportModel" AllowVirtualization="false" Style="height:400px"
+                     AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
+                     AllowSorting="true">
+        <Columns>
+            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="RowNumber" Title="ردیف" />
+            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="InvoiceCode" Title="کد" />
+            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="Date" Title="تاریخ" />
+            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="Vehicle" Title="خودرو" />
+            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="CustomerName" Title="مشتری" />
+            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="TotalPrice" Title="قیمت کل" />
+            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="State" Title="وضعیت" />
+            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="State" Title="عملیات" />
+        </Columns>
+    </RadzenDataGrid>
+</RadzenRow>
+<br/>
+<RadzenRow>
+    <RadzenText Text="لیست فاکتورهای خرید" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif"/>
+</RadzenRow>
+<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+    <RadzenDataGrid  TItem="InvoicesPageBuyReportModel" AllowVirtualization="false" Style="height:400px"
+                     AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
+                     AllowSorting="true">
+        <Columns>
+            <RadzenDataGridColumn TItem="InvoicesPageBuyReportModel" Property="RowNumber" Title="ردیف" />
+            <RadzenDataGridColumn TItem="InvoicesPageBuyReportModel" Property="InvoiceCode" Title="کد" />
+            <RadzenDataGridColumn TItem="InvoicesPageBuyReportModel" Property="Date" Title="تاریخ" />
+            <RadzenDataGridColumn TItem="InvoicesPageBuyReportModel" Property="SellerName" Title="شخص/شرکت" />
+            <RadzenDataGridColumn TItem="InvoicesPageBuyReportModel" Property="TotalPrice" Title="قیمت کل" />
+            <RadzenDataGridColumn TItem="InvoicesPageBuyReportModel" Property="State" Title="وضعیت" />
+            <RadzenDataGridColumn TItem="InvoicesPageBuyReportModel" Property="State" Title="عملیات" />
+        </Columns>
+    </RadzenDataGrid>
+</RadzenRow>
+<br/>
 @code {
     
+    public class InvoicesPageSellReportModel
+    {
+        public int RowNumber { get; set; }
+        public int InvoiceCode { get; set; }
+        public int Date { get; set; }
+        public int Vehicle { get; set; }
+        public int CustomerName { get; set; }
+        public int TotalPrice { get; set; }
+        public int State { get; set; }
+
+    }
+    
+    public class InvoicesPageBuyReportModel
+    {
+        public int RowNumber { get; set; }
+        public int InvoiceCode { get; set; }
+        public int Date { get; set; }
+        public int SellerName { get; set; }
+        public int TotalPrice { get; set; }
+        public int State { get; set; }
+
+    }
+
 }

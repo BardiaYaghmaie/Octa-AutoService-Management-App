@@ -6,15 +6,15 @@
 
 <PageTitle>صفحه اصلی</PageTitle>
 
-<h1>صفحه اصلی</h1>
-
 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-    <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ثبت مشتری" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
-    <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ورود ماشین" Icon="arrow_back" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
+    <RadzenColumn>
+            <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ثبت مشتری" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+    </RadzenColumn>
+    <RadzenColumn>
+            <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ورود ماشین" Icon="arrow_back" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+    </RadzenColumn>
 </RadzenRow>
-<MudDivider/>
-<br />
-<br />
+
 <br />
 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
     <RadzenDataGrid Data="@Elements" TItem="HomePageReportModel" AllowVirtualization="false" Style="height:400px"
@@ -23,8 +23,8 @@
         <Columns>
             <RadzenDataGridColumn TItem="HomePageReportModel" Property="RowNumber" Title="ردیف" />
             <RadzenDataGridColumn TItem="HomePageReportModel" Property="CustomerName" Title="نام مشتری" />
-            <RadzenDataGridColumn TItem="HomePageReportModel" Property="CarName" Title="خودرو" />
-            <RadzenDataGridColumn TItem="HomePageReportModel" Property="CarName" Title="عملیات" />
+            <RadzenDataGridColumn TItem="HomePageReportModel" Property="Vehicle" Title="خودرو" />
+            <RadzenDataGridColumn TItem="HomePageReportModel" Property="Vehicle" Title="عملیات" />
         </Columns>
     </RadzenDataGrid>
    
@@ -39,12 +39,12 @@
     {
         public int RowNumber { get; set; }
         public string CustomerName { get; set; }
-        public string CarName { get; set; }
+        public string Vehicle { get; set; }
     }
     private List<HomePageReportModel> Elements = new()
     {
-        new (){RowNumber = 1,CarName="تیبا تیپ 2 نوک مدادی",CustomerName = "محمد یوسفیان"},
-        new (){RowNumber = 2,CarName="پراید E131 زرشکی",CustomerName = "بردیا یغمایی"},
+        new (){RowNumber = 1,Vehicle= "تیبا تیپ 2 نوک مدادی",CustomerName = "محمد یوسفیان"},
+        new (){RowNumber = 2,Vehicle= "پراید E131 زرشکی",CustomerName = "بردیا یغمایی"},
     };
 
 

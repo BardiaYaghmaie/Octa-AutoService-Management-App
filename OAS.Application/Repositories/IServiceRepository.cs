@@ -9,9 +9,12 @@ namespace OAS.Application.Repositories
 {
     public interface IServiceRepository
     {
-        Task<List<Service>> GetAll();
+        Task<List<Service>> GetAllAsync();
         Task AddAsync(Service entity);
         void Update(Service entity);
         void Delete(Service entity);
+        Task<int> GetNewCodeAsync();
+        Task<Service?> GetByCode(int code);
+        Task<Service?> GetByIdAsync(Guid id);
     }
 }

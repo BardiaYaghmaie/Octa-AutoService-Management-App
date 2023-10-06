@@ -10,7 +10,7 @@ public class InventoryItemHistory
     public long SellPrice { get; set; }
     public float Count { get; set; }
     public bool IsActive { get; set; }
-    public DateTime RegisterDate { get; set; }
+    public DateTime UpdateDate { get; set; }
 
     //public string BuyFactorCode { get; set; }
     //public string SellerName { get; set; }

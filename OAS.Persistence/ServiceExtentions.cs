@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OAS.Application.Repositories;
 using OAS.Persistence.Contexts;
+using OAS.Persistence.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,11 @@ public static class ServiceExtentions
         string connectionString = configuration.GetConnectionString("OAS");
 
         services.AddDbContext<ApplicationDbContext>(opt => opt.UseNpgsql(connectionString));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IInventoryItemHistoryRepository, InventoryItemHistoryRepository>();
+        services.AddScoped<IInventoryItemRepository, InventoryItemRepository>();
+        services.AddScoped<IServiceRepository, ServiceRepository>();
+        services.AddScoped<IServiceHistoryRepository, ServiceHistoryRepository>();
 
     }
 }

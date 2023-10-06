@@ -34,9 +34,23 @@ namespace OAS.Persistence.Repositories
            return  await _context.InventoryItems.ToListAsync();
         }
 
+        public async Task<int> GetNewCode()
+        {
+            return await _context.InventoryItems.Select(a=> a.Code).MaxAsync();
+        }
+
         public void Update(InventoryItem entity)
         {
             _context.InventoryItems.Update(entity);
+        }
+        public async Task<InventoryItem?> GetByIdAsync(Guid id)
+        {
+            return await _context.InventoryItems.FirstOrDefaultAsync(a => a.Id == id);
+        }
+
+        public async Task<InventoryItem?> GetByCodeAsync(int code)
+        {
+            return await _context.InventoryItems.FirstOrDefaultAsync(a => a.Code == code);
         }
     }
 }

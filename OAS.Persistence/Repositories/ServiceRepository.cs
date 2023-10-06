@@ -21,27 +21,37 @@ namespace OAS.Persistence.Repositories
 
         public async Task AddAsync(Service entity)
         {
-            await _context.Services.AddAsync(entity);    
+            await _context.Services.AddAsync(entity);
         }
 
-        public void  Delete(Service entity)
-        {
-            _context.Services.Remove(entity);
-        }
-
-        public Task<List<Service>> GetAll()
+        public void Delete(Service entity)
         {
             throw new NotImplementedException();
         }
 
         public async Task<List<Service>> GetAllAsync()
         {
-           return  await _context.Services.ToListAsync();
+            return await _context.Services.ToListAsync();
+        }
+
+        public async Task<Service?> GetByCode(int code)
+        {
+            return await _context.Services.FirstOrDefaultAsync(x => x.Code == code);
+        }
+
+        public async Task<Service?> GetByIdAsync(Guid id)
+        {
+            return await _context.Services.FirstOrDefaultAsync(a => a.Id == id);
+        }
+
+        public async Task<int> GetNewCodeAsync()
+        {
+            return await _context.Services.Select(a=> a.Code).MaxAsync();
         }
 
         public void Update(Service entity)
         {
-            _context.Services.Update(entity);
+            throw new NotImplementedException();
         }
     }
 }

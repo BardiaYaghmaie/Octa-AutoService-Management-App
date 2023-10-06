@@ -14,7 +14,7 @@ public class InventoryItemHistoryConfig : IEntityTypeConfiguration<InventoryItem
         builder.Property(a => a.IsActive).IsRequired(true);
         builder.Property(a => a.Name).HasMaxLength(255).IsRequired(true);
         builder.Property(a => a.Code).IsRequired(true);
-        builder.Property(a => a.RegisterDate).IsRequired(true);
+        builder.Property(a => a.UpdateDate).IsRequired(true);
         builder.Property(a => a.CountLowerBound).IsRequired(true);
         builder.Property(a => a.BuyPrice).IsRequired(true);
         builder.Property(a => a.SellPrice).IsRequired(true);        

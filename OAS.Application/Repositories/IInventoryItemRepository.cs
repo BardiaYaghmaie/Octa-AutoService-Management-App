@@ -13,6 +13,11 @@ namespace OAS.Application.Repositories
         Task AddAsync(InventoryItem entity);
         void Update(InventoryItem entity);
         void Delete(InventoryItem entity);
+        Task<int> GetNewCode();
+        Task<InventoryItem?> GetByIdAsync(Guid id);
+        Task<InventoryItem?> GetByCodeAsync(int code);
+
+
 
     }
 }

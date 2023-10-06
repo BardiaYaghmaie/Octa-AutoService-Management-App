@@ -1,28 +1,24 @@
 ﻿using OAS.Application.Repositories;
-using OAS.Domain.Models;
 using OAS.Persistence.Contexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OAS.Persistence.Repositories
 {
-    public class ServiceHistoryRepository : IServiceHistoryRepository
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;
 
-        public ServiceHistoryRepository(ApplicationDbContext context)
+        public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
         }
-        public async Task AddAsync(ServiceHistory entity)
+        public Task SaveAsync(CancellationToken cancellationToken)
         {
-            await _context.ServiceHistories.AddAsync(entity);
+            return _context.SaveChangesAsync(cancellationToken);
         }
-
-        
     }
 }

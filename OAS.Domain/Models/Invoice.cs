@@ -11,6 +11,7 @@ public class Invoice
     public string? SerllerName { get; set; } //new
     public InvoiceType Type{ get; set; } //new
     public bool UseBuyPrice { get; set; } //new
+    public int Code{ get; set; } //new
     public DateTime RegisterDate { get; set; }
     public virtual ICollection<InvoiceDescription>  InvoiceDescriptions { get; set; }
     public virtual ICollection<InvoiceInventoryItem> InvoiceInventoryItems{ get; set; }

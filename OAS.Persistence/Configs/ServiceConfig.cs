@@ -12,6 +12,7 @@ public class ServiceConfig : IEntityTypeConfiguration<Service>
         builder.HasKey(a => a.Id);
         builder.Property(a => a.Name).HasMaxLength(255).IsRequired(true);
         builder.Property(a => a.IsActive).IsRequired(true);
+        builder.Property(a => a.DefaultPrice).IsRequired(true);
         builder.Property(a => a.RegisterDate).IsRequired(true);
 
         builder.HasMany(a => a.InvoiceServices)

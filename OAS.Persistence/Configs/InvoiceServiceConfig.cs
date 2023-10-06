@@ -4,7 +4,7 @@ using OAS.Domain.Models;
 
 namespace OAS.Persistence.Configs;
 
-public class InvoiceServiceItemConfig : IEntityTypeConfiguration<InvoiceService>
+public class InvoiceServiceConfig : IEntityTypeConfiguration<InvoiceService>
 {
     public void Configure(EntityTypeBuilder<InvoiceService> builder)
     {

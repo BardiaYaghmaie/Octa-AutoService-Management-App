@@ -22,6 +22,7 @@ public class ApplicationDbContext : DbContext
     public virtual DbSet<InvoiceDescription> InvoiceDescriptions { get; set; }
     public virtual DbSet<InvoiceInventoryItem> InvoiceInventoryItems { get; set; }
     public virtual DbSet<InvoicePayment> InvoicePayments { get; set; }
+    public virtual DbSet<InvoicePaymentHistory>  InvoicePaymentHistories { get; set; }
     public virtual DbSet<Service> Services { get; set; }
     public virtual DbSet<ServiceHistory> ServiceHistories { get; set; }
     public virtual DbSet<Vehicle> Vehicles { get; set; }

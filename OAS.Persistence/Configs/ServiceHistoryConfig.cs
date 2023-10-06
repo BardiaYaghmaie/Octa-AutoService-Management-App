@@ -13,6 +13,7 @@ public class ServiceHistoryConfig : IEntityTypeConfiguration<ServiceHistory>
         builder.Property(a => a.ServiceId).IsRequired(true);
         builder.Property(a => a.Name).HasMaxLength(255).IsRequired(true);
         builder.Property(a => a.IsActive).IsRequired(true);
+        builder.Property(a => a.DefaultPrice).IsRequired(true);
         builder.Property(a => a.UpdateDate).IsRequired(true);
 
      

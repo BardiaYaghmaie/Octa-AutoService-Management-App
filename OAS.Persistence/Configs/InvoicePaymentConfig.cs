@@ -13,5 +13,12 @@ public class InvoicePaymentConfig : IEntityTypeConfiguration<InvoicePayment>
         builder.Property(a => a.InvoiceId).IsRequired(true);
         builder.Property(a => a.LastPaymentDate).IsRequired(true);
         builder.Property(a => a.PaidAmount).IsRequired(true);
+
+        builder.Property(a => a.TrackCode).IsRequired(false);
+
+        builder.HasMany(a => a.InvoicePaymentHistories)
+.WithOne(a => a.InvoicePayment)
+.HasPrincipalKey(a => a.Id)
+.HasForeignKey(a => a.InvoicePaymentId);
     }
 }

@@ -11,8 +11,8 @@ public class InventoryItem
     public bool IsActive { get; set; }
     public DateTime RegisterDate { get; set; }
 
-    public string BuyFactorCode { get; set; }
-    public string SellerName { get; set; }
+    //public string BuyFactorCode { get; set; }
+    //public string SellerName { get; set; }
 
     public float CountLowerBound { get; set; }
 

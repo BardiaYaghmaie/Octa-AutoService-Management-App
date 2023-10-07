@@ -1,6 +1,9 @@
 @page "/testform"
 @using OAS.Domain.Models
-@inject IDialogService DialogService
+@using DialogOptions = Radzen.DialogOptions
+@using DialogService = Radzen.DialogService
+@using Variant = MudBlazor.Variant
+@inject DialogService DialogService
 <div class="container-fluid" dir="rtl">
     <div class="row px-3">
         <div class="col-md-6 col-lg-4 p-3">
@@ -40,9 +43,10 @@
     </p>
     </div>
 
-<MudButton @onclick="OpenDialog" Variant="MudBlazor.Variant.Filled" Color="Color.Primary">
-    Open Simple Dialog
-</MudButton>
+
+<div class="rz-p-12 rz-text-align-center">
+    <RadzenButton Text=@($"Order {orderID} details") ButtonStyle="ButtonStyle.Secondary" Click=@OpenOrder />
+</div>
 
 
 @code {
@@ -50,10 +54,13 @@
     
 
 
-    private void OpenDialog()
+    int orderID = 10248;
+
+    public async Task OpenOrder()
     {
-        var options = new MudBlazor.DialogOptions { CloseOnEscapeKey = true };
-        DialogService.Show<MyDialog>("Simple Dialog", options);
+        await DialogService.OpenAsync<MyDialog>($"Order {orderID}",
+            new Dictionary<string, object>() { { "OrderID", orderID } },
+            new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
     }
     void OnChange(string value, string name)
     {

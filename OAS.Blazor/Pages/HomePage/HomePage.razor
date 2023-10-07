@@ -1,5 +1,9 @@
 ﻿@page "/"
 @using AlignItems = Radzen.AlignItems
+@using DialogOptions = Radzen.DialogOptions
+@using DialogService = Radzen.DialogService
+@inject DialogService DialogService
+
 @*@using System.Net.Http.Json*@
 @*@inject HttpClient httpClient*@
 
@@ -8,7 +12,7 @@
 
 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
     <RadzenColumn>
-            <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ثبت مشتری" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+            <RadzenButton Click=@OpenRegisterCustomer Text="ثبت مشتری" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
     </RadzenColumn>
     <RadzenColumn>
             <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ورود ماشین" Icon="arrow_back" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
@@ -31,6 +35,15 @@
 </RadzenRow>
 
 @code {
+
+    public async Task OpenRegisterCustomer()
+    {
+        await DialogService.OpenAsync<RegisterCustomerDialog>("ثبت مشتری",
+            new Dictionary<string, object>(),
+            new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
+
+    }
+
     private void OnClick(string text)
     {
     //

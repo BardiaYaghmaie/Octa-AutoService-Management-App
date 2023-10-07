@@ -29,9 +29,11 @@ namespace OAS.Application.Features.CustomerFeatures.AddCustomer
             var vehicles = request.VehicleDTOs.Select(dto => _mapper.Map<Vehicle>(dto)).ToList();   
             foreach (var vehicle in vehicles)
             {
+                vehicle.Id = Guid.NewGuid();
                 vehicle.Code = await _customerRepository.GetNewVehicleCode();
             }
             customer.Code = await _customerRepository.GetNewCustomerCode();
+            customer.Vehicles = vehicles;
             await _customerRepository.AddAsync(customer);
             await _unitOfWork.SaveAsync(cancellationToken);
             var response = new AddCustomerResponse(customer.Id , customer.Vehicles.Select(a=> a.Id).ToList());

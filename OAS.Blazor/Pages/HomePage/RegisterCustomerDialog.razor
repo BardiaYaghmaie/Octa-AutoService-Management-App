@@ -1,0 +1,14 @@
+@using Variant = Radzen.Variant
+@inject Radzen.DialogService dialogService
+<MudRTLProvider RightToLeft="true">
+    <RadzenText Text="test" TextStyle="TextStyle.H4"/>
+    
+    <RadzenRow>
+         <RadzenButton Click="@((args) => dialogService.Close(false))" Variant="Variant.Flat" ButtonStyle="ButtonStyle.Light" Text="Cancel" Style="width: 120px" />
+                <RadzenButton Click="@((args) => dialogService.Close(true))" Variant="Variant.Flat" Text="OK" Style="width: 120px" />
+            
+    </RadzenRow>
+</MudRTLProvider>
+@code {
+    
+}

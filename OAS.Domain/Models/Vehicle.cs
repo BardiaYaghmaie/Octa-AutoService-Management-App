@@ -9,6 +9,8 @@ public class Vehicle
     public string Plate { get; set; }
     public DateTime RegisterDate { get; set; }
     public bool IsActive { get; set; }
+    public Guid CustomerId { get; set; }
+    public virtual Customer Customer { get; set; }
     public virtual ICollection<VehicleHistory> VehicleHistory{ get; set; }
     public virtual ICollection<Invoice> Invoices{ get; set; }
 

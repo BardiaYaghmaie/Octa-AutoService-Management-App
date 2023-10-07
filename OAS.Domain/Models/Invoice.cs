@@ -5,7 +5,8 @@ namespace OAS.Domain.Models;
 public class Invoice
 {
     public Guid Id { get; set; }
-    public Guid VehicleId { get; set; }
+    public Guid? VehicleId { get; set; }
+    public Guid? CustomerId { get; set; }
     public long DiscountAmount{ get; set; }
     public DateTime IssueDate { get; set; }
     public string? SerllerName { get; set; } //new
@@ -17,7 +18,8 @@ public class Invoice
     public virtual ICollection<InvoiceInventoryItem> InvoiceInventoryItems{ get; set; }
     public virtual ICollection<InvoicePayment>  InvoicePayments{ get; set; }
     public virtual ICollection<InvoiceService> InvoiceServiceItems{ get; set; }
-    public virtual Vehicle Vehicle { get; set; }
+    public virtual Vehicle? Vehicle { get; set; }
+    public virtual Customer? Customer{ get; set; }
 
 
 }

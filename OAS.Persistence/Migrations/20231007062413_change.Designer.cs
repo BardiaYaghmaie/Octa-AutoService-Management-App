@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OAS.Persistence.Contexts;
@@ -11,9 +12,11 @@ using OAS.Persistence.Contexts;
 namespace OAS.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231007062413_change")]
+    partial class change
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,7 +204,7 @@ namespace OAS.Persistence.Migrations
                     b.Property<int>("Code")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("CustomerId")
+                    b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
 
                     b.Property<long>("DiscountAmount")
@@ -222,7 +225,7 @@ namespace OAS.Persistence.Migrations
                     b.Property<bool>("UseBuyPrice")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid?>("VehicleId")
+                    b.Property<Guid>("VehicleId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -519,11 +522,15 @@ namespace OAS.Persistence.Migrations
                 {
                     b.HasOne("OAS.Domain.Models.Customer", "Customer")
                         .WithMany("Invoices")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("OAS.Domain.Models.Vehicle", "Vehicle")
                         .WithMany("Invoices")
-                        .HasForeignKey("VehicleId");
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
 

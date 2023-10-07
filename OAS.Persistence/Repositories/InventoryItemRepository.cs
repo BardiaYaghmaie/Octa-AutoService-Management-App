@@ -36,7 +36,7 @@ namespace OAS.Persistence.Repositories
 
         public async Task<int> GetNewCode()
         {
-            return await _context.InventoryItems.Select(a=> a.Code).MaxAsync();
+            return await _context.InventoryItems.Select(a=> a.Code).MaxAsync() + 1;
         }
 
         public void Update(InventoryItem entity)

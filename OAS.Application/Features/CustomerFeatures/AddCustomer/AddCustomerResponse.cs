@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace OAS.Application.Features.CustomerFeatures.AddCustomer
 {
-    public class AddCustomerResponse
-    {
-    }
+    public sealed record AddCustomerResponse(Guid CustomerId , List<Guid> VehicleIds);    
 }

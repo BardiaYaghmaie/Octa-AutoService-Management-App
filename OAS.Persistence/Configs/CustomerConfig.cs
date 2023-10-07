@@ -20,9 +20,14 @@ public class CustomerConfig : IEntityTypeConfiguration<Customer>
         builder.Property(a => a.Code).IsRequired(true);
         builder.Property(a => a.RegisterDate).IsRequired(true);
 
-        builder.HasMany(a => a.CustomerHistories)
+        builder.HasMany(a => a.Invoices)
             .WithOne(a => a.Customer)
             .HasPrincipalKey(a => a.Id)
+            .HasForeignKey(a => a.CustomerId).IsRequired(false);
+        
+        builder.HasMany(a => a.CustomerHistories)
+            .WithOne(a => a.Customer)            
+            .HasPrincipalKey(a => a.Id)            
             .HasForeignKey(a => a.CustomerId);
     }
 }

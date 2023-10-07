@@ -24,7 +24,7 @@ public class VehicleConfig : IEntityTypeConfiguration<Vehicle>
         builder.HasMany(a => a.Invoices)
         .WithOne(a => a.Vehicle)
         .HasPrincipalKey(a => a.Id)
-        .HasForeignKey(a => a.VehicleId);
+        .HasForeignKey(a => a.VehicleId).IsRequired(false);
 
     }
 }

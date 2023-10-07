@@ -13,7 +13,8 @@ public class InvoiceConfig : IEntityTypeConfiguration<Invoice>
         builder.Property(a => a.IssueDate).IsRequired(true);
         builder.Property(a => a.RegisterDate).IsRequired(true);
         builder.Property(a => a.DiscountAmount).IsRequired(true);
-        builder.Property(a => a.VehicleId).IsRequired(true);
+        builder.Property(a => a.VehicleId).IsRequired(false);
+        builder.Property(a => a.CustomerId).IsRequired(false);
         builder.Property(a => a.Code).IsRequired(true);
         builder.Property(a => a.UseBuyPrice).IsRequired(true);
         builder.Property(a => a.SerllerName).IsRequired(false);

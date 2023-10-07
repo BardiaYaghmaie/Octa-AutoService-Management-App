@@ -15,6 +15,8 @@ public class Customer
     public DateTime RegisterDate { get; set; }
     public bool IsActive { get; set; }
 
+    public virtual ICollection<Vehicle> Vehicles{ get; set; }
+    public virtual ICollection<Invoice> Invoices{ get; set; }
 
     public virtual ICollection<CustomerHistory> CustomerHistories { get; set; }
 }

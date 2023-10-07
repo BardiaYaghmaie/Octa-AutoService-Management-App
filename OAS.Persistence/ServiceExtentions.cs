@@ -17,12 +17,13 @@ public static class ServiceExtentions
     {
         string connectionString = configuration.GetConnectionString("OAS");
 
-        services.AddDbContext<ApplicationDbContext>(opt => opt.UseNpgsql(connectionString));
+        services.AddDbContext<ApplicationDbContext>(opt => opt.UseNpgsql(connectionString) , ServiceLifetime.Singleton);
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IInventoryItemHistoryRepository, InventoryItemHistoryRepository>();
         services.AddScoped<IInventoryItemRepository, InventoryItemRepository>();
         services.AddScoped<IServiceRepository, ServiceRepository>();
         services.AddScoped<IServiceHistoryRepository, ServiceHistoryRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
 
     }
 }

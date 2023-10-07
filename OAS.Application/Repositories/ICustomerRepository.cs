@@ -10,7 +10,7 @@ namespace OAS.Application.Repositories
     public interface ICustomerRepository
     {
         Task AddAsync(Customer entity);
-        Task GetAllAsync();
+        Task<List<Customer>> GetAllAsync();
         void Delete(Customer entity);
         void Update(Customer entity);
         Task<int> GetNewVehicleCode();

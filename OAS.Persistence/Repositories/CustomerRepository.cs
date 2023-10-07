@@ -29,9 +29,9 @@ namespace OAS.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public Task GetAllAsync()
+        public async Task<List<Customer>>GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Customers.ToListAsync();
         }
 
         public async Task<int> GetNewCustomerCode()

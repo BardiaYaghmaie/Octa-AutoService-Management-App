@@ -31,7 +31,8 @@ namespace OAS.Persistence.Repositories
 
         public async Task<List<InventoryItem>> GetAllAsync()
         {
-           return  await _context.InventoryItems.ToListAsync();
+            var result = await _context.InventoryItems.ToListAsync();
+           return result;
         }
 
         public async Task<int> GetNewCode()

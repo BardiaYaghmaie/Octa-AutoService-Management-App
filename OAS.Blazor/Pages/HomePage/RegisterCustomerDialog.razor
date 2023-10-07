@@ -1,16 +1,19 @@
+@using OAS.Application.DomainModels;
+@using OAS.Application.Features.CustomerFeatures.AddCustomer;
 @using Variant = Radzen.Variant
 @using AlignItems = Radzen.AlignItems
 @inject Radzen.DialogService dialogService
+@inject MediatR.IMediator mediator;
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
         <RadzenColumn>
             <RadzenRow>
-                <RadzenColumn>
+                <RadzenColumn Size="6">
                     <RadzenFormField Text="نام" Variant="Variant.Outlined">
                         <RadzenTextBox @bind-Value="@CustomerFirstName"/>
                     </RadzenFormField>
                 </RadzenColumn>
-                <RadzenColumn>
+                <RadzenColumn Size="6">
                     <RadzenFormField Text="نام خانوادگی" Variant="Variant.Outlined">
                         <RadzenTextBox @bind-Value="@CustomerLastName"/>
                     </RadzenFormField>
@@ -53,7 +56,7 @@
                     </RadzenFormField>
                 </RadzenColumn>
                 <RadzenColumn>
-                    <RadzenButton Text="افزودن" ButtonStyle="ButtonStyle.Success" Style="width: 120px"/>
+                    <RadzenButton Click="AddVehicle" Text="افزودن" ButtonStyle="ButtonStyle.Success" Style="width: 120px" />
                 </RadzenColumn>
             </RadzenRow>
         </RadzenColumn>
@@ -63,6 +66,13 @@
             </RadzenRow>
             <RadzenRow>
                 @* Customer Vehicle Lists*@
+                <ul>
+
+                    @foreach (var item in vehicles)
+                    {
+                        <li>@($"{item.Name} {item.Color} {item.Plate}")</li>
+                    }
+                </ul>
             </RadzenRow>
         </RadzenColumn>
     </RadzenRow>
@@ -72,17 +82,43 @@
         <RadzenColumn>
             <RadzenRow JustifyContent="JustifyContent.End">
                  <RadzenButton Click="@((args) => dialogService.Close(false))" ButtonStyle="ButtonStyle.Danger" Text="لغو" Style="width: 120px"/>
-                             <RadzenButton Click="@((args) => dialogService.Close(true))" ButtonStyle="ButtonStyle.Success" Text="ثبت" Style="width: 120px"/>
+                             <RadzenButton Click="AddCustomer" ButtonStyle="ButtonStyle.Success" Text="ثبت" Style="width: 120px"/>
             </RadzenRow>
         </RadzenColumn>
     </RadzenRow>
 </MudRTLProvider>
 
 @code {
+    List<VehicleDTO> vehicles = new();
+    private void AddVehicle()
+    {
+        VehicleDTO vehicle = new(VehicleName, VehiclePlate, VehicleColor);
+        vehicles.Add(vehicle);
+        VehicleName = "";
+        VehicleColor = "";
+        VehiclePlate = "";
+    }
+    private async void AddCustomer()
+    {
+        AddCustomerRequest request = new(CustomerFirstName, CustomerLastName, CustomerPhoneNumber, CustomerRegisterDate, vehicles);
+        try
+        {
+            var response = await mediator.Send(request);
+            //show success
+            dialogService.Close(true);
+
+        }
+        catch (Exception e)
+        {
+            //show error message
+            throw;
+        }
+
+    }
     public string CustomerFirstName { get; set; }
     public string CustomerLastName { get; set; }
     public string CustomerPhoneNumber { get; set; }
-    public DateTime CustomerRegisterDate { get; set; } = DateTime.Now;
+    public DateTime CustomerRegisterDate { get; set; } = DateTime.UtcNow;
     
     public string VehicleName { get; set; }
     public string VehicleColor { get; set; }

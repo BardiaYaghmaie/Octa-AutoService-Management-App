@@ -36,11 +36,19 @@ namespace OAS.Persistence.Repositories
 
         public async Task<int> GetNewCustomerCode()
         {
+            if (_dbContext.Customers.Count() == 0)
+            {
+                return 1;
+            }
             return await _dbContext.Customers.Select(a => a.Code).MaxAsync() + 1;
         }
 
         public async Task<int> GetNewVehicleCode()
         {
+            if (_dbContext.Vehicles.Count() == 0)
+            {
+                return 1;
+            }
             return await _dbContext.Vehicles.Select(a => a.Code).MaxAsync() + 1;
 
         }

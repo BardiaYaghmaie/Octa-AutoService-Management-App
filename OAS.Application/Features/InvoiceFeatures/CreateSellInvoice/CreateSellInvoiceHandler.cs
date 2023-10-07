@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using OAS.Application.Repositories;
+using OAS.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,26 @@ namespace OAS.Application.Features.InvoiceFeatures.CreateInvoice
 {
     internal class CreateSellInvoiceHandler : IRequestHandler<CreateSellInvoiceRequest, CreateSellInvoiceResponse>
     {
+        private readonly IInvoiceRepository _invoiceRepository;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public CreateSellInvoiceHandler(IInvoiceRepository invoiceRepository, IUnitOfWork unitOfWork)
+        {
+            _invoiceRepository = invoiceRepository;
+            _unitOfWork = unitOfWork;
+        }
+
         public async Task<CreateSellInvoiceResponse> Handle(CreateSellInvoiceRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Invoice invoice = new();
+            invoice.VehicleId = request.VehicleId;
+            invoice.RegisterDate = DateTime.Now;
+            invoice.Code = await _invoiceRepository.GetNewInvoiceCode();
+            invoice.Type = Domain.Enums.InvoiceType.Sell;
+            await _invoiceRepository.AddAsync(invoice);
+            await _unitOfWork.SaveAsync(cancellationToken);
+            var response = new CreateSellInvoiceResponse(invoice.Id, invoice.Code);
+            return response;
         }
     }
 }

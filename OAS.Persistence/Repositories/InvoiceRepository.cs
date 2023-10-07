@@ -1,4 +1,5 @@
 ﻿using OAS.Application.Repositories;
+using OAS.Domain.Models;
 using OAS.Persistence.Contexts;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,9 @@ namespace OAS.Persistence.Repositories
         }
         
 
-        public Task CreateSellInvoice(Guid VehicleId)
+        public async Task AddAsync(Invoice entity)
         {
-            throw new NotImplementedException();
+             await _dbContext.Invoices.AddAsync(entity);
         }
 
         public async Task<int> GetNewInvoiceCode()

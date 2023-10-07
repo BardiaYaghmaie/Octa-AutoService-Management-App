@@ -24,6 +24,7 @@ public static class ServiceExtentions
         services.AddScoped<IServiceRepository, ServiceRepository>();
         services.AddScoped<IServiceHistoryRepository, ServiceHistoryRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OAS.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace OAS.Application.Repositories
 {
     public interface IInvoiceRepository
     {
-        Task CreateSellInvoice(Guid VehicleId);
+        Task AddAsync(Invoice entity);
         Task<int> GetNewInvoiceCode();
     }
 }

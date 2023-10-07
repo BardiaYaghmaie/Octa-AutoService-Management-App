@@ -7,11 +7,11 @@ public class Invoice
     public Guid Id { get; set; }
     public Guid? VehicleId { get; set; }
     public Guid? CustomerId { get; set; }
-    public long DiscountAmount{ get; set; }
-    public DateTime IssueDate { get; set; }
+    public long? DiscountAmount{ get; set; }
+    public DateTime? IssueDate { get; set; }
     public string? SerllerName { get; set; } //new
     public InvoiceType Type{ get; set; } //new
-    public bool UseBuyPrice { get; set; } //new
+    public bool? UseBuyPrice { get; set; } //new
     public int Code{ get; set; } //new
     public DateTime RegisterDate { get; set; }
     public virtual ICollection<InvoiceDescription>  InvoiceDescriptions { get; set; }

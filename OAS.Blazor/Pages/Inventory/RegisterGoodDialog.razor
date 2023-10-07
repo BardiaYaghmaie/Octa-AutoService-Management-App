@@ -1,4 +1,5 @@
 @page "/testform"
+@using OAS.Domain.Models
 @inject IDialogService DialogService
 <div class="container-fluid" dir="rtl">
     <div class="row px-3">
@@ -28,6 +29,16 @@
         </div>
     </div>
 </div>
+<br/><br/>
+<div class="rz-p-12 rz-text-align-center">
+    <RadzenAutoComplete @bind-Value=@LastName Data=@customers TextProperty="LastName" Style="width: 13rem" />
+    <p>
+        @LastName
+        @customers.FirstOrDefault(x => x.LastName == LastName)?.Id
+        
+
+    </p>
+    </div>
 
 <MudButton @onclick="OpenDialog" Variant="MudBlazor.Variant.Filled" Color="Color.Primary">
     Open Simple Dialog
@@ -36,6 +47,7 @@
 
 @code {
     string value;
+    
 
 
     private void OpenDialog()
@@ -46,5 +58,20 @@
     void OnChange(string value, string name)
     {
         //
+    }
+    string LastName;
+
+    IEnumerable<Customer> customers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        customers = new List<Customer>()
+        {
+            new Customer() { Id = Guid.NewGuid(), FirstName = "Bardia", LastName = "Yaghmaie" },
+            new Customer() {Id = Guid.NewGuid(), FirstName = "Mammad", LastName = "Yousefian" }
+
+        };
     }
 }

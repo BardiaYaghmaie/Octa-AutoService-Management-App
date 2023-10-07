@@ -1,5 +1,37 @@
-<h3>VehicleEntranceDialog</h3>
+@using Variant = Radzen.Variant
+@using AlignItems = Radzen.AlignItems
+@inject Radzen.DialogService dialogService
+<MudRTLProvider RightToLeft="true">
+    <RadzenRow>
+        <RadzenColumn Size="6">
+            <RadzenRow>
+                <RadzenFormField Text="کد اشتراک خودرو" Variant="Variant.Outlined">
+                    <RadzenTextBox @bind-Value="@VehicleCode"/>
+                </RadzenFormField>
 
+            </RadzenRow>
+            <br/>
+            <RadzenRow>
+                <RadzenButton Text="ثبت فاکتور" ButtonStyle="ButtonStyle.Success" Style="width: 180px"/>
+
+            </RadzenRow>
+        </RadzenColumn>
+        <RadzenColumn Size="6">
+            <RadzenRow>
+
+            </RadzenRow>
+            <br/>
+            <RadzenRow>
+                <RadzenButton Text="ثبت فاکتور متفرقه" ButtonStyle="ButtonStyle.Info" Variant="Variant.Outlined" Style="width: 180px"/>
+
+            </RadzenRow>
+        </RadzenColumn>
+    </RadzenRow>
+    
+
+
+</MudRTLProvider>
 @code {
+    public string VehicleCode { get; set; }
     
 }

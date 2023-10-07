@@ -1,4 +1,5 @@
 @using Variant = Radzen.Variant
+@using AlignItems = Radzen.AlignItems
 @inject Radzen.DialogService dialogService
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
@@ -23,28 +24,57 @@
                     </RadzenFormField>
                 </RadzenColumn>
                 <RadzenColumn>
-                    <RadzenFormField Text="نام خانوادگی" Variant="Variant.Outlined">
-                        <RadzenTextBox @bind-Value="@CustomerLastName"/>
+                    <RadzenFormField Text="تاریخ" Variant="Variant.Outlined">
+                        <RadzenDatePicker @bind-Value=@CustomerRegisterDate ShowTime="true" ShowSeconds="false" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="yyyy/MM/dd" />
                     </RadzenFormField>
                 </RadzenColumn>
             </RadzenRow>
-            
-            
+            <br/>
+            <RadzenRow>
+                <RadzenText TextStyle="TextStyle.H6" Text="اضافه کردن ماشین" Style="font-family: Vazirmatn, serif"/>
+            </RadzenRow>
+            <RadzenRow>
+                <RadzenColumn>
+                    <RadzenFormField Text="خودرو" Variant="Variant.Outlined">
+                        <RadzenTextBox @bind-Value="@VehicleName"/>
+                    </RadzenFormField>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenFormField Text="رنگ" Variant="Variant.Outlined">
+                        <RadzenTextBox @bind-Value="@VehicleColor"/>
+                    </RadzenFormField>
+                </RadzenColumn>
+            </RadzenRow>
+            <br/>
+            <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" >
+                <RadzenColumn>
+                    <RadzenFormField Text="پلاک" Variant="Variant.Outlined">
+                        <RadzenTextBox @bind-Value="@VehiclePlate"/>
+                    </RadzenFormField>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenButton Text="افزودن" ButtonStyle="ButtonStyle.Success" Style="width: 120px"/>
+                </RadzenColumn>
+            </RadzenRow>
         </RadzenColumn>
         <RadzenColumn>
+            <RadzenRow>
+                <RadzenText TextStyle="TextStyle.H6" Text="لیست خودروها" Style="font-family: Vazirmatn, serif"/>
+            </RadzenRow>
+            <RadzenRow>
+                @* Customer Vehicle Lists*@
+            </RadzenRow>
         </RadzenColumn>
     </RadzenRow>
-    
-
-
-
-
-
-
-
+    <br/><br/>
     <RadzenRow>
-        <RadzenButton Click="@((args) => dialogService.Close(false))" Variant="Variant.Flat" ButtonStyle="ButtonStyle.Light" Text="Cancel" Style="width: 120px"/>
-        <RadzenButton Click="@((args) => dialogService.Close(true))" Variant="Variant.Flat" Text="OK" Style="width: 120px"/>
+        <RadzenColumn></RadzenColumn>
+        <RadzenColumn>
+            <RadzenRow JustifyContent="JustifyContent.End">
+                 <RadzenButton Click="@((args) => dialogService.Close(false))" ButtonStyle="ButtonStyle.Danger" Text="لغو" Style="width: 120px"/>
+                             <RadzenButton Click="@((args) => dialogService.Close(true))" ButtonStyle="ButtonStyle.Success" Text="ثبت" Style="width: 120px"/>
+            </RadzenRow>
+        </RadzenColumn>
     </RadzenRow>
 </MudRTLProvider>
 
@@ -52,6 +82,10 @@
     public string CustomerFirstName { get; set; }
     public string CustomerLastName { get; set; }
     public string CustomerPhoneNumber { get; set; }
-
+    public DateTime CustomerRegisterDate { get; set; } = DateTime.Now;
+    
+    public string VehicleName { get; set; }
+    public string VehicleColor { get; set; }
+    public string VehiclePlate { get; set; }
     
 }

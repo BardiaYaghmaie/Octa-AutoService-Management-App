@@ -1,14 +1,57 @@
 @using Variant = Radzen.Variant
 @inject Radzen.DialogService dialogService
 <MudRTLProvider RightToLeft="true">
-    <RadzenText Text="test" TextStyle="TextStyle.H4"/>
-    
     <RadzenRow>
-         <RadzenButton Click="@((args) => dialogService.Close(false))" Variant="Variant.Flat" ButtonStyle="ButtonStyle.Light" Text="Cancel" Style="width: 120px" />
-                <RadzenButton Click="@((args) => dialogService.Close(true))" Variant="Variant.Flat" Text="OK" Style="width: 120px" />
+        <RadzenColumn>
+            <RadzenRow>
+                <RadzenColumn>
+                    <RadzenFormField Text="نام" Variant="Variant.Outlined">
+                        <RadzenTextBox @bind-Value="@CustomerFirstName"/>
+                    </RadzenFormField>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenFormField Text="نام خانوادگی" Variant="Variant.Outlined">
+                        <RadzenTextBox @bind-Value="@CustomerLastName"/>
+                    </RadzenFormField>
+                </RadzenColumn>
+            </RadzenRow>
+            <br/>
+            <RadzenRow>
+                <RadzenColumn>
+                    <RadzenFormField Text="موبایل" Variant="Variant.Outlined">
+                        <RadzenTextBox @bind-Value="@CustomerPhoneNumber"/>
+                    </RadzenFormField>
+                </RadzenColumn>
+                <RadzenColumn>
+                    <RadzenFormField Text="نام خانوادگی" Variant="Variant.Outlined">
+                        <RadzenTextBox @bind-Value="@CustomerLastName"/>
+                    </RadzenFormField>
+                </RadzenColumn>
+            </RadzenRow>
             
+            
+        </RadzenColumn>
+        <RadzenColumn>
+        </RadzenColumn>
+    </RadzenRow>
+    
+
+
+
+
+
+
+
+    <RadzenRow>
+        <RadzenButton Click="@((args) => dialogService.Close(false))" Variant="Variant.Flat" ButtonStyle="ButtonStyle.Light" Text="Cancel" Style="width: 120px"/>
+        <RadzenButton Click="@((args) => dialogService.Close(true))" Variant="Variant.Flat" Text="OK" Style="width: 120px"/>
     </RadzenRow>
 </MudRTLProvider>
+
 @code {
+    public string CustomerFirstName { get; set; }
+    public string CustomerLastName { get; set; }
+    public string CustomerPhoneNumber { get; set; }
+
     
 }

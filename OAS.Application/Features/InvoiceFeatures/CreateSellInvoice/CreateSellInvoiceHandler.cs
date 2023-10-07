@@ -23,6 +23,7 @@ namespace OAS.Application.Features.InvoiceFeatures.CreateInvoice
         public async Task<CreateSellInvoiceResponse> Handle(CreateSellInvoiceRequest request, CancellationToken cancellationToken)
         {
             Invoice invoice = new();
+            invoice.Id = Guid.NewGuid();
             invoice.VehicleId = request.VehicleId;
             invoice.RegisterDate = DateTime.Now;
             invoice.Code = await _invoiceRepository.GetNewInvoiceCode();

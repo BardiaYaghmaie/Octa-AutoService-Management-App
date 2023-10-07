@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace OAS.Application.Features.InventoryFeatures.AddInventoryItem
 {
-    public sealed record AddInventoryItemRequest(string Name , long BuyPrice , long SellPrice, float Count , float CountLowerBound) :IRequest<AddInventoryItemResponse>;    
+    public sealed record AddInventoryItemRequest(string Name) :IRequest<AddInventoryItemResponse>;    
 }

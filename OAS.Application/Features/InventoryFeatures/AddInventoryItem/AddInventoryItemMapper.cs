@@ -12,7 +12,12 @@ namespace OAS.Application.Features.InventoryFeatures.AddInventoryItem
     {
         public AddInventoryItemMapper()
         {
-            CreateMap<AddInventoryItemRequest, InventoryItem>();
+            CreateMap<AddInventoryItemRequest, InventoryItem>().AfterMap((s,d) =>
+            {
+                d.Id = Guid.NewGuid();
+                d.IsActive = true;
+                d.RegisterDate = DateTime.Now;
+            });
             CreateMap<AddInventoryItemRequest, InventoryItemHistory>();
         }
     }

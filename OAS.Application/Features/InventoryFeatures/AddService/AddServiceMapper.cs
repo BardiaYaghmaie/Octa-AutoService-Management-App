@@ -13,7 +13,10 @@ namespace OAS.Application.Features.InventoryFeatures.AddService
     {
         public AddServiceMapper()
         {
-            CreateMap<AddServiceRequest, Service>();
+            CreateMap<AddServiceRequest, Service>().AfterMap((s,d) =>
+            {
+                d.Id = Guid.NewGuid();
+            });
             CreateMap<AddServiceRequest, ServiceHistory>();
         }
     }

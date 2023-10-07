@@ -16,6 +16,7 @@ namespace OAS.Application.Features.CustomerFeatures.AddCustomer
             CreateMap<VehicleDTO, Vehicle>();
             CreateMap<AddCustomerRequest, Customer>().AfterMap((s, d) =>
             {
+                d.Id = Guid.NewGuid();
                 d.IsActive = true;
             });
         }

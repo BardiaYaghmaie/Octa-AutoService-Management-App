@@ -15,7 +15,7 @@
             <RadzenButton Click=@OpenRegisterCustomer Text="ثبت مشتری" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
     </RadzenColumn>
     <RadzenColumn>
-            <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ورود ماشین" Icon="arrow_back" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+            <RadzenButton Click=@OpenVehicleEntrance Text="ورود ماشین" Icon="arrow_back" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
     </RadzenColumn>
 </RadzenRow>
 
@@ -41,6 +41,14 @@
         await DialogService.OpenAsync<RegisterCustomerDialog>("ثبت مشتری",
             new Dictionary<string, object>(),
             new DialogOptions() { Width = "950px", Height = "512px",
+                Draggable = false, AutoFocusFirstElement = false, CloseDialogOnOverlayClick = true});
+
+    }
+    public async Task OpenVehicleEntrance()
+    {
+        await DialogService.OpenAsync<VehicleEntranceDialog>("ورود خودرو",
+            new Dictionary<string, object>(),
+            new DialogOptions() { Width = "550px", Height = "260px",
                 Draggable = false, AutoFocusFirstElement = false, CloseDialogOnOverlayClick = true});
 
     }

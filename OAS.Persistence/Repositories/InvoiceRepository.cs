@@ -1,4 +1,5 @@
-﻿using OAS.Application.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using OAS.Application.Repositories;
 using OAS.Domain.Models;
 using OAS.Persistence.Contexts;
 using System;
@@ -24,9 +25,19 @@ namespace OAS.Persistence.Repositories
              await _dbContext.Invoices.AddAsync(entity);
         }
 
+        public void Delete(Invoice entity)
+        {
+           _dbContext.Invoices.Remove(entity);
+        }
+
+        public async Task<Invoice?> GetById(Guid id)
+        {
+            return await _dbContext.Invoices.FirstOrDefaultAsync(a => a.Id == id);
+        }
+
         public async Task<int> GetNewInvoiceCode()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Invoices.Select(a => a.Code).MaxAsync() + 1;
 
         }
     }

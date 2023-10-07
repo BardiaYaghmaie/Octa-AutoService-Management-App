@@ -23,25 +23,32 @@ public class InvoiceConfig : IEntityTypeConfiguration<Invoice>
         builder.HasMany(a => a.InvoiceServiceItems)
             .WithOne(a => a.Invoice)
             .HasPrincipalKey(a => a.Id)
-            .HasForeignKey(a => a.InvoiceId);
+            .HasForeignKey(a => a.InvoiceId)
+            .OnDelete(DeleteBehavior.Cascade);
 
 
         builder.HasMany(a => a.InvoiceDescriptions)
             .WithOne(a => a.Invoice)
           .HasPrincipalKey(a => a.Id)
-         .HasForeignKey(a => a.InvoiceId);
+         .HasForeignKey(a => a.InvoiceId)
+         .OnDelete(DeleteBehavior.Cascade);
+
 
         builder.HasMany(a => a.InvoiceServiceItems)
     .WithOne(a => a.Invoice)
   .HasPrincipalKey(a => a.Id)
- .HasForeignKey(a => a.InvoiceId);
+ .HasForeignKey(a => a.InvoiceId)
+         .OnDelete(DeleteBehavior.Cascade);
+
 
 
 
         builder.HasMany(a => a.InvoicePayments)
 .WithOne(a => a.Invoice)
 .HasPrincipalKey(a => a.Id)
-.HasForeignKey(a => a.InvoiceId);
+.HasForeignKey(a => a.InvoiceId)
+         .OnDelete(DeleteBehavior.Cascade);
+
 
 
     }

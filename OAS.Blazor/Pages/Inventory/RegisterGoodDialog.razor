@@ -1,5 +1,9 @@
 @page "/testform"
-@inject IDialogService DialogService
+@using OAS.Domain.Models
+@using DialogOptions = Radzen.DialogOptions
+@using DialogService = Radzen.DialogService
+@using Variant = MudBlazor.Variant
+@inject DialogService DialogService
 <div class="container-fluid" dir="rtl">
     <div class="row px-3">
         <div class="col-md-6 col-lg-4 p-3">
@@ -28,23 +32,53 @@
         </div>
     </div>
 </div>
+<br/><br/>
+<div class="rz-p-12 rz-text-align-center">
+    <RadzenAutoComplete @bind-Value=@LastName Data=@customers TextProperty="LastName" Style="width: 13rem" />
+    <p>
+        @LastName
+        @customers.FirstOrDefault(x => x.LastName == LastName)?.Id
+        
 
-<MudButton @onclick="OpenDialog" Variant="MudBlazor.Variant.Filled" Color="Color.Primary">
-    Open Simple Dialog
-</MudButton>
+    </p>
+    </div>
+
+
+<div class="rz-p-12 rz-text-align-center">
+    <RadzenButton Text=@($"Order {orderID} details") ButtonStyle="ButtonStyle.Secondary" Click=@OpenOrder />
+</div>
 
 
 @code {
     string value;
+    
 
 
-    private void OpenDialog()
+    int orderID = 10248;
+
+    public async Task OpenOrder()
     {
-        var options = new MudBlazor.DialogOptions { CloseOnEscapeKey = true };
-        DialogService.Show<MyDialog>("Simple Dialog", options);
+        await DialogService.OpenAsync<MyDialog>($"Order {orderID}",
+            new Dictionary<string, object>() { { "OrderID", orderID } },
+            new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
     }
     void OnChange(string value, string name)
     {
         //
+    }
+    string LastName;
+
+    IEnumerable<Customer> customers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        customers = new List<Customer>()
+        {
+            new Customer() { Id = Guid.NewGuid(), FirstName = "Bardia", LastName = "Yaghmaie" },
+            new Customer() {Id = Guid.NewGuid(), FirstName = "Mammad", LastName = "Yousefian" }
+
+        };
     }
 }

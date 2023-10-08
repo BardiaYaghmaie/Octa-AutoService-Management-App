@@ -14,7 +14,8 @@ namespace OAS.Application.Features.InventoryFeatures.DeleteInventoryItem
         {
             CreateMap<InventoryItem, InventoryItemHistory>().AfterMap((s, d) =>
             {
-                d.UpdateDate= DateTime.Now;
+                d.Id = Guid.NewGuid();
+                d.UpdateDate= DateTime.UtcNow;
                 d.InventoryItemId = s.Id;
             });
         }

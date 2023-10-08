@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OAS.Application.Features.CustomerFeatures.GetCustomersMinimal;
 using OAS.Application.Repositories;
 using OAS.Domain.Models;
 using OAS.Persistence.Contexts;
@@ -27,6 +28,12 @@ namespace OAS.Persistence.Repositories
         public void Delete(Customer entity)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<GetCustomersMinimal_DTO>> Get()
+        {
+            var data = await _dbContext.Customers.Select(a => new GetCustomersMinimal_DTO(a.Id, a.Code, a.FirstName + " " + a.LastName)).ToListAsync();
+            return data;
         }
 
         public async Task<List<Customer>>GetAllAsync()

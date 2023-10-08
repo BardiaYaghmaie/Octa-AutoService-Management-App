@@ -15,7 +15,8 @@ namespace OAS.Application.Features.InventoryFeatures.UpdateService
         {
             CreateMap<Service, ServiceHistory>().AfterMap((s,d) =>
             {
-                d.UpdateDate = DateTime.Now;
+                d.Id = Guid.NewGuid();
+                d.UpdateDate = DateTime.UtcNow;
                 d.ServiceId = s.Id;
             });
         }

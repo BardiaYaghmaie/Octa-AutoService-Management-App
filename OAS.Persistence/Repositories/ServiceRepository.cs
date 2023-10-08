@@ -46,6 +46,8 @@ namespace OAS.Persistence.Repositories
 
         public async Task<int> GetNewCodeAsync()
         {
+            if (await _context.Services.CountAsync() == 0)
+                return 1;
             return await _context.Services.Select(a=> a.Code).MaxAsync() + 1;
         }
 

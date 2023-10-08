@@ -6,13 +6,14 @@
 @using OAS.Application.DomainModels;
 @using OAS.Application.Features.Inventory.GetInventoryItems;
 @using OAS.Application.Features.Inventory.GetServices;
+@inject NavigationManager NavigationManager
 @inject DialogService DialogService
 @inject MediatR.IMediator mediator;
 <MudRTLProvider RightToLeft="true">
 
 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
     <RadzenColumn>
-        <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="خرید کالا" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+        <RadzenButton Click=@(args => NavigationManager.NavigateTo("/purchase/inventoryitem")) Text="خرید کالا" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
     </RadzenColumn>
     <RadzenColumn>
         <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ویرایش کالا" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>

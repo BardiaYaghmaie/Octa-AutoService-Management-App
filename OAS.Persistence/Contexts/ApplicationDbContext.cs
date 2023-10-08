@@ -21,6 +21,7 @@ public class ApplicationDbContext : DbContext
     public virtual DbSet<Invoice> Invoices { get; set; }
     public virtual DbSet<InvoiceDescription> InvoiceDescriptions { get; set; }
     public virtual DbSet<InvoiceInventoryItem> InvoiceInventoryItems { get; set; }
+    public virtual DbSet<InvoiceService> InvoiceServices{ get; set; }
     public virtual DbSet<InvoicePayment> InvoicePayments { get; set; }
     public virtual DbSet<InvoicePaymentHistory>  InvoicePaymentHistories { get; set; }
     public virtual DbSet<Service> Services { get; set; }
@@ -38,6 +39,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfiguration(new InvoiceConfig());
         modelBuilder.ApplyConfiguration(new InvoiceDescriptionConfig());
         modelBuilder.ApplyConfiguration(new InvoiceInventoryItemConfig());
+        modelBuilder.ApplyConfiguration(new InvoiceServiceConfig());
         modelBuilder.ApplyConfiguration(new ServiceConfig());
         modelBuilder.ApplyConfiguration(new ServiceHistoryConfig());
         modelBuilder.ApplyConfiguration(new VehicleConfig());

@@ -11,7 +11,14 @@ namespace OAS.Application.Repositories
     {
         Task AddAsync(Invoice entity);
         void Delete(Invoice entity);
+        void Update(Invoice entity);
         Task<int> GetNewInvoiceCode();
         Task<Invoice?> GetById(Guid id);
+        Task DeleteInvoiceInventoryItemsAsync(List<Guid> invoiceInventoryItemIds);
+        Task DeleteInvoiceServicesAsync(List<Guid> invoiceServicesIds);
+
+        Task AddInvoiceInventoryItemsAsync(List<InvoiceInventoryItem> invoiceInventoryItems);    
+        Task AddInvoiceServicesAsync(List<InvoiceService> invoiceServices);
+        Task AddInvoicePaymentsAsync(List<InvoicePayment> invoicePayments);
     }
 }

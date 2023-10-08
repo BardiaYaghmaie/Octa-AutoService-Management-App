@@ -25,9 +25,42 @@ namespace OAS.Persistence.Repositories
              await _dbContext.Invoices.AddAsync(entity);
         }
 
+        public async Task AddInvoiceInventoryItemsAsync(List<InvoiceInventoryItem> invoiceInventoryItems)
+        {
+            await _dbContext.InvoiceInventoryItems.AddRangeAsync(invoiceInventoryItems);
+        }
+
+        public async Task AddInvoicePaymentsAsync(List<InvoicePayment> invoicePayments)
+        {
+            await _dbContext.InvoicePayments.AddRangeAsync(invoicePayments);
+        }
+
+        public async Task AddInvoiceServicesAsync(List<InvoiceService> invoiceServices)
+        {
+            await _dbContext.InvoiceServices.AddRangeAsync(invoiceServices);
+        }
+
         public void Delete(Invoice entity)
         {
            _dbContext.Invoices.Remove(entity);
+        }
+
+        public async Task DeleteInvoiceInventoryItemsAsync(List<Guid> invoiceInventoryItemIds)
+        {
+            var entities = await _dbContext.InvoiceInventoryItems.Where(a=> invoiceInventoryItemIds.Contains(a.Id)).ToListAsync();
+            foreach (var item in entities)
+            {
+                _dbContext.InvoiceInventoryItems.Remove(item);
+            }
+        }
+
+        public async Task DeleteInvoiceServicesAsync(List<Guid> invoiceServicesIds)
+        {
+            var entities = await _dbContext.InvoiceServices.Where(a => invoiceServicesIds.Contains(a.Id)).ToListAsync();
+            foreach (var item in entities)
+            {
+                _dbContext.InvoiceServices.Remove(item);
+            }
         }
 
         public async Task<Invoice?> GetById(Guid id)
@@ -39,6 +72,11 @@ namespace OAS.Persistence.Repositories
         {
             return await _dbContext.Invoices.Select(a => a.Code).MaxAsync() + 1;
 
+        }
+
+        public void Update(Invoice entity)
+        {
+            _dbContext.Invoices.Update(entity);
         }
     }
 }

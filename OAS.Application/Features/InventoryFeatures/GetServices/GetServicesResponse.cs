@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace OAS.Application.Features.Inventory.GetServices
 {
-    public sealed record GetServicesResponse(List<ServiceDTO> InventoryItemDTOs);
+    public sealed record GetServicesResponse(List<ServiceDTO> ServiceDTOs);
 }

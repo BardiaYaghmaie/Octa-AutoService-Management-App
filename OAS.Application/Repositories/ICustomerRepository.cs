@@ -1,4 +1,5 @@
-﻿using OAS.Domain.Models;
+﻿using OAS.Application.Features.CustomerFeatures.GetCustomersMinimal;
+using OAS.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace OAS.Application.Repositories
 {
     public interface ICustomerRepository
     {
+        Task<List<GetCustomersMinimal_DTO>> Get();
         Task AddAsync(Customer entity);
         Task<List<Customer>> GetAllAsync();
         void Delete(Customer entity);

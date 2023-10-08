@@ -1,4 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OAS.Application.Features.InvoiceFeatures.GetBuyInvoices;
+using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceInventoryItems;
+using OAS.Application.Features.InvoiceFeatures.GetSellInvoices;
+using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceServices;
 using OAS.Application.Repositories;
 using OAS.Domain.Models;
 using OAS.Persistence.Contexts;
@@ -18,11 +22,11 @@ namespace OAS.Persistence.Repositories
         {
             _dbContext = dbContext;
         }
-        
+
 
         public async Task AddAsync(Invoice entity)
         {
-             await _dbContext.Invoices.AddAsync(entity);
+            await _dbContext.Invoices.AddAsync(entity);
         }
 
         public async Task AddInvoiceInventoryItemsAsync(List<InvoiceInventoryItem> invoiceInventoryItems)
@@ -42,12 +46,12 @@ namespace OAS.Persistence.Repositories
 
         public void Delete(Invoice entity)
         {
-           _dbContext.Invoices.Remove(entity);
+            _dbContext.Invoices.Remove(entity);
         }
 
         public async Task DeleteInvoiceInventoryItemsAsync(List<Guid> invoiceInventoryItemIds)
         {
-            var entities = await _dbContext.InvoiceInventoryItems.Where(a=> invoiceInventoryItemIds.Contains(a.Id)).ToListAsync();
+            var entities = await _dbContext.InvoiceInventoryItems.Where(a => invoiceInventoryItemIds.Contains(a.Id)).ToListAsync();
             foreach (var item in entities)
             {
                 _dbContext.InvoiceInventoryItems.Remove(item);
@@ -63,6 +67,31 @@ namespace OAS.Persistence.Repositories
             }
         }
 
+        public async Task<List<GetBuyInvoices_InvoiceDTO>> GetBuyInvoicesAsync()
+        {
+            var d = await _dbContext.Invoices.Include(a => a.Customer).Include(a => a.InvoiceInventoryItems).Include(a => a.InvoicePayments).Where(a => a.Type == Domain.Enums.InvoiceType.Buy).ToListAsync();
+            var data = d.Select((a, i) =>
+            {
+                long paidAmount = a.InvoicePayments.Select(b => b.PaidAmount).Sum();
+                long total = a.InvoiceServiceItems.Select(b => b.Price).Sum() +
+                +a.InvoiceInventoryItems.Select(b => b.InventoryItem).Select(b => b.BuyPrice.Value).Sum();
+
+                return new GetBuyInvoices_InvoiceDTO
+                (
+                    CustomerName: "",
+                    InvoiceCode: a.Code.ToString(),
+                    InvoiceDate: a.IssueDate.Value,
+                    InvoiceDateString: a.IssueDate.ToString(),
+                    InvoiceId: a.Id,
+                    RowNumber: i + 1,
+                    InvoiceTotalPrice: total,
+                    InvoicePaidAmount: paidAmount
+
+                );
+            }).ToList();
+            return data;
+        }
+
         public async Task<Invoice?> GetById(Guid id)
         {
             return await _dbContext.Invoices.FirstOrDefaultAsync(a => a.Id == id);
@@ -71,6 +100,61 @@ namespace OAS.Persistence.Repositories
         public async Task<int> GetNewInvoiceCode()
         {
             return await _dbContext.Invoices.Select(a => a.Code).MaxAsync() + 1;
+
+        }
+
+        public async Task<List<GetSellInvoiceInventoryItems_DTO>> GetSellInvoiceInventoryItemsAsync(Guid invoiceId)
+        {
+            var data = await _dbContext.InvoiceInventoryItems.Include(a => a.InventoryItem).Where(a => a.InvoiceId == invoiceId).ToListAsync();
+            var answer = data.Select((a, i) => new GetSellInvoiceInventoryItems_DTO
+            (
+                RowNumber: i + 1,
+                InventoryItemName: a.InventoryItem.Name,
+                InventoryItemCount: a.InventoryItem.Count.Value, //todo
+                UnitPrice: a.InventoryItem.SellPrice.Value,
+                TotalPrice: a.InventoryItem.Count.Value * a.InventoryItem.SellPrice.Value
+            )).ToList();
+            return answer;
+        }
+
+        public async Task<List<GetSellInvoices_InvoiceDTO>> GetSellInvoicesAsync()
+        {
+            var d = await _dbContext.Invoices.Include(a => a.Customer).Include(a => a.Vehicle).ThenInclude(a => a.Customer).Include(a => a.InvoiceInventoryItems).Include(a => a.InvoicePayments).Include(a => a.InvoiceServiceItems).Where(a => a.Type == Domain.Enums.InvoiceType.Sell).ToListAsync();
+            var data = d.Select((a, i) =>
+                {
+                    long paidAmount = a.InvoicePayments.Select(b => b.PaidAmount).Sum();
+                    long total = a.InvoiceServiceItems.Select(b => b.Price).Sum() +
+                    +a.InvoiceInventoryItems.Select(b => b.InventoryItem).Select(b => a.UseBuyPrice.Value ? b.BuyPrice.Value : b.SellPrice.Value).Sum();
+
+                    return new GetSellInvoices_InvoiceDTO
+                    (
+                        CustomerName: a.VehicleId == null ? a.Customer?.FirstName + " " + a.Customer?.LastName : a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName,
+                        InvoiceCode: a.Code.ToString(),
+                        InvoiceDate: a.IssueDate.Value,
+                        InvoiceDateString: a.IssueDate.ToString(),
+                        InvoiceId: a.Id,
+                        RowNumber: i + 1,
+                        VehicleName: a.Vehicle?.Name,
+                        InvoiceTotalPrice: total,
+                        InvoicePaidAmount: paidAmount
+
+                    );
+                }).ToList();
+            return data;
+        }
+
+        public async Task<List<GetSellInvoiceServices_DTO>> GetSellInvoicesServicesAsync(Guid invoiceId)
+        {
+            var data = await _dbContext.InvoiceServices.Include(a => a.Service).Where(a => a.InvoiceId == invoiceId).ToListAsync();
+            var answer = data.Select((a, i) => new GetSellInvoiceServices_DTO
+            (
+                RowNumber: i + 1,
+                ServiceName: a.Service.Name,
+                Count: 1, //todo
+                UnitPrice: a.Price,
+                TotalPrice: a.Price
+            )).ToList();
+            return answer;
 
         }
 

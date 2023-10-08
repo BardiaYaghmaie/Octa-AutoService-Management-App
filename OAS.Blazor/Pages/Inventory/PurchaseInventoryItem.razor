@@ -1,0 +1,93 @@
+@page "/purchase/inventoryitem"
+@using Variant = Radzen.Variant
+@using AlignItems = Radzen.AlignItems
+<MudRTLProvider RightToLeft="true">
+    <RadzenRow>
+        <!-- sabte kalaye jadid--> 
+        <RadzenColumn Size="6">
+            <RadzenRow><RadzenText Text="ثبت کالای جدید" TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif"/></RadzenRow>
+            <RadzenRow>
+                <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
+                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
+                </RadzenFormField>
+                <RadzenButton Text="ثبت" ButtonStyle="ButtonStyle.Success" Style="width: 180px"/>
+            </RadzenRow>
+            <br/><br/>
+            <RadzenRow><RadzenText Text="ثبت فاکتور خرید کالا" TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif"/></RadzenRow>
+            <RadzenRow>
+                <RadzenFormField Text="شماره فاکتور" Variant="Variant.Outlined">
+                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
+                </RadzenFormField>
+                <RadzenFormField Text="فروشنده" Variant="Variant.Outlined">
+                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
+                </RadzenFormField>
+            </RadzenRow>
+            <RadzenRow>
+                <RadzenFormField Text="تاریخ صدور" Variant="Variant.Outlined">
+                    <RadzenDatePicker @bind-Value=@NewInventoryItemRegister ShowTime="true" ShowSeconds="false" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="yyyy/MM/dd" />
+                </RadzenFormField>
+                <RadzenButton Text="افزودن" ButtonStyle="ButtonStyle.Success" Style="width: 180px"/>
+            </RadzenRow>
+        </RadzenColumn>
+        <!-- sabte aghlame kharid-->
+        <RadzenColumn Size="6">
+            <RadzenRow><RadzenText Text="ثبت اقلام خرید کالا" TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif"/></RadzenRow>
+            <RadzenRow>
+                <RadzenFormField Text="کد کالا" Variant="Variant.Outlined">
+                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
+                </RadzenFormField>
+                <RadzenButton Click=@(args => OnClick("Primary icon button")) Icon="add_circle_outline" ButtonStyle="ButtonStyle.Success" Variant="Variant.Outlined" />
+                <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
+                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
+                </RadzenFormField>
+            </RadzenRow>
+            <RadzenRow>
+                <RadzenFormField Text="قیمت خرید" Variant="Variant.Outlined">
+                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
+                </RadzenFormField>
+                <RadzenFormField Text="قیمت فروش" Variant="Variant.Outlined">
+                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
+                </RadzenFormField>
+            </RadzenRow>
+            <RadzenRow>
+                <RadzenFormField Text="تعداد" Variant="Variant.Outlined">
+                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
+                </RadzenFormField>
+                <RadzenFormField Text="حداقل موجودی" Variant="Variant.Outlined">
+                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
+                </RadzenFormField>
+            </RadzenRow>
+            <RadzenRow JustifyContent="JustifyContent.End">
+                <RadzenButton Text="افزودن" ButtonStyle="ButtonStyle.Success" Style="width: 180px"/>
+            </RadzenRow>
+        </RadzenColumn>
+    </RadzenRow>
+    
+    <!-- Generated Invoice-->
+    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+        <RadzenText Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H5">
+            فاکتور ۹۲۹۱ - شرکت روغن گیران قرن 
+        </RadzenText>
+    </RadzenRow>
+    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+        @* <RadzenDataGrid  TItem="InventoryPageServicesReportModel" AllowVirtualization="false" Style="height:400px" *@
+        @*                      AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or" *@
+        @*                      AllowSorting="true"> *@
+        @*         <Columns> *@
+        @*             <RadzenDataGridColumn TItem="InventoryPageServicesReportModel" Property="RowNumber" Title="ردیف" /> *@
+        @*             <RadzenDataGridColumn TItem="InventoryPageServicesReportModel" Property="ItemCode" Title="کد" /> *@
+        @*             <RadzenDataGridColumn TItem="InventoryPageServicesReportModel" Property="Price" Title="قیمت خرید" /> *@
+        @*             <RadzenDataGridColumn TItem="InventoryPageServicesReportModel" Property="Price" Title="عملیات" /> *@
+        @*         </Columns> *@
+        @*     </RadzenDataGrid> *@
+    </RadzenRow>
+    
+
+</MudRTLProvider>
+@code {
+    public string NewInventoryItemRegister { get; set; }
+    private void OnClick(string text)
+    {
+    //
+    }
+}

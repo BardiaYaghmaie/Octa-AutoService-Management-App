@@ -1,11 +1,15 @@
 @page "/inventory"
 @using AlignItems = Radzen.AlignItems
 @using DialogOptions = MudBlazor.DialogOptions
-@inject IDialogService DialogService
+@using DialogService = Radzen.DialogService
+@inject DialogService DialogService
+@inject NavigationManager NavigationManager
+
+
 
 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
     <RadzenColumn>
-        <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="خرید کالا" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+        <RadzenButton Click=@(args => NavigationManager.NavigateTo("/purchase/inventoryitem")) Text="خرید کالا" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
     </RadzenColumn>
     <RadzenColumn>
         <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ویرایش کالا" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
@@ -60,6 +64,7 @@
     {
     //
     }
+
     public class InventoryPageItemsReportModel
     {
         public int RowNumber { get; set; }

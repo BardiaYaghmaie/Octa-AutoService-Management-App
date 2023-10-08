@@ -16,9 +16,14 @@ namespace OAS.Application.Features.InventoryFeatures.AddInventoryItem
             {
                 d.Id = Guid.NewGuid();
                 d.IsActive = true;
-                d.RegisterDate = DateTime.Now;
+                d.RegisterDate = DateTime.UtcNow;
             });
-            CreateMap<AddInventoryItemRequest, InventoryItemHistory>();
+            CreateMap<AddInventoryItemRequest, InventoryItemHistory>().AfterMap((s, d) =>
+            {
+                d.Id = Guid.NewGuid();
+                d.IsActive = true;
+                d.UpdateDate = DateTime.UtcNow;
+            }); ;
         }
     }
 }

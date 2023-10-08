@@ -15,7 +15,8 @@ namespace OAS.Application.Features.InventoryFeatures.UpdateInventoryItem
             CreateMap<UpdateInventoryItemRequest, InventoryItem>();
             CreateMap<InventoryItem, InventoryItemHistory>().AfterMap((s, d) =>
             {
-                d.UpdateDate = DateTime.Now;
+                d.Id = Guid.NewGuid();
+                d.UpdateDate = DateTime.UtcNow;
                 d.InventoryItemId = s.Id;
             });
         }

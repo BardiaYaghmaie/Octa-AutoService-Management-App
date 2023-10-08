@@ -58,9 +58,9 @@
 
     public async Task OpenOrder()
     {
-        await DialogService.OpenAsync<MyDialog>($"Order {orderID}",
-            new Dictionary<string, object>() { { "OrderID", orderID } },
-            new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
+        //await DialogService.OpenAsync<MyDialog>($"Order {orderID}",
+        //    new Dictionary<string, object>() { { "OrderID", orderID } },
+        //    new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
     }
     void OnChange(string value, string name)
     {

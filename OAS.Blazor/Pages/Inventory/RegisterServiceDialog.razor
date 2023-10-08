@@ -1,0 +1,57 @@
+﻿@using OAS.Application.DomainModels;
+@using OAS.Application.Features.CustomerFeatures.AddCustomer;
+@using OAS.Application.Features.InventoryFeatures.AddService;
+@using Variant = Radzen.Variant
+@using AlignItems = Radzen.AlignItems
+@inject Radzen.DialogService dialogService
+@inject MediatR.IMediator mediator;
+<MudRTLProvider RightToLeft="true">
+    <RadzenRow JustifyContent="JustifyContent.SpaceBetween">
+
+        <RadzenColumn Size="5">
+            <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
+                <RadzenTextBox @bind-Value="serviceName" />
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn Size="5">
+            <RadzenFormField Text="قیمت" Variant="Variant.Outlined">
+                <RadzenTextBox @bind-Value="servicePrice" />
+            </RadzenFormField>
+        </RadzenColumn>
+
+    </RadzenRow>
+    <RadzenRow JustifyContent="JustifyContent.Center" Style="margin-top:20px">
+        <RadzenButton Click="@((args) => dialogService.Close(false))" ButtonStyle="ButtonStyle.Danger" Text="لغو" />
+        <RadzenButton Click="AddService" ButtonStyle="ButtonStyle.Success" Text="ثبت" />
+    </RadzenRow>
+</MudRTLProvider>
+
+@code {
+    [Parameter]
+    public Func<Task> RefreshServicesGridData { get; set; }
+    [Parameter]
+    public Func<Task>  RefreshInventoryItemsGridData { get; set; }
+    List<VehicleDTO> vehicles = new();
+    private string serviceName;
+    private string servicePrice;
+    private async void AddService()
+    {
+        try
+        {
+            AddServiceRequest request = new(serviceName, long.Parse(servicePrice));
+            var response = await mediator.Send(request);
+            //show success
+            await RefreshServicesGridData();
+            dialogService.Close(true);
+
+        }
+        catch (Exception e)
+        {
+            //show error message
+            throw e;
+        }
+
+    }
+
+
+}

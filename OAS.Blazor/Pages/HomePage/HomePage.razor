@@ -2,6 +2,7 @@
 @using AlignItems = Radzen.AlignItems
 @using DialogOptions = Radzen.DialogOptions
 @using DialogService = Radzen.DialogService
+@using OAS.Blazor.Pages.Shared
 @inject DialogService DialogService
 
 @*@using System.Net.Http.Json*@
@@ -33,6 +34,7 @@
     </RadzenDataGrid>
    
 </RadzenRow>
+<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark"/>
 
 @code {
 
@@ -49,6 +51,17 @@
         await DialogService.OpenAsync<VehicleEntranceDialog>("ورود خودرو",
             new Dictionary<string, object>(),
             new DialogOptions() { Width = "550px", Height = "260px",
+                Draggable = false, AutoFocusFirstElement = false, CloseDialogOnOverlayClick = true});
+
+    }
+
+    string InvoiceCode = "39204";
+    public async Task OpenDeleteConfirmation()
+    {
+        await DialogService.OpenAsync<InvoiceDeleteConfirmationDialog>("حذف فاکتور",
+            new Dictionary<string, object>(){{"InvoiceCode", InvoiceCode}},
+
+    new DialogOptions() { Width = "550px", Height = "260px",
                 Draggable = false, AutoFocusFirstElement = false, CloseDialogOnOverlayClick = true});
 
     }

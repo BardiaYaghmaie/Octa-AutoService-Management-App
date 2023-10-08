@@ -1,0 +1,27 @@
+@using Variant = Radzen.Variant
+@using AlignItems = Radzen.AlignItems
+@inject Radzen.DialogService dialogService
+<MudRTLProvider RightToLeft="true">
+    <RadzenRow>
+        <RadzenText TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif">
+            آیا از حذف فاکتور @InvoiceCode اطمینان دارید؟ 
+        </RadzenText>
+    </RadzenRow>
+    
+    <RadzenRow>
+        <RadzenColumn Size="6"></RadzenColumn>
+        <RadzenColumn Size="3">
+            <RadzenButton Click="@((args) => dialogService.Close(false))" ButtonStyle="ButtonStyle.Danger" Text="لغو" Style="width: 120px"/>
+        </RadzenColumn>
+        <RadzenColumn Size="3">
+            <RadzenButton Click=@OnClick ButtonStyle="ButtonStyle.Success" Text="بله" Style="width: 120px"/>
+        </RadzenColumn>
+    </RadzenRow>
+</MudRTLProvider>
+@code {
+    [Parameter]
+    public string InvoiceCode { get; set; }
+    
+    private void OnClick(){}
+    
+}

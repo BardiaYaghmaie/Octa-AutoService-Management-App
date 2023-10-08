@@ -16,8 +16,13 @@ namespace OAS.Application.Features.InventoryFeatures.AddService
             CreateMap<AddServiceRequest, Service>().AfterMap((s,d) =>
             {
                 d.Id = Guid.NewGuid();
+                d.RegisterDate = DateTime.UtcNow;
             });
-            CreateMap<AddServiceRequest, ServiceHistory>();
+            CreateMap<AddServiceRequest, ServiceHistory>().AfterMap((s, d) =>
+            {
+                d.Id = Guid.NewGuid();
+                d.UpdateDate = DateTime.UtcNow;
+            });
         }
     }
 }

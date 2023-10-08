@@ -15,8 +15,9 @@ namespace OAS.Application.Features.InventoryFeatures.DeleteService
         {
             CreateMap<Service, ServiceHistory>().AfterMap((s,d) =>
             {
-                d.UpdateDate = DateTime.Now;
+                d.UpdateDate = DateTime.UtcNow;
                 d.ServiceId = s.Id;
+                d.Id = Guid.NewGuid();
             });
         }
     }

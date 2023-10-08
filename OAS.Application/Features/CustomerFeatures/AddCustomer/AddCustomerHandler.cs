@@ -26,17 +26,19 @@ namespace OAS.Application.Features.CustomerFeatures.AddCustomer
         public async Task<AddCustomerResponse> Handle(AddCustomerRequest request, CancellationToken cancellationToken)
         {
             var customer = _mapper.Map<Customer>(request);
-            var vehicles = request.VehicleDTOs.Select(dto => _mapper.Map<Vehicle>(dto)).ToList();   
+            var vehicles = request.VehicleDTOs.Select(dto => _mapper.Map<Vehicle>(dto)).ToList();
+            int i = 0;
             foreach (var vehicle in vehicles)
             {
                 vehicle.Id = Guid.NewGuid();
-                vehicle.Code = await _customerRepository.GetNewVehicleCode();
+                vehicle.Code = await _customerRepository.GetNewVehicleCode() + i;
+                i++;
             }
             customer.Code = await _customerRepository.GetNewCustomerCode();
             customer.Vehicles = vehicles;
             await _customerRepository.AddAsync(customer);
             await _unitOfWork.SaveAsync(cancellationToken);
-            var response = new AddCustomerResponse(customer.Id , customer.Vehicles.Select(a=> a.Id).ToList());
+            var response = new AddCustomerResponse(customer.Id, customer.Vehicles.Select(a => a.Id).ToList());
             return response;
         }
     }

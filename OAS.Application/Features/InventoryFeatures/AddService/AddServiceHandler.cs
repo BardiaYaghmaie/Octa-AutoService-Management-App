@@ -38,8 +38,8 @@ namespace OAS.Application.Features.InventoryFeatures.AddService
             var serviceHistoryToAdd = _mapper.Map<ServiceHistory>(request);
             serviceHistoryToAdd.ServiceId= serviceToAdd.Id;
             await _serviceHistoryRepository.AddAsync(serviceHistoryToAdd);
-            var response = new AddServiceResponse(serviceToAdd.Id);
             await _unitOfWork.SaveAsync(cancellationToken);
+            var response = new AddServiceResponse(serviceToAdd.Id);
             return response;
         }
     }

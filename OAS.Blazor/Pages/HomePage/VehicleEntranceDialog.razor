@@ -3,33 +3,15 @@
 @inject Radzen.DialogService dialogService
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
-        <RadzenColumn Size="6">
-            <RadzenRow>
-                <RadzenFormField Text="کد اشتراک خودرو" Variant="Variant.Outlined">
-                    <RadzenTextBox @bind-Value="@VehicleCode"/>
-                </RadzenFormField>
-
-            </RadzenRow>
-            <br/>
-            <RadzenRow>
-                <RadzenButton Text="ثبت فاکتور" ButtonStyle="ButtonStyle.Success" Style="width: 180px"/>
-
-            </RadzenRow>
-        </RadzenColumn>
-        <RadzenColumn Size="6">
-            <RadzenRow>
-
-            </RadzenRow>
-            <br/>
-            <RadzenRow>
-                <RadzenButton Text="ثبت فاکتور متفرقه" ButtonStyle="ButtonStyle.Info" Variant="Variant.Outlined" Style="width: 180px"/>
-
-            </RadzenRow>
-        </RadzenColumn>
+        <RadzenFormField Text="کد اشتراک خودرو" Variant="Variant.Outlined">
+            <RadzenTextBox @bind-Value="@VehicleCode"/>
+        </RadzenFormField>
     </RadzenRow>
-    
-
-
+    <br/>
+    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenButton Text="ثبت فاکتور" ButtonStyle="ButtonStyle.Success" Style="width: 200px"/>
+        <RadzenButton Text="ثبت فاکتور متفرقه" ButtonStyle="ButtonStyle.Info" Variant="Variant.Outlined" Style="width: 180px"/>
+    </RadzenRow>
 </MudRTLProvider>
 @code {
     public string VehicleCode { get; set; }

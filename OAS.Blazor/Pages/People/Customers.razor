@@ -1,0 +1,31 @@
+@page "/Customers"
+@using OAS.Application.Features.CustomerFeatures.GetCustomersMinimal
+@inject MediatR.IMediator mediator
+
+<MudRTLProvider RightToLeft="true">
+    <ul>
+        @foreach (var c in _customers)
+        {
+            <li>@c.Name -- @c.Code -- @c.Id</li>
+        }
+    </ul>
+
+</MudRTLProvider>
+
+
+
+@code {
+    private List<GetCustomersMinimal_DTO> _customers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var request = new GetCustomersMinimalRequest();
+        var response = await mediator.Send(request);
+
+        var customers = response.Data;
+        _customers = customers;
+
+
+    }
+
+}

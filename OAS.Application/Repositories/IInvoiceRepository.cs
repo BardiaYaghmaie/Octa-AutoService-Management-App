@@ -1,4 +1,5 @@
 ﻿using OAS.Application.Features.InvoiceFeatures.GetBuyInvoices;
+using OAS.Application.Features.InvoiceFeatures.GetDailySellInvoices;
 using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceInventoryItems;
 using OAS.Application.Features.InvoiceFeatures.GetSellInvoices;
 using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceServices;
@@ -13,6 +14,7 @@ namespace OAS.Application.Repositories
 {
     public interface IInvoiceRepository
     {
+        Task<List<GetDailySellInvoices_DTO>> GetDailySellInvoicesAsync();
         Task<List<GetSellInvoiceServices_DTO>> GetSellInvoicesServicesAsync(Guid invoiceId);
         Task<List<GetSellInvoiceInventoryItems_DTO>> GetSellInvoiceInventoryItemsAsync(Guid invoiceId);
         Task<List<GetSellInvoices_InvoiceDTO>> GetSellInvoicesAsync(); 

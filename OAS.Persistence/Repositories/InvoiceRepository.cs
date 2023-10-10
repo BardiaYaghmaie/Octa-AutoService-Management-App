@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OAS.Application.Features.InvoiceFeatures.GetBuyInvoices;
+using OAS.Application.Features.InvoiceFeatures.GetDailySellInvoices;
 using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceInventoryItems;
 using OAS.Application.Features.InvoiceFeatures.GetSellInvoices;
 using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceServices;
@@ -73,15 +74,15 @@ namespace OAS.Persistence.Repositories
             var data = d.Select((a, i) =>
             {
                 long paidAmount = a.InvoicePayments.Select(b => b.PaidAmount).Sum();
-                long total = a.InvoiceServiceItems.Select(b => b.Price).Sum() +
+                long total = a.InvoiceServices.Select(b => b.Price).Sum() +
                 +a.InvoiceInventoryItems.Select(b => b.InventoryItem).Select(b => b.BuyPrice.Value).Sum();
 
                 return new GetBuyInvoices_InvoiceDTO
                 (
                     CustomerName: "",
                     InvoiceCode: a.Code.ToString(),
-                    InvoiceDate: a.IssueDate.Value,
-                    InvoiceDateString: a.IssueDate.ToString(),
+                    InvoiceDate: a.UpdateDate.Value,
+                    InvoiceDateString: a.UpdateDate.ToString(),
                     InvoiceId: a.Id,
                     RowNumber: i + 1,
                     InvoiceTotalPrice: total,
@@ -95,6 +96,24 @@ namespace OAS.Persistence.Repositories
         public async Task<Invoice?> GetById(Guid id)
         {
             return await _dbContext.Invoices.FirstOrDefaultAsync(a => a.Id == id);
+        }
+
+        public async Task<List<GetDailySellInvoices_DTO>> GetDailySellInvoicesAsync()
+        {
+            var data = await _dbContext.Invoices
+                .Include(a => a.Customer).Include(a => a.Vehicle).ThenInclude(a => a.Customer).Include(a => a.InvoiceInventoryItems).Include(a => a.InvoicePayments).Include(a => a.InvoiceServices).Where(a => a.Type == Domain.Enums.InvoiceType.Sell)
+                .Where(a => a.RegisterDate.Date == DateTime.Now.Date)
+                .ToListAsync();
+                var data1=data.Where(a=> a.VehicleId.HasValue || a.CustomerId.HasValue)
+                .Select((a,i) => new GetDailySellInvoices_DTO(
+                    a.Id,
+                    a.Code.ToString(),
+                    a.VehicleId.HasValue?a.Vehicle.Name:"",
+                    a.CustomerId.HasValue?a.Customer.FirstName + " " + a.Customer.LastName:"",
+                    i+1
+
+                )).ToList();
+            return data1;
         }
 
         public async Task<int> GetNewInvoiceCode()
@@ -119,19 +138,19 @@ namespace OAS.Persistence.Repositories
 
         public async Task<List<GetSellInvoices_InvoiceDTO>> GetSellInvoicesAsync()
         {
-            var d = await _dbContext.Invoices.Include(a => a.Customer).Include(a => a.Vehicle).ThenInclude(a => a.Customer).Include(a => a.InvoiceInventoryItems).Include(a => a.InvoicePayments).Include(a => a.InvoiceServiceItems).Where(a => a.Type == Domain.Enums.InvoiceType.Sell).ToListAsync();
+            var d = await _dbContext.Invoices.Include(a => a.Customer).Include(a => a.Vehicle).ThenInclude(a => a.Customer).Include(a => a.InvoiceInventoryItems).Include(a => a.InvoicePayments).Include(a => a.InvoiceServices).Where(a => a.Type == Domain.Enums.InvoiceType.Sell).ToListAsync();
             var data = d.Select((a, i) =>
                 {
                     long paidAmount = a.InvoicePayments.Select(b => b.PaidAmount).Sum();
-                    long total = a.InvoiceServiceItems.Select(b => b.Price).Sum() +
+                    long total = a.InvoiceServices.Select(b => b.Price).Sum() +
                     +a.InvoiceInventoryItems.Select(b => b.InventoryItem).Select(b => a.UseBuyPrice.Value ? b.BuyPrice.Value : b.SellPrice.Value).Sum();
 
                     return new GetSellInvoices_InvoiceDTO
                     (
                         CustomerName: a.VehicleId == null ? a.Customer?.FirstName + " " + a.Customer?.LastName : a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName,
                         InvoiceCode: a.Code.ToString(),
-                        InvoiceDate: a.IssueDate.Value,
-                        InvoiceDateString: a.IssueDate.ToString(),
+                        InvoiceDate: a.UpdateDate.Value,
+                        InvoiceDateString: a.UpdateDate.ToString(),
                         InvoiceId: a.Id,
                         RowNumber: i + 1,
                         VehicleName: a.Vehicle?.Name,

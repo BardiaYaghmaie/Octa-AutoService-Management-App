@@ -2,10 +2,11 @@
 @using AlignItems = Radzen.AlignItems
 @using DialogOptions = Radzen.DialogOptions
 @using DialogService = Radzen.DialogService
+@using OAS.Application.Features.InvoiceFeatures.GetDailySellInvoices;
 @using OAS.Blazor.Pages.Shared
 @using OAS.Blazor.Pages.Invoices
 @inject DialogService DialogService
-
+@inject MediatR.IMediator mediator;
 @*@using System.Net.Http.Json*@
 @*@inject HttpClient httpClient*@
 
@@ -14,26 +15,27 @@
 
 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
     <RadzenColumn>
-            <RadzenButton Click=@OpenRegisterCustomer Text="ثبت مشتری" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+        <RadzenButton Click=@OpenRegisterCustomer Text="ثبت مشتری" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
     </RadzenColumn>
     <RadzenColumn>
-            <RadzenButton Click=@OpenVehicleEntrance Text="ورود ماشین" Icon="arrow_back" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
+        <RadzenButton Click=@OpenVehicleEntrance Text="ورود ماشین" Icon="arrow_back" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
     </RadzenColumn>
 </RadzenRow>
 
 <br />
 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-    <RadzenDataGrid Data="@Elements" TItem="HomePageReportModel" AllowVirtualization="false" Style="height:400px"
+    <RadzenDataGrid Data="@gridData" TItem="GetDailySellInvoices_DTO" AllowVirtualization="false" Style="height:400px"
                     AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
                     AllowSorting="true">
         <Columns>
-            <RadzenDataGridColumn TItem="HomePageReportModel" Property="RowNumber" Title="ردیف" />
-            <RadzenDataGridColumn TItem="HomePageReportModel" Property="CustomerName" Title="نام مشتری" />
-            <RadzenDataGridColumn TItem="HomePageReportModel" Property="Vehicle" Title="خودرو" />
-            <RadzenDataGridColumn TItem="HomePageReportModel" Property="Vehicle" Title="عملیات" />
+            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="RowNumber" Title="ردیف" />
+            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="InvoiceCode" Title="شماره فاکتور" />
+            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="CustomerName" Title=" مشتری" />
+            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="VehicleName" Title="خودرو" />
+            <RadzenDataGridColumn TItem="string" Property="Vehicle" Title="عملیات" />
         </Columns>
     </RadzenDataGrid>
-   
+
 </RadzenRow>
 <RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark"/>
 <RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary"/>
@@ -44,16 +46,28 @@
     {
         await DialogService.OpenAsync<RegisterCustomerDialog>("ثبت مشتری",
             new Dictionary<string, object>(),
-            new DialogOptions() { Width = "950px", Height = "512px",
-                Draggable = false, AutoFocusFirstElement = false, CloseDialogOnOverlayClick = true});
+            new DialogOptions()
+                {
+                    Width = "950px",
+                    Height = "512px",
+                    Draggable = false,
+                    AutoFocusFirstElement = false,
+                    CloseDialogOnOverlayClick = true
+                });
 
     }
     public async Task OpenVehicleEntrance()
     {
         await DialogService.OpenAsync<VehicleEntranceDialog>("ورود خودرو",
             new Dictionary<string, object>(),
-            new DialogOptions() { Width = "550px", Height = "260px",
-                Draggable = false, AutoFocusFirstElement = false, CloseDialogOnOverlayClick = true});
+            new DialogOptions()
+                {
+                    Width = "550px",
+                    Height = "260px",
+                    Draggable = false,
+                    AutoFocusFirstElement = false,
+                    CloseDialogOnOverlayClick = true
+                });
 
     }
 
@@ -61,10 +75,16 @@
     public async Task OpenDeleteConfirmation()
     {
         await DialogService.OpenAsync<InvoiceDeleteConfirmationDialog>("حذف فاکتور",
-            new Dictionary<string, object>(){{"InvoiceCode", InvoiceCode}},
+            new Dictionary<string, object>() { { "InvoiceCode", InvoiceCode } },
 
-    new DialogOptions() { Width = "550px", Height = "260px",
-                Draggable = false, AutoFocusFirstElement = false, CloseDialogOnOverlayClick = true});
+    new DialogOptions()
+        {
+            Width = "550px",
+            Height = "260px",
+            Draggable = false,
+            AutoFocusFirstElement = false,
+            CloseDialogOnOverlayClick = true
+        });
 
     }
     public async Task OpenPaySellInvoice()
@@ -79,24 +99,15 @@
 
     private void OnClick(string text)
     {
-    //
+        //
     }
-    public class HomePageReportModel
+ 
+    private List<GetDailySellInvoices_DTO> gridData = new();
+
+    protected override async Task OnInitializedAsync()
     {
-        public int RowNumber { get; set; }
-        public string CustomerName { get; set; }
-        public string Vehicle { get; set; }
+        var request = new GetDailySellInvoicesRequest();
+        var response = await mediator.Send(request);
+        gridData = response.Data;
     }
-    private List<HomePageReportModel> Elements = new()
-    {
-        new (){RowNumber = 1,Vehicle= "تیبا تیپ 2 نوک مدادی",CustomerName = "محمد یوسفیان"},
-        new (){RowNumber = 2,Vehicle= "پراید E131 زرشکی",CustomerName = "بردیا یغمایی"},
-    };
-
-
-
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    Elements = await httpClient.GetFromJsonAsync<List<HomePageReportModel>>("webapi/periodictable");
-    //}
 }

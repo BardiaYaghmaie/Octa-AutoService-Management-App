@@ -32,6 +32,7 @@ namespace OAS.Application.Features.CustomerFeatures.AddCustomer
             {
                 vehicle.Id = Guid.NewGuid();
                 vehicle.Code = await _customerRepository.GetNewVehicleCode() + i;
+                vehicle.RegisterDate = DateTime.Now;
                 i++;
             }
             customer.Code = await _customerRepository.GetNewCustomerCode();

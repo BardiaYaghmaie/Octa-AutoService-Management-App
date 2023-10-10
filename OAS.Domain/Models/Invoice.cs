@@ -8,7 +8,7 @@ public class Invoice
     public Guid? VehicleId { get; set; }
     public Guid? CustomerId { get; set; }
     public long? DiscountAmount{ get; set; }
-    public DateTime? IssueDate { get; set; }
+    public DateTime? UpdateDate { get; set; }
     public string? SerllerName { get; set; } //new
     public InvoiceType Type{ get; set; } //new
     public bool? UseBuyPrice { get; set; } //new
@@ -17,7 +17,7 @@ public class Invoice
     public virtual ICollection<InvoiceDescription>  InvoiceDescriptions { get; set; }
     public virtual ICollection<InvoiceInventoryItem> InvoiceInventoryItems{ get; set; }
     public virtual ICollection<InvoicePayment>  InvoicePayments{ get; set; }
-    public virtual ICollection<InvoiceService> InvoiceServiceItems{ get; set; }
+    public virtual ICollection<InvoiceService> InvoiceServices{ get; set; }
     public virtual Vehicle? Vehicle { get; set; }
     public virtual Customer? Customer{ get; set; }
 

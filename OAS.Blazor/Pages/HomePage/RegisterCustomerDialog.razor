@@ -10,7 +10,7 @@
             <RadzenRow>
                 <RadzenColumn Size="6">
                     <RadzenFormField Text="نام" Variant="Variant.Outlined">
-                        <RadzenTextBox @bind-Value="@CustomerFirstName"/>
+                        <RadzenTextBox  @bind-Value="@CustomerFirstName"/>
                     </RadzenFormField>
                 </RadzenColumn>
                 <RadzenColumn Size="6">
@@ -86,10 +86,12 @@
             </RadzenRow>
         </RadzenColumn>
     </RadzenRow>
+    @error
 </MudRTLProvider>
 
 @code {
     List<VehicleDTO> vehicles = new();
+    private string error = "";
     private void AddVehicle()
     {
         VehicleDTO vehicle = new(VehicleName, VehiclePlate, VehicleColor);
@@ -110,15 +112,16 @@
         }
         catch (Exception e)
         {
+            error = e.Message + "#" + e.InnerException.Message;
             //show error message
-            throw;
+            
         }
 
     }
     public string CustomerFirstName { get; set; }
     public string CustomerLastName { get; set; }
     public string CustomerPhoneNumber { get; set; }
-    public DateTime CustomerRegisterDate { get; set; } = DateTime.UtcNow;
+    public DateTime CustomerRegisterDate { get; set; } = DateTime.Now;
     
     public string VehicleName { get; set; }
     public string VehicleColor { get; set; }

@@ -29,7 +29,7 @@ namespace OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInven
             if (invoice == null && invoice?.Type != Domain.Enums.InvoiceType.Sell)
                 throw new Exception("invalid invoice");
             invoice.UseBuyPrice = request.UseBuyPrice;
-            invoice.IssueDate = DateTime.UtcNow;
+            invoice.UpdateDate = DateTime.UtcNow;
             List<InvoiceService> invoiceServices = request.ServiceIdsAndPrices.Select(a => new InvoiceService
             {
                 Id = Guid.NewGuid(),

@@ -12,6 +12,7 @@ public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
     public virtual DbSet<Customer> Customers { get; set; }
     public virtual DbSet<CustomerHistory> CustomerHistories { get; set; }

@@ -10,7 +10,7 @@ public class InvoiceConfig : IEntityTypeConfiguration<Invoice>
     {
         builder.ToTable("Invoice");
         builder.HasKey(a => a.Id);
-        builder.Property(a => a.IssueDate).IsRequired(true);
+        builder.Property(a => a.UpdateDate).IsRequired(true);
         builder.Property(a => a.RegisterDate).IsRequired(true);
         builder.Property(a => a.DiscountAmount).IsRequired(false);
         builder.Property(a => a.VehicleId).IsRequired(false);
@@ -20,35 +20,28 @@ public class InvoiceConfig : IEntityTypeConfiguration<Invoice>
         builder.Property(a => a.SerllerName).IsRequired(false);
         builder.Property(a => a.Type).IsRequired(true);
 
-        builder.HasMany(a => a.InvoiceServiceItems)
+        builder.HasMany(a => a.InvoiceServices)
             .WithOne(a => a.Invoice)
             .HasPrincipalKey(a => a.Id)
-            .HasForeignKey(a => a.InvoiceId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(a => a.InvoiceId);
 
 
         builder.HasMany(a => a.InvoiceDescriptions)
             .WithOne(a => a.Invoice)
           .HasPrincipalKey(a => a.Id)
-         .HasForeignKey(a => a.InvoiceId)
-         .OnDelete(DeleteBehavior.Cascade);
+         .HasForeignKey(a => a.InvoiceId);
 
-
-        builder.HasMany(a => a.InvoiceServiceItems)
+        builder.HasMany(a => a.InvoiceServices)
     .WithOne(a => a.Invoice)
   .HasPrincipalKey(a => a.Id)
- .HasForeignKey(a => a.InvoiceId)
-         .OnDelete(DeleteBehavior.Cascade);
-
+ .HasForeignKey(a => a.InvoiceId);
 
 
 
         builder.HasMany(a => a.InvoicePayments)
 .WithOne(a => a.Invoice)
 .HasPrincipalKey(a => a.Id)
-.HasForeignKey(a => a.InvoiceId)
-         .OnDelete(DeleteBehavior.Cascade);
-
+.HasForeignKey(a => a.InvoiceId);
 
 
     }

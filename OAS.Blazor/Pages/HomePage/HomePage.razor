@@ -3,6 +3,7 @@
 @using DialogOptions = Radzen.DialogOptions
 @using DialogService = Radzen.DialogService
 @using OAS.Blazor.Pages.Shared
+@using OAS.Blazor.Pages.Invoices
 @inject DialogService DialogService
 
 @*@using System.Net.Http.Json*@
@@ -35,6 +36,7 @@
    
 </RadzenRow>
 <RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark"/>
+<RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary"/>
 
 @code {
 
@@ -62,6 +64,15 @@
             new Dictionary<string, object>(){{"InvoiceCode", InvoiceCode}},
 
     new DialogOptions() { Width = "550px", Height = "260px",
+                Draggable = false, AutoFocusFirstElement = false, CloseDialogOnOverlayClick = true});
+
+    }
+    public async Task OpenPaySellInvoice()
+    {
+        await DialogService.OpenAsync<PaySellInvoiceDialog>("حذف فاکتور",
+            new Dictionary<string, object>(){{"InvoiceCode", InvoiceCode}},
+
+            new DialogOptions() { Width = "550px", Height = "260px",
                 Draggable = false, AutoFocusFirstElement = false, CloseDialogOnOverlayClick = true});
 
     }

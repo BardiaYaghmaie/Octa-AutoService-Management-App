@@ -4,6 +4,7 @@
 @using DialogService = Radzen.DialogService
 @using OAS.Application.Features.InvoiceFeatures.GetDailySellInvoices;
 @using OAS.Blazor.Pages.Shared
+@using OAS.Blazor.Pages.Invoices
 @inject DialogService DialogService
 @inject MediatR.IMediator mediator;
 @*@using System.Net.Http.Json*@
@@ -36,7 +37,8 @@
     </RadzenDataGrid>
 
 </RadzenRow>
-<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" />
+<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark"/>
+<RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary"/>
 
 @code {
 
@@ -83,6 +85,15 @@
             AutoFocusFirstElement = false,
             CloseDialogOnOverlayClick = true
         });
+
+    }
+    public async Task OpenPaySellInvoice()
+    {
+        await DialogService.OpenAsync<PaySellInvoiceDialog>("پرداخت فاکتور ",
+            new Dictionary<string, object>(){},
+
+            new DialogOptions() { Width = "700px", Height = "500px",
+                Draggable = false, AutoFocusFirstElement = false, CloseDialogOnOverlayClick = true});
 
     }
 

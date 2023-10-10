@@ -1,6 +1,6 @@
 @page "/invoices"
 @using AlignItems = Radzen.AlignItems
-
+<MudRTLProvider RightToLeft="true">
 <RadzenRow>
     <RadzenText Text="لیست فاکتورهای فروش" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif"/>
 </RadzenRow>
@@ -39,6 +39,7 @@
         </Columns>
     </RadzenDataGrid>
 </RadzenRow>
+<MudRTLProvider/>
 <br/>
 @code {
     
@@ -65,4 +66,4 @@
 
     }
 
-}
+}</MudRTLProvider>

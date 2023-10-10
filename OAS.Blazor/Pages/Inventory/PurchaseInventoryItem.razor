@@ -1,75 +1,100 @@
 @page "/purchase/inventoryitem"
+@using OAS.Application.DomainModels;
+@using OAS.Application.Features.Inventory.GetInventoryItems;
+@using OAS.Application.Features.InventoryFeatures.AddInventoryItem;
 @using Variant = Radzen.Variant
 @using AlignItems = Radzen.AlignItems
+@inject MediatR.IMediator mediator;
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
-        <!-- sabte kalaye jadid--> 
+        <!-- sabte kalaye jadid-->
         <RadzenColumn Size="6">
-            <RadzenRow><RadzenText Text="ثبت کالای جدید" TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif"/></RadzenRow>
-            <RadzenRow>
-                <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
-                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
-                </RadzenFormField>
-                <RadzenButton Text="ثبت" ButtonStyle="ButtonStyle.Success" Style="width: 180px"/>
-            </RadzenRow>
-            <br/><br/>
-            <RadzenRow><RadzenText Text="ثبت فاکتور خرید کالا" TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif"/></RadzenRow>
+            <RadzenRow><RadzenText Text="ثبت کالای جدید" TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif" /></RadzenRow>
+            <RadzenTemplateForm TItem="AddNewInventoryItemModel" Data="newInventoryItemModel" Submit="OnSubmitNewInventoryItem" InvalidSubmit="OnInvalidSubmitNewInventoryItem">
+
+                <RadzenRow>
+                    <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
+                        <RadzenTextBox Name="Title" @bind-Value="newInventoryItemModel.Title" />
+                        <RadzenRequiredValidator Component="Title" Text="عنوان کالا را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                    </RadzenFormField>
+                    <RadzenButton Text="ثبت" ButtonType="Radzen.ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Style="width: 180px" />
+                </RadzenRow>
+            </RadzenTemplateForm>
+            <br /><br />
+            <RadzenRow><RadzenText Text="ثبت فاکتور خرید کالا" TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif" /></RadzenRow>
             <RadzenRow>
                 <RadzenFormField Text="شماره فاکتور" Variant="Variant.Outlined">
-                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
+                    <RadzenTextBox Name="InvoiceCode" @bind-Value="updateInventoryItemModel.Limit" />
+                    <RadzenRequiredValidator Component="InvoiceCode" Text="شماره فاکتور را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
                 </RadzenFormField>
-                <RadzenFormField Text="فروشنده" Variant="Variant.Outlined">
-                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
+                <RadzenFormField  Text="فروشنده" Variant="Variant.Outlined">
+                    <RadzenTextBox Name="SellerName" @bind-Value="updateInventoryItemModel.Limit" />
+                    <RadzenRequiredValidator Component="SellerName" Text="فروشنده را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
                 </RadzenFormField>
             </RadzenRow>
             <RadzenRow>
                 <RadzenFormField Text="تاریخ صدور" Variant="Variant.Outlined">
-                    <RadzenDatePicker @bind-Value=@NewInventoryItemRegister ShowTime="true" ShowSeconds="false" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="yyyy/MM/dd" />
+                    <RadzenDatePicker Name="InvoiceRegisterDate" @bind-Value="updateInventoryItemModel.Limit" ShowTime="true" ShowSeconds="false" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="yyyy/MM/dd" />
+                    <RadzenRequiredValidator Component="InvoiceRegisterDate" Text="تاریخ صدور را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
                 </RadzenFormField>
-                <RadzenButton Text="افزودن" ButtonStyle="ButtonStyle.Success" Style="width: 180px"/>
+                <RadzenButton Text="افزودن" ButtonStyle="ButtonStyle.Success" Style="width: 180px" />
             </RadzenRow>
         </RadzenColumn>
         <!-- sabte aghlame kharid-->
         <RadzenColumn Size="6">
-            <RadzenRow><RadzenText Text="ثبت اقلام خرید کالا" TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif"/></RadzenRow>
-            <RadzenRow>
-                <RadzenFormField Text="کد کالا" Variant="Variant.Outlined">
-                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
-                </RadzenFormField>
-                <RadzenButton Click=@(args => OnClick("Primary icon button")) Icon="add_circle_outline" ButtonStyle="ButtonStyle.Success" Variant="Variant.Outlined" />
-                <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
-                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
-                </RadzenFormField>
-            </RadzenRow>
-            <RadzenRow>
-                <RadzenFormField Text="قیمت خرید" Variant="Variant.Outlined">
-                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
-                </RadzenFormField>
-                <RadzenFormField Text="قیمت فروش" Variant="Variant.Outlined">
-                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
-                </RadzenFormField>
-            </RadzenRow>
-            <RadzenRow>
-                <RadzenFormField Text="تعداد" Variant="Variant.Outlined">
-                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
-                </RadzenFormField>
-                <RadzenFormField Text="حداقل موجودی" Variant="Variant.Outlined">
-                    <RadzenTextBox @bind-Value="@NewInventoryItemRegister"/>
-                </RadzenFormField>
-            </RadzenRow>
-            <RadzenRow JustifyContent="JustifyContent.End">
-                <RadzenButton Text="افزودن" ButtonStyle="ButtonStyle.Success" Style="width: 180px"/>
-            </RadzenRow>
+            <RadzenTemplateForm TItem="UpdateInventoryItemModel" Data="updateInventoryItemModel" Submit="OnSubmitUpdateInventoryItem" InvalidSubmit="OnInvalidSubmitUpdateInventoryItem">
+                <RadzenRow><RadzenText Text="ثبت اقلام خرید کالا" TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif" /></RadzenRow>
+                <RadzenRow>
+                    <RadzenFormField Text="کد کالا" Variant="Variant.Outlined">
+
+                        <RadzenAutoComplete ValueChanged="InventoryCodeItemAutoCompleteTextChanged" Name="Code" Data=@inventoryItems TextProperty="Code" Value="updateInventoryItemModel.Code" Style="width: 13rem" />
+                        <RadzenRequiredValidator Component="Code" Text="کد کالا را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                    </RadzenFormField>
+                    @*
+                    <RadzenButton Click=@(args => OnClick("Primary icon button")) Icon="add_circle_outline" ButtonStyle="ButtonStyle.Success" Variant="Variant.Outlined" />*@
+                    <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
+
+                        <RadzenAutoComplete ValueChanged="InventoryItemNameAutoCompleteTextChanged" Name="Title" Data=@inventoryItems TextProperty="Title" Value="updateInventoryItemModel.Title" Style="width: 13rem" />
+                        <RadzenRequiredValidator Component="Title" Text="عنوان کالا را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                    </RadzenFormField>
+                </RadzenRow>
+                <br />
+                <RadzenRow>
+                    <RadzenFormField Text="قیمت خرید" Variant="Variant.Outlined">
+                        <RadzenTextBox Name="BuyPrice" @bind-Value="@updateInventoryItemModel.BuyPrice" />
+                        <RadzenRequiredValidator  Component="BuyPrice" Text="قیمت خرید را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="قیمت فروش" Variant="Variant.Outlined">
+                        <RadzenTextBox Name="SellPrice" @bind-Value="@updateInventoryItemModel.SellPrice" />
+                        <RadzenRequiredValidator Component="SellPrice" Text="قیمت فروش را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                    </RadzenFormField>
+                </RadzenRow>
+                <br />
+
+                <RadzenRow>
+                    <RadzenFormField Text="تعداد" Variant="Variant.Outlined">
+                        <RadzenTextBox Name="Count" @bind-Value="@updateInventoryItemModel.Count" />
+                        <RadzenRequiredValidator Component="Count" Text="تعداد  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="حداقل موجودی" Variant="Variant.Outlined">
+                        <RadzenTextBox Name="Limit" @bind-Value="@updateInventoryItemModel.Limit" />
+                        <RadzenRequiredValidator Component="Limit" Text="حداقل موجودی  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                    </RadzenFormField>
+                </RadzenRow>
+                <RadzenRow JustifyContent="JustifyContent.End">
+                    <RadzenButton Text="افزودن" ButtonType="Radzen.ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Style="width: 180px" />
+                </RadzenRow>
+            </RadzenTemplateForm>
         </RadzenColumn>
     </RadzenRow>
-    
+
     <!-- Generated Invoice-->
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
         <RadzenText Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H5">
-            فاکتور ۹۲۹۱ - شرکت روغن گیران قرن 
+            فاکتور ۹۲۹۱ - شرکت روغن گیران قرن
         </RadzenText>
     </RadzenRow>
-    
+
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
         @* <RadzenDataGrid  TItem="InventoryPageServicesReportModel" AllowVirtualization="false" Style="height:400px" *@
         @*                      AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or" *@
@@ -82,13 +107,124 @@
         @*         </Columns> *@
         @*     </RadzenDataGrid> *@
     </RadzenRow>
-    
+
 
 </MudRTLProvider>
 @code {
-    public string NewInventoryItemRegister { get; set; }
-    private void OnClick(string text)
+    bool popup = false;
+    string error = "";
+    private List<InventoryItemDTO> inventoryItems = new();
+    private AddNewInventoryItemModel newInventoryItemModel = new();
+    private UpdateInventoryItemModel updateInventoryItemModel = new();
+    class AddNewInventoryItemModel
     {
-    //
+        public string Title { get; set; }
+    }
+    class UpdateInventoryItemModel
+    {
+        public string Title { get; set; }
+        public string Code { get; set; }
+
+        public string BuyPrice { get; set; }
+        public string SellPrice { get; set; }
+        public string Count { get; set; }
+        public string Limit { get; set; }
+    }
+    private async Task OnSubmitNewInventoryItem()
+    {
+        await AddNewInventoryItem();
+    }
+    private void InventoryItemNameAutoCompleteTextChanged(string newValue)
+    {
+        updateInventoryItemModel.Title = newValue;
+        var inventoryItem = inventoryItems.FirstOrDefault(a => a.Title == newValue);
+        if (inventoryItem != null)
+        {
+            updateInventoryItemModel.Code = inventoryItem.Code;
+            updateInventoryItemModel.BuyPrice = inventoryItem.BuyPrice.ToString();
+            updateInventoryItemModel.SellPrice = inventoryItem.SellPrice.ToString();
+            updateInventoryItemModel.Count = inventoryItem.Count.ToString();
+            updateInventoryItemModel.Limit = inventoryItem.Limit.ToString();
+        }
+        else
+        {
+            updateInventoryItemModel.Code = "";
+            updateInventoryItemModel.BuyPrice = "";
+            updateInventoryItemModel.SellPrice = "";
+            updateInventoryItemModel.Count = "";
+            updateInventoryItemModel.Limit = "";
+        }
+
+    }
+    private void InventoryCodeItemAutoCompleteTextChanged(string newValue)
+    {
+        updateInventoryItemModel.Code = newValue;
+        var inventoryItem = inventoryItems.FirstOrDefault(a => a.Code == newValue);
+        if (inventoryItem != null)
+        {
+            updateInventoryItemModel.Title = inventoryItem.Title;
+            updateInventoryItemModel.BuyPrice = inventoryItem.BuyPrice.ToString();
+            updateInventoryItemModel.SellPrice = inventoryItem.SellPrice.ToString();
+            updateInventoryItemModel.Count = inventoryItem.Count.ToString();
+            updateInventoryItemModel.Limit = inventoryItem.Limit.ToString();
+
+        }
+        else
+        {
+            updateInventoryItemModel.Title = "";
+            updateInventoryItemModel.BuyPrice = "";
+            updateInventoryItemModel.SellPrice = "";
+            updateInventoryItemModel.Count = "";
+            updateInventoryItemModel.Limit = "";
+        }
+    }
+    private async Task FetchInventoryData()
+    {
+        var request = new GetInventoryItemsRequest();
+        var response = await mediator.Send(request);
+        inventoryItems = response.InventoryItemDTOs;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await FetchInventoryData();
+        }
+        catch (Exception e)
+        {
+            error = "خطا هنگام خواندن اطلاعات";
+        }
+    }
+    private async Task OnInvalidSubmitNewInventoryItem()
+    {
+
+    }
+    private async Task OnSubmitUpdateInventoryItem()
+    {
+
+    }
+    private async Task OnInvalidSubmitUpdateInventoryItem()
+    {
+        updateInventoryItemModel = updateInventoryItemModel;
+    }
+    private void OnClick(string x)
+    {
+
+    }
+    private async Task AddNewInventoryItem()
+    {
+        try
+        {
+
+            var request = new AddInventoryItemRequest(newInventoryItemModel.Title);
+            var response = await mediator.Send(request);
+            newInventoryItemModel.Title = "";
+            await FetchInventoryData();
+            //success
+        }
+        catch (Exception e)
+        {
+            error = "خطا در حین انجام عملیات";
+        }
     }
 }

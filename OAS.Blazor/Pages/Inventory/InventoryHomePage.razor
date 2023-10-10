@@ -11,63 +11,63 @@
 @inject MediatR.IMediator mediator;
 <MudRTLProvider RightToLeft="true">
 
-<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-    <RadzenColumn>
-        <RadzenButton Click=@(args => NavigationManager.NavigateTo("/purchase/inventoryitem")) Text="خرید کالا" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
-    </RadzenColumn>
-    <RadzenColumn>
-        <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ویرایش کالا" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
-    </RadzenColumn>
-</RadzenRow>
-<br/>
-<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-    <RadzenColumn>   
-        <RadzenButton Click="OpenRegisterServiceDialog" Text="ثبت خدمت جدید" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
-    </RadzenColumn>
-    <RadzenColumn>
-        <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ویرایش خدمت" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large"/>
-    </RadzenColumn>
-</RadzenRow>
-<br/>
-<RadzenRow>
-    <RadzenText Text="لیست موجودی انبار" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif"/>
-</RadzenRow>
-<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-    <RadzenDataGrid Data="inventoryItems" TItem="InventoryItemDTO" AllowVirtualization="false" Style="height:300px"
-                     AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
-                     AllowSorting="true">
-        <Columns>
-            <RadzenDataGridColumn TItem="InventoryItemDTO" Property="RowNumber" Title="ردیف" />
-            <RadzenDataGridColumn TItem="InventoryItemDTO" Property="Code" Title="کد " />
-            <RadzenDataGridColumn TItem="InventoryItemDTO" Property="Title" Title="عنوان " />
-            <RadzenDataGridColumn TItem="InventoryItemDTO" Property="Count" Title="تعداد" />
-            <RadzenDataGridColumn TItem="InventoryItemDTO" Property="BuyPrice" Title="قیمت خرید" />
-            <RadzenDataGridColumn TItem="InventoryItemDTO" Property="SellPrice" Title="قیمت فروش" />
-        </Columns>
-    </RadzenDataGrid>
-</RadzenRow>
-<br/>
-<RadzenRow>
-    <RadzenText Text="لیست خدمات" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif"/>
-</RadzenRow>
-<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-    <RadzenDataGrid Data="services" TItem="ServiceDTO" AllowVirtualization="false" Style="height:300px"
-                     AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
-                     AllowSorting="true">
-        <Columns>
-            <RadzenDataGridColumn TItem="ServiceDTO" Property="RowNumber" Title="ردیف" />
-            <RadzenDataGridColumn TItem="ServiceDTO" Property="Code" Title="کد" />
-            <RadzenDataGridColumn TItem="ServiceDTO" Property="Title" Title="عنوان" />
-            <RadzenDataGridColumn TItem="ServiceDTO" Property="Price" Title="قیمت خرید" />
-        </Columns>
-    </RadzenDataGrid>
-</RadzenRow>
+    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+        <RadzenColumn>
+            <RadzenButton Click=@(args => NavigationManager.NavigateTo("/purchase/inventoryitem")) Text="خرید کالا" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
+        </RadzenColumn>
+        <RadzenColumn>
+            <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ویرایش کالا" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
+        </RadzenColumn>
+    </RadzenRow>
+    <br />
+    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+        <RadzenColumn>
+            <RadzenButton Click="OpenRegisterServiceDialog" Text="ثبت خدمت جدید" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
+        </RadzenColumn>
+        <RadzenColumn>
+            <RadzenButton Click="OpenEditServiceDialog" Text="ویرایش خدمت" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
+        </RadzenColumn>
+    </RadzenRow>
+    <br />
+    <RadzenRow>
+        <RadzenText Text="لیست موجودی انبار" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif" />
+    </RadzenRow>
+    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+        <RadzenDataGrid Data="inventoryItems" TItem="InventoryItemDTO" AllowVirtualization="false" Style="height:300px"
+                        AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
+                        AllowSorting="true">
+            <Columns>
+                <RadzenDataGridColumn TItem="InventoryItemDTO" Property="RowNumber" Title="ردیف" />
+                <RadzenDataGridColumn TItem="InventoryItemDTO" Property="Code" Title="کد " />
+                <RadzenDataGridColumn TItem="InventoryItemDTO" Property="Title" Title="عنوان " />
+                <RadzenDataGridColumn TItem="InventoryItemDTO" Property="Count" Title="تعداد" />
+                <RadzenDataGridColumn TItem="InventoryItemDTO" Property="BuyPrice" Title="قیمت خرید" />
+                <RadzenDataGridColumn TItem="InventoryItemDTO" Property="SellPrice" Title="قیمت فروش" />
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenRow>
+    <br />
+    <RadzenRow>
+        <RadzenText Text="لیست خدمات" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif" />
+    </RadzenRow>
+    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+        <RadzenDataGrid Data="services" TItem="ServiceDTO" AllowVirtualization="false" Style="height:300px"
+                        AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
+                        AllowSorting="true">
+            <Columns>
+                <RadzenDataGridColumn TItem="ServiceDTO" Property="RowNumber" Title="ردیف" />
+                <RadzenDataGridColumn TItem="ServiceDTO" Property="Code" Title="کد" />
+                <RadzenDataGridColumn TItem="ServiceDTO" Property="Title" Title="عنوان" />
+                <RadzenDataGridColumn TItem="ServiceDTO" Property="Price" Title="قیمت خرید" />
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenRow>
 </MudRTLProvider>
 
 @code {
     private void OnClick(string text)
     {
-    //
+        //
     }
     IEnumerable<InventoryItemDTO> inventoryItems;
     IEnumerable<ServiceDTO> services;
@@ -87,14 +87,33 @@
         await GetServicesGridData();
 
     }
+    private async Task OpenEditServiceDialog()
+    {
+        await DialogService.OpenAsync<EditServiceDialog>("ویرایش خدمت",
+           new Dictionary<string, object>()
+                   {
+               { "RefreshServicesGridData",GetServicesGridData },
+              { "Services",services}
+
+                   },
+           new Radzen.DialogOptions()
+               {
+                   Width = "600px",
+                   Height = "250px",
+                   Draggable = false,
+                   AutoFocusFirstElement = false,
+                   CloseDialogOnOverlayClick = true
+               });
+
+    }
     private async Task OpenRegisterServiceDialog()
     {
         await DialogService.OpenAsync<RegisterServiceDialog>("ثبت خدمت",
             new Dictionary<string, object>()
-            {
+                {
                { "RefreshServicesGridData",GetServicesGridData },
                { "RefreshInventoryItemsGridData",GetInventoryItemsGridData }
-            },
+                },
             new Radzen.DialogOptions()
                 {
                     Width = "600px",
@@ -103,7 +122,7 @@
                     AutoFocusFirstElement = false,
                     CloseDialogOnOverlayClick = true
                 });
-        
+
 
 
     }

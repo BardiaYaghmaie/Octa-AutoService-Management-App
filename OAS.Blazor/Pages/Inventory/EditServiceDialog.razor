@@ -1,6 +1,7 @@
 ﻿@using OAS.Application.DomainModels;
 @using OAS.Application.Features.CustomerFeatures.AddCustomer;
 @using OAS.Application.Features.InventoryFeatures.AddService;
+@using OAS.Application.Features.InventoryFeatures.UpdateService;
 @using Variant = Radzen.Variant
 @using AlignItems = Radzen.AlignItems
 @inject Radzen.DialogService dialogService
@@ -12,8 +13,9 @@
 
             <RadzenColumn Size="5">
                 <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
-                    <RadzenTextBox Name="ServiceName" @bind-Value="model.ServiceName" />
+                    <RadzenAutoComplete Name="ServiceName" @bind-Value=@model.ServiceName Data=@Services TextProperty="Title" Style="width: 13rem" />
                     <RadzenRequiredValidator Component="ServiceName" Text="عنوان سرویس را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+
 
                 </RadzenFormField>
             </RadzenColumn>
@@ -29,15 +31,17 @@
             <RadzenButton Click="@((args) => dialogService.Close(false))" ButtonStyle="ButtonStyle.Danger" Text="لغو" />
             <RadzenButton ButtonType="Radzen.ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Text="ثبت" />
         </RadzenRow>
+        @error
     </RadzenTemplateForm>
 </MudRTLProvider>
 
 @code {
     [Parameter]
     public Func<Task> RefreshServicesGridData { get; set; }
+
     [Parameter]
-    public Func<Task> RefreshInventoryItemsGridData { get; set; }
-    List<VehicleDTO> vehicles = new();
+    public List<ServiceDTO> Services { get; set; }
+
     class Model
     {
         public string ServiceName;
@@ -49,18 +53,20 @@
     void OnSubmit(Model model)
     {
 
-        AddService();
+        UpdateService();
     }
 
     void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
     {
 
     }
-    private async void AddService()
+    private string error = "";
+    private async void UpdateService()
     {
         try
         {
-            AddServiceRequest request = new(model.ServiceName, long.Parse(model.ServicePrice));
+            Guid ServiceId = Services.First(a => a.Title == model.ServiceName).Id;
+            UpdateServiceRequest request = new(ServiceId, model.ServiceName, long.Parse(model.ServicePrice));
             var response = await mediator.Send(request);
             //show success
             await RefreshServicesGridData();
@@ -70,7 +76,8 @@
         catch (Exception e)
         {
             //show error message
-            throw e;
+            error = "عملیات با خطا مواجه شد";
+            
         }
 
     }

@@ -53,7 +53,7 @@ namespace OAS.Persistence.Repositories
 
         public void Update(Service entity)
         {
-            throw new NotImplementedException();
+            _context.Services.Update(entity);
         }
     }
 }

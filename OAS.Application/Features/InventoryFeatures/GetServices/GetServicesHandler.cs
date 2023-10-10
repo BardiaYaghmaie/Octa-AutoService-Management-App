@@ -27,7 +27,8 @@ namespace OAS.Application.Features.Inventory.GetServices
                     RowNumber: index + 1,
                     Code: item.Code.ToString(),
                     Title: item.Name,
-                    Price: item.DefaultPrice
+                    Price: item.DefaultPrice,
+                    Id:item.Id
                     );
             }).ToList();
             var response = new GetServicesResponse(serviceDTOs);

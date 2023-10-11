@@ -7,6 +7,7 @@
 @using OAS.Blazor.Pages.Invoices
 @inject DialogService DialogService
 @inject MediatR.IMediator mediator;
+@inject NavigationManager NavigationManager
 @*@using System.Net.Http.Json*@
 @*@inject HttpClient httpClient*@
 
@@ -39,6 +40,7 @@
 </RadzenRow>
 <RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark"/>
 <RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary"/>
+<RadzenButton Click=@(args => NavToOpenInvoiceEdit(testInvoiceCode)) ButtonStyle="ButtonStyle.Warning"/>
 
 @code {
 
@@ -96,6 +98,13 @@
                 Draggable = false, AutoFocusFirstElement = false, CloseDialogOnOverlayClick = true});
 
     }
+
+    private string testInvoiceCode { get; set; } = "0000";
+    private void NavToOpenInvoiceEdit(string invoiceCode)
+    {
+        NavigationManager.NavigateTo($"/OpenInvoiceEditPage/{invoiceCode}");
+    }
+    
 
     private void OnClick(string text)
     {

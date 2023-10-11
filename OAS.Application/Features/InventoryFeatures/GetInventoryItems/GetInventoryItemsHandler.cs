@@ -29,7 +29,8 @@ namespace OAS.Application.Features.Inventory.GetInventoryItems
                     Count: item.Count,
                     Limit: item.CountLowerBound,
                     BuyPrice: item.BuyPrice,
-                    SellPrice: item.SellPrice);
+                    SellPrice: item.SellPrice,
+                    Id:item.Id);
             }).ToList();
             var response = new GetInventoryItemsResponse(inventoryItemDTOs);
             return response;

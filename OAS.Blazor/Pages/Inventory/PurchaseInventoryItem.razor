@@ -126,14 +126,14 @@
                         <td>@item.Code</td>
                         <td>@item.BuyPrice</td>
                         <td>@item.SellPrice</td>
-                        <td class="text-danger">X</td>
+                        <td class="text-danger" @onclick="() => RemoveInvoiceInventoryItem(item.InventoryItemId)">X</td>
                     </tr>
                 }
             </tbody>
 
         </table>
         <RadzenButton Click="OnFinalClick" Text="ثبت نهایی" ButtonType="Radzen.ButtonType.Button" ButtonStyle="ButtonStyle.Success" Style="width: 180px" />
-        <RadzenButton Text="انصراف" ButtonType="Radzen.ButtonType.Button" ButtonStyle="ButtonStyle.Danger" Style="width: 180px" />
+        <RadzenButton Text="انصراف" Click="OnClickCancel" ButtonType="Radzen.ButtonType.Button" ButtonStyle="ButtonStyle.Danger" Style="width: 180px" />
     </RadzenRow>
 
 
@@ -174,19 +174,34 @@
     }
     class GridDataModel
     {
+        public Guid InventoryItemId { get; set; }
         public string Title { get; set; }
         public string Code { get; set; }
         public string BuyPrice { get; set; }
         public string SellPrice { get; set; }
     }
+    private void OnClickCancel()
+    {
+        navigationManager.NavigateTo("/inventory");
+    }
     private async void OnFinalClick()
     {
         try
         {
+            if (invoiceInventoryItems.Count == 0)
+            {
+                error = "لطفا قسمت ثبت اقلام خرید کالا را انجام دهید";
+                return;
+            }
+            if (string.IsNullOrEmpty(addNewInvoiceModel.Code) || string.IsNullOrEmpty(addNewInvoiceModel.Title) || addNewInvoiceModel.RegisterDate == null)
+            {
+                error = "لطفا قسمت ثبت فاکتور را انجام دهید";
+                return;
 
-            var request = new CreateBuyInvoiceRequest(invoiceInventoryItems, int.Parse(addNewInvoiceInventoryItemModel.Code), addNewInvoiceModel.Title, addNewInvoiceModel.RegisterDate);
+            }
+            var request = new CreateBuyInvoiceRequest(invoiceInventoryItems, int.Parse(addNewInvoiceModel.Code), addNewInvoiceModel.Title, addNewInvoiceModel.RegisterDate);
             var response = await mediator.Send(request);
-            navigationManager.NavigateTo("/");
+            navigationManager.NavigateTo("/invoices");
         }
         catch (Exception e)
         {
@@ -302,6 +317,7 @@
             invoiceInventoryItems.Add(dto);
             gridData.Add(new GridDataModel()
                 {
+                    InventoryItemId = addNewInvoiceInventoryItemModel.Id,
                     Title = addNewInvoiceInventoryItemModel.Title,
                     Code = addNewInvoiceInventoryItemModel.Code,
                     BuyPrice = addNewInvoiceInventoryItemModel.BuyPrice,
@@ -326,6 +342,18 @@
             //success
         }
         catch (Exception e)
+        {
+            error = "خطا در حین انجام عملیات";
+        }
+    }
+    private void RemoveInvoiceInventoryItem(Guid inventoryItemId)
+    {
+        try
+        {
+            invoiceInventoryItems.Remove(invoiceInventoryItems.First(b => b.Id == inventoryItemId));
+            gridData.Remove(gridData.First(b => b.InventoryItemId == inventoryItemId));
+        }
+        catch (Exception)
         {
             error = "خطا در حین انجام عملیات";
         }

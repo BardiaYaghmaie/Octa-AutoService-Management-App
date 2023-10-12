@@ -109,13 +109,13 @@
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
         <table class="table table">
             <thead>
-            <tr>
-                <th>نام کالا</th>
-                <th>کد</th>
-                <th>قمیت خرید</th>
-                <th>قیمت فروش</th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th>نام کالا</th>
+                    <th>کد</th>
+                    <th>قمیت خرید</th>
+                    <th>قیمت فروش</th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
                 @foreach (var item in gridData)
@@ -131,7 +131,7 @@
             </tbody>
 
         </table>
-        <RadzenButton Text="ثبت نهایی" ButtonType="Radzen.ButtonType.Button" ButtonStyle="ButtonStyle.Success" Style="width: 180px" />
+        <RadzenButton Click="OnFinalClick" Text="ثبت نهایی" ButtonType="Radzen.ButtonType.Button" ButtonStyle="ButtonStyle.Success" Style="width: 180px" />
         <RadzenButton Text="انصراف" ButtonType="Radzen.ButtonType.Button" ButtonStyle="ButtonStyle.Danger" Style="width: 180px" />
     </RadzenRow>
 
@@ -145,31 +145,17 @@
     private AddNewInventoryItemModel newInventoryItemModel = new();
     private AddNewInvoiceInventoryItemModel addNewInvoiceInventoryItemModel = new();
     private AddNewInvoiceModel addNewInvoiceModel = new();
+    private List<CreateBuyInvoice_InventoryItemDTO> invoiceInventoryItems = new();
+    private List<GridDataModel> gridData = new();
+
     class AddNewInvoiceModel
     {
         public string Title { get; set; }
         public string Code { get; set; }
         public DateTime RegisterDate { get; set; }
     }
-    private void OnSubmitAddNewInvoice()
-    {
-        try
-        {
 
 
-            createInvoiceButtonDisabled = true;
-
-
-        }
-        catch (Exception)
-        {
-            error = "خطا در حین انجام عملیات";
-        }
-    }
-    private void OnInvalidSubmitAddNewInvoice()
-    {
-
-    }
     class AddNewInventoryItemModel
     {
         public string Title { get; set; }
@@ -191,6 +177,39 @@
         public string Code { get; set; }
         public string BuyPrice { get; set; }
         public string SellPrice { get; set; }
+    }
+    private async void OnFinalClick()
+    {
+        try
+        {
+
+            var request = new CreateBuyInvoiceRequest(invoiceInventoryItems, int.Parse(addNewInvoiceInventoryItemModel.Code), addNewInvoiceModel.Title, addNewInvoiceModel.RegisterDate);
+            var response = await mediator.Send(request);
+        }
+        catch (Exception e)
+        {
+            error= "خطا هنگام ثبت اطلاعات";
+            throw;
+        }
+    }
+    private void OnSubmitAddNewInvoice()
+    {
+        try
+        {
+
+
+            createInvoiceButtonDisabled = true;
+
+
+        }
+        catch (Exception)
+        {
+            error = "خطا در حین انجام عملیات";
+        }
+    }
+    private void OnInvalidSubmitAddNewInvoice()
+    {
+
     }
     private async Task OnSubmitNewInventoryItem()
     {
@@ -280,13 +299,12 @@
     {
 
     }
-    List<CreateBuyInvoice_InventoryItemDTO> invoiceInventoryItems = new();
-    List<GridDataModel> gridData = new();
+
     private void AddInvoiceInventoryItem()
     {
         try
         {
-            if (invoiceInventoryItems.Any(a=> a.Id == addNewInvoiceInventoryItemModel.Id))
+            if (invoiceInventoryItems.Any(a => a.Id == addNewInvoiceInventoryItemModel.Id))
             {
                 throw new Exception("");
             }

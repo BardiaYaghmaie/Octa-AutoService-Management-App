@@ -10,7 +10,7 @@ public class InvoiceConfig : IEntityTypeConfiguration<Invoice>
     {
         builder.ToTable("Invoice");
         builder.HasKey(a => a.Id);
-        builder.Property(a => a.UpdateDate).IsRequired(true);
+        builder.Property(a => a.UpdateDate).IsRequired(false);
         builder.Property(a => a.RegisterDate).IsRequired(true);
         builder.Property(a => a.DiscountAmount).IsRequired(false);
         builder.Property(a => a.VehicleId).IsRequired(false);

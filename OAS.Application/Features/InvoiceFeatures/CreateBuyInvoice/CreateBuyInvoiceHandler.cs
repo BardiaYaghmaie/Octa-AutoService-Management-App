@@ -50,6 +50,7 @@ namespace OAS.Application.Features.InvoiceFeatures.CreateBuyInvoice
                     InventoryItemHistory history = new()
                     {
                         Id = Guid.NewGuid(),
+                        Name = original.Name,
                         BuyPrice = original.SellPrice,
                         Code = original.Code,
                         Count = original.Count,
@@ -61,7 +62,6 @@ namespace OAS.Application.Features.InvoiceFeatures.CreateBuyInvoice
                     };
                     _inventoryItemRepository.Update(original);
                     await _inventoryItemHistoryRepository.AddAsync(history);
-                    await _unitOfWork.SaveAsync(cancellationToken);
                 }
 
             }

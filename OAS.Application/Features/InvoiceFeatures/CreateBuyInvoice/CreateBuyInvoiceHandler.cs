@@ -32,7 +32,7 @@ namespace OAS.Application.Features.InvoiceFeatures.CreateBuyInvoice
             var inventoryItems = await _inventoryItemRepository.GetAllAsync();
             foreach (var item in request.Dtos)
             {
-                var original = inventoryItems.First(a => a.Id == item.Id);
+                var original = await _inventoryItemRepository.GetByIdAsync(item.Id);
                 if (item.SellPrice == original.SellPrice && item.BuyPrice == original.BuyPrice
                     && item.Count == original.Count && item.LowerBoundCount == original.CountLowerBound
                     )
@@ -43,15 +43,14 @@ namespace OAS.Application.Features.InvoiceFeatures.CreateBuyInvoice
                 {
                     original.SellPrice = item.SellPrice;
                     original.BuyPrice = item.BuyPrice;
-                    original.Count = item.Count; 
                     original.CountLowerBound = item.LowerBoundCount;
-
+                    original.Count = item.Count;                   
 
                     InventoryItemHistory history = new()
                     {
                         Id = Guid.NewGuid(),
                         Name = original.Name,
-                        BuyPrice = original.SellPrice,
+                        BuyPrice = original.BuyPrice,
                         Code = original.Code,
                         Count = original.Count,
                         CountLowerBound = original.CountLowerBound,
@@ -70,7 +69,9 @@ namespace OAS.Application.Features.InvoiceFeatures.CreateBuyInvoice
             {
                 Id = Guid.NewGuid(),
                 InventoryItemId = a.Id,
-                InvoiceId = invoiceId                
+                InvoiceId = invoiceId,
+                Count = a.Count - (inventoryItems.First(b=> b.Id == a.Id).Count??0)// front end should check this to be  a positive number
+                ,RegisterDate = DateTime.Now
                 
             }).ToList();            
             Invoice invoice = new()

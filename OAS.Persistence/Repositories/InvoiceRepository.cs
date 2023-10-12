@@ -70,19 +70,29 @@ namespace OAS.Persistence.Repositories
 
         public async Task<List<GetBuyInvoices_InvoiceDTO>> GetBuyInvoicesAsync()
         {
-            var d = await _dbContext.Invoices.Include(a => a.Customer).Include(a => a.InvoiceInventoryItems).Include(a => a.InvoicePayments).Where(a => a.Type == Domain.Enums.InvoiceType.Buy).ToListAsync();
-            var data = d.Select((a, i) =>
+            var invoices = await _dbContext.Invoices.ToListAsync();
+            var inventoryItemHistories = await _dbContext.InventoryItemHistories.ToListAsync();
+            var invoicePayments = await _dbContext.InvoicePayments.ToListAsync();
+            var invoiceInventoryItems = await _dbContext.InvoiceInventoryItems.ToListAsync();
+            var data = invoices.Where(a => a.Type == Domain.Enums.InvoiceType.Buy).Select((a, i) =>
             {
-                long paidAmount = a.InvoicePayments.Select(b => b.PaidAmount).Sum();
-                long total = a.InvoiceServices.Select(b => b.Price).Sum() +
-                +a.InvoiceInventoryItems.Select(b => b.InventoryItem).Select(b => b.BuyPrice.Value).Sum();
+                long paidAmount = invoicePayments.Where(b => b.InvoiceId == a.Id).Select(b => b.PaidAmount).Sum();
+                float total = 0;
+                foreach (var invoiceInventoryItem in invoiceInventoryItems.Where(b => b.InvoiceId == a.Id).ToList())
+                {
+                    float count = invoiceInventoryItem.Count;
+                    DateTime registerDate = invoiceInventoryItem.RegisterDate;
+                    var inventoryItemId = invoiceInventoryItem.InventoryItemId;
+                    var buyPrice = inventoryItemHistories.Where(b => b.InventoryItemId == inventoryItemId && b.BuyPrice.HasValue &&  b.UpdateDate <= registerDate).OrderByDescending(b => b.UpdateDate).Select(b => b.BuyPrice.Value).First();
+                    total += (count * buyPrice);
+                }
 
                 return new GetBuyInvoices_InvoiceDTO
                 (
-                    CustomerName: "",
+                    SellerName: a.SerllerName,
                     InvoiceCode: a.Code.ToString(),
-                    InvoiceDate: a.UpdateDate.Value,
-                    InvoiceDateString: a.UpdateDate.ToString(),
+                    InvoiceDate: a.RegisterDate,
+                    InvoiceDateString: a.RegisterDate.ToString(),
                     InvoiceId: a.Id,
                     RowNumber: i + 1,
                     InvoiceTotalPrice: total,

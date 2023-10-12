@@ -31,7 +31,7 @@ namespace OAS.Persistence.Repositories
 
         public async Task<List<InventoryItem>> GetAllAsync()
         {
-            var result = await _context.InventoryItems.ToListAsync();
+            var result = await _context.InventoryItems.AsNoTracking().ToListAsync();
            return result;
         }
 

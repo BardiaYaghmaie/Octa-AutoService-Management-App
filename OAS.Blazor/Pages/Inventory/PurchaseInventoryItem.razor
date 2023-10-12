@@ -7,6 +7,7 @@
 @using Variant = Radzen.Variant
 @using AlignItems = Radzen.AlignItems
 @inject MediatR.IMediator mediator;
+@inject NavigationManager navigationManager;
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
         <!-- sabte kalaye jadid-->
@@ -185,27 +186,16 @@
 
             var request = new CreateBuyInvoiceRequest(invoiceInventoryItems, int.Parse(addNewInvoiceInventoryItemModel.Code), addNewInvoiceModel.Title, addNewInvoiceModel.RegisterDate);
             var response = await mediator.Send(request);
+            navigationManager.NavigateTo("/");
         }
         catch (Exception e)
         {
-            error= "خطا هنگام ثبت اطلاعات";
-            throw;
+            error = "خطا هنگام ثبت نهایی اطلاعات";
         }
     }
     private void OnSubmitAddNewInvoice()
     {
-        try
-        {
-
-
-            createInvoiceButtonDisabled = true;
-
-
-        }
-        catch (Exception)
-        {
-            error = "خطا در حین انجام عملیات";
-        }
+        createInvoiceButtonDisabled = true;
     }
     private void OnInvalidSubmitAddNewInvoice()
     {
@@ -321,7 +311,7 @@
         }
         catch (Exception e)
         {
-            error = "خطا در حین انجام عملیات";
+            error = "لطفا کالای تکراری ثبت نکنید";
         }
     }
     private async Task AddNewInventoryItem()

@@ -125,7 +125,14 @@
                         <td>@item.Title</td>
                         <td>@item.Code</td>
                         <td>@item.BuyPrice</td>
-                        <td>@item.SellPrice</td>
+                        @* Here in buy invoice, the sell price is not needed 
+                        and the important missing thing is "BuyCount" not the whole 
+                        count in inventory, but the specefic invoice buy items
+                        
+                        for example there are 80 of A in inventory, if now there is 85
+                        the buy count is 5
+                        <td></td>
+                        *@
                         <td class="text-danger" @onclick="() => RemoveInvoiceInventoryItem(item.InventoryItemId)">X</td>
                     </tr>
                 }

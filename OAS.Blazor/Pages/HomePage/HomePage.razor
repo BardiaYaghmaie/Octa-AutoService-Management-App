@@ -24,6 +24,8 @@
 </RadzenRow>
 
 <br />
+<h5>فاکتور های روز</h5>
+
 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
     <RadzenDataGrid Data="@gridData" TItem="GetDailySellInvoices_DTO" AllowVirtualization="false" Style="height:400px"
                     AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
@@ -38,9 +40,9 @@
     </RadzenDataGrid>
 
 </RadzenRow>
-<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark"/>
-<RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary"/>
-<RadzenButton Click=@(args => NavToOpenInvoiceEdit(testInvoiceCode)) ButtonStyle="ButtonStyle.Warning"/>
+<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" />
+<RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" />
+<RadzenButton Click=@(args => NavToOpenInvoiceEdit(testInvoiceCode)) ButtonStyle="ButtonStyle.Warning" />
 
 @code {
 
@@ -61,7 +63,11 @@
     public async Task OpenVehicleEntrance()
     {
         await DialogService.OpenAsync<VehicleEntranceDialog>("ورود خودرو",
-            new Dictionary<string, object>(),
+            new Dictionary<string, object>()
+                {
+                {"RefreshGridData",RefreshGridData }
+                },
+
             new DialogOptions()
                 {
                     Width = "550px",
@@ -92,10 +98,16 @@
     public async Task OpenPaySellInvoice()
     {
         await DialogService.OpenAsync<PaySellInvoiceDialog>("پرداخت فاکتور ",
-            new Dictionary<string, object>(){},
+            new Dictionary<string, object>() { },
 
-            new DialogOptions() { Width = "700px", Height = "500px",
-                Draggable = false, AutoFocusFirstElement = false, CloseDialogOnOverlayClick = true});
+            new DialogOptions()
+                {
+                    Width = "700px",
+                    Height = "500px",
+                    Draggable = false,
+                    AutoFocusFirstElement = false,
+                    CloseDialogOnOverlayClick = true
+                });
 
     }
 
@@ -104,19 +116,23 @@
     {
         NavigationManager.NavigateTo($"/OpenInvoiceEditPage/{invoiceCode}");
     }
-    
+
 
     private void OnClick(string text)
     {
         //
     }
- 
+
     private List<GetDailySellInvoices_DTO> gridData = new();
 
-    protected override async Task OnInitializedAsync()
+    private async Task RefreshGridData()
     {
         var request = new GetDailySellInvoicesRequest();
         var response = await mediator.Send(request);
         gridData = response.Data;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshGridData();
     }
 }

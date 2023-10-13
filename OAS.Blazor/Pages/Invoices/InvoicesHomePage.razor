@@ -1,24 +1,25 @@
 @page "/invoices"
 @using AlignItems = Radzen.AlignItems
 @using OAS.Application.Features.InvoiceFeatures.GetBuyInvoices;
+@using OAS.Application.Features.InvoiceFeatures.GetSellInvoices;
 @inject MediatR.IMediator mediator;
 <MudRTLProvider RightToLeft="true">
 <RadzenRow>
     <RadzenText Text="لیست فاکتورهای فروش" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif"/>
 </RadzenRow>
-<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-    <RadzenDataGrid  TItem="InvoicesPageSellReportModel" AllowVirtualization="false" Style="height:400px"
+    <RadzenRow  AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+        <RadzenDataGrid Data="gridDataSell"  TItem="GetSellInvoices_InvoiceDTO" AllowVirtualization="false" Style="height:400px"
                      AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
                      AllowSorting="true">
         <Columns>
-            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="RowNumber" Title="ردیف" />
-            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="InvoiceCode" Title="کد" />
-            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="Date" Title="تاریخ" />
-            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="Vehicle" Title="خودرو" />
-            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="CustomerName" Title="مشتری" />
-            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="TotalPrice" Title="قیمت کل" />
-            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="State" Title="وضعیت" />
-            <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="State" Title="عملیات" />
+                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="RowNumber" Title="ردیف" />
+                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="InvoiceCode" Title="کد" />
+                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="InvoiceDateString" Title="تاریخ" />
+                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="VehicleName" Title="خودرو" />
+                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="CustomerName" Title="مشتری" />
+                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="InvoiceTotalPrice" Title="قیمت کل" />
+@*                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="State" Title="وضعیت" />
+                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="State" Title="عملیات" />*@
         </Columns>
     </RadzenDataGrid>
 </RadzenRow>
@@ -45,20 +46,9 @@
 <br/>
 @code {
 
-    public class InvoicesPageSellReportModel
-    {
-        public int RowNumber { get; set; }
-        public int InvoiceCode { get; set; }
-        public int Date { get; set; }
-        public int Vehicle { get; set; }
-        public int CustomerName { get; set; }
-        public int TotalPrice { get; set; }
-        public int State { get; set; }
-
-    }
-
     private string error = "";
     private List<GetBuyInvoices_InvoiceDTO> gridDataBuy = new List<GetBuyInvoices_InvoiceDTO>();
+    private List<GetSellInvoices_InvoiceDTO> gridDataSell = new List<GetSellInvoices_InvoiceDTO>();
     protected override async Task OnInitializedAsync()
     {
         try
@@ -66,6 +56,9 @@
             var request = new GetBuyInvoicesRequest();
             var response = await mediator.Send(request);
             gridDataBuy = response.Data;
+            var request2 = new GetSellInvoicesRequest();
+            var response2 = await mediator.Send(request2);
+            gridDataSell = response2.Data;   
         }
         catch (Exception e)
         {

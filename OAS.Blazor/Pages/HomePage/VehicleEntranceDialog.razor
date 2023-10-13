@@ -18,6 +18,8 @@
     <p class="text-danger">@error</p>
 </MudRTLProvider>
 @code {
+    [Parameter]
+    public Func<Task> RefreshGridData { get; set; }
 
     public string VehicleCode { get; set; }
     private List<GetVehiclesMinimal_DTO> vehicles = new ();
@@ -44,6 +46,7 @@
             var request = new CreateSellInvoiceRequest(vehicleId);
             var response = await mediator.Send(request);
             error = "";
+            await RefreshGridData();
             dialogService.Close(true);
         
         }

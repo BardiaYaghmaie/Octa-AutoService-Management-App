@@ -119,7 +119,7 @@ namespace OAS.Persistence.Repositories
                     a.Id,
                     a.Code.ToString(),
                     a.VehicleId.HasValue?a.Vehicle.Name:"",
-                    a.CustomerId.HasValue?a.Customer.FirstName + " " + a.Customer.LastName:"",
+                    a.VehicleId.HasValue?(a.Vehicle.Customer.FirstName + a.Vehicle.Customer.LastName):a.CustomerId.HasValue?(a.Customer.FirstName + " " + a.Customer.LastName):"",
                     i+1
 
                 )).ToList();
@@ -148,27 +148,37 @@ namespace OAS.Persistence.Repositories
 
         public async Task<List<GetSellInvoices_InvoiceDTO>> GetSellInvoicesAsync()
         {
-            var d = await _dbContext.Invoices.Include(a => a.Customer).Include(a => a.Vehicle).ThenInclude(a => a.Customer).Include(a => a.InvoiceInventoryItems).Include(a => a.InvoicePayments).Include(a => a.InvoiceServices).Where(a => a.Type == Domain.Enums.InvoiceType.Sell).ToListAsync();
-            var data = d.Select((a, i) =>
+            var invoices = await _dbContext.Invoices.Include(a=> a.Vehicle).ThenInclude(a=> a.Customer).Include(a=> a.Customer).ToListAsync();
+            var inventoryItemHistories = await _dbContext.InventoryItemHistories.ToListAsync();
+            var invoicePayments = await _dbContext.InvoicePayments.ToListAsync();
+            var invoiceInventoryItems = await _dbContext.InvoiceInventoryItems.ToListAsync();
+            var data = invoices.Where(a => a.Type == Domain.Enums.InvoiceType.Sell).Select((a, i) =>
+            {
+                long paidAmount = invoicePayments.Where(b => b.InvoiceId == a.Id).Select(b => b.PaidAmount).Sum();
+                float total = 0;
+                foreach (var invoiceInventoryItem in invoiceInventoryItems.Where(b => b.InvoiceId == a.Id).ToList())
                 {
-                    long paidAmount = a.InvoicePayments.Select(b => b.PaidAmount).Sum();
-                    long total = a.InvoiceServices.Select(b => b.Price).Sum() +
-                    +a.InvoiceInventoryItems.Select(b => b.InventoryItem).Select(b => a.UseBuyPrice.Value ? b.BuyPrice.Value : b.SellPrice.Value).Sum();
+                    float count = invoiceInventoryItem.Count;
+                    DateTime registerDate = invoiceInventoryItem.RegisterDate;
+                    var inventoryItemId = invoiceInventoryItem.InventoryItemId;
+                    var buyPrice = inventoryItemHistories.Where(b => b.InventoryItemId == inventoryItemId && b.BuyPrice.HasValue && b.UpdateDate <= registerDate).OrderByDescending(b => b.UpdateDate).Select(b => a.UseBuyPrice.HasValue && a.UseBuyPrice.Value?b.BuyPrice:b.SellPrice.Value).FirstOrDefault()??0;
+                    total += (count * buyPrice);
+                }
 
-                    return new GetSellInvoices_InvoiceDTO
-                    (
-                        CustomerName: a.VehicleId == null ? a.Customer?.FirstName + " " + a.Customer?.LastName : a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName,
-                        InvoiceCode: a.Code.ToString(),
-                        InvoiceDate: a.UpdateDate.Value,
-                        InvoiceDateString: a.UpdateDate.ToString(),
-                        InvoiceId: a.Id,
-                        RowNumber: i + 1,
-                        VehicleName: a.Vehicle?.Name,
-                        InvoiceTotalPrice: total,
-                        InvoicePaidAmount: paidAmount
+                return new GetSellInvoices_InvoiceDTO
+                (
+                    InvoiceCode: a.Code.ToString(),
+                    InvoiceDate: a.RegisterDate,
+                    InvoiceDateString: a.RegisterDate.ToString(),
+                    InvoiceId: a.Id,
+                    RowNumber: i + 1,
+                    InvoiceTotalPrice: total,
+                    InvoicePaidAmount: paidAmount,
+                    VehicleName:a.Vehicle?.Name,
+                    CustomerName:a.VehicleId.HasValue?(a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName):(a.CustomerId.HasValue?(a.Customer.FirstName + " " + a.Customer.LastName):(""))
 
-                    );
-                }).ToList();
+                );
+            }).ToList();
             return data;
         }
 

@@ -1,6 +1,9 @@
+@using OAS.Application.Features.InvoiceFeatures.CreateInvoice;
 @using Variant = Radzen.Variant
 @using AlignItems = Radzen.AlignItems
+@using Application.Features.VehicleFeatures.GetVehiclesMinimal
 @inject Radzen.DialogService dialogService
+@inject MediatR.IMediator mediator;
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
         <RadzenFormField Text="کد اشتراک خودرو" Variant="Variant.Outlined">
@@ -9,11 +12,57 @@
     </RadzenRow>
     <br/>
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-        <RadzenButton Text="ثبت فاکتور" ButtonStyle="ButtonStyle.Success" Style="width: 200px"/>
+        <RadzenButton Text="ثبت فاکتور" Click="CreateSellInvoice" ButtonStyle="ButtonStyle.Success" Style="width: 200px"/>
         <RadzenButton Text="ثبت فاکتور متفرقه" ButtonStyle="ButtonStyle.Info" Variant="Variant.Outlined" Style="width: 180px"/>
     </RadzenRow>
+    <p class="text-danger">@error</p>
 </MudRTLProvider>
 @code {
+
     public string VehicleCode { get; set; }
-    
+    private List<GetVehiclesMinimal_DTO> vehicles = new ();
+    private string error = "";
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var request = new GetVehiclesMinimalRequest();
+            var response = await mediator.Send(request);
+            vehicles = response.Data;
+        }
+        catch (Exception e)
+        {
+            error = "خطا در خواندن اطلاعات";
+        }
+
+    }
+    private async Task CreateSellInvoice()
+    {
+        try
+        {
+            Guid vehicleId = vehicles.First(a => a.Code == int.Parse(VehicleCode)).Id;
+            var request = new CreateSellInvoiceRequest(vehicleId);
+            var response = await mediator.Send(request);
+            error = "";
+            dialogService.Close(true);
+        
+        }
+        catch (ArgumentNullException e)
+        {
+            error = "کد خودرو وارد شده نامعتبر است";
+        }
+        catch (InvalidOperationException e)
+        {
+            error = "کد خودرو وارد شده نامعتبر است";
+        }
+        catch (FormatException e)
+        {
+            error = "کد خودرو وارد شده نامعتبر است";
+        }
+        catch (Exception e)
+        {
+            error = "خطا در ثبت اطلاعات";
+
+        }
+    }
 }

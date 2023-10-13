@@ -1,4 +1,3 @@
-@page "/purchase/inventoryitem"
 @using OAS.Application.DomainModels;
 @using OAS.Application.Features.Inventory.GetInventoryItems;
 @using OAS.Application.Features.InventoryFeatures.AddInventoryItem;
@@ -8,59 +7,23 @@
 @using AlignItems = Radzen.AlignItems
 @inject MediatR.IMediator mediator;
 @inject NavigationManager navigationManager;
+@using OAS.Application.DomainModels;
+@using OAS.Application.Features.CustomerFeatures.AddCustomer;
+@using OAS.Application.Features.InventoryFeatures.AddService;
+@using OAS.Application.Features.InventoryFeatures.UpdateService;
+@inject Radzen.DialogService dialogService
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
-        <!-- sabte kalaye jadid-->
-        <RadzenColumn Size="6">
-            <RadzenRow><RadzenText Text="ثبت کالای جدید" TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif" /></RadzenRow>
-            <RadzenTemplateForm TItem="AddNewInventoryItemModel" Data="newInventoryItemModel" Submit="OnSubmitNewInventoryItem" InvalidSubmit="OnInvalidSubmitNewInventoryItem">
-
-                <RadzenRow>
-                    <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
-                        <RadzenTextBox Name="Title" @bind-Value="newInventoryItemModel.Title" />
-                        <RadzenRequiredValidator Component="Title" Text="عنوان کالا را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                    </RadzenFormField>
-                    <RadzenButton Text="ثبت" ButtonType="Radzen.ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Style="width: 180px" />
-                </RadzenRow>
-            </RadzenTemplateForm>
-            <br /><br />
-            <RadzenRow><RadzenText Text="ثبت فاکتور خرید کالا" TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif" /></RadzenRow>
-            <RadzenTemplateForm TItem="AddNewInvoiceModel" Data="addNewInvoiceModel" Submit="OnSubmitAddNewInvoice" InvalidSubmit="OnInvalidSubmitAddNewInvoice">
-                <RadzenRow>
-                    <RadzenFormField Text="شماره فاکتور" Variant="Variant.Outlined">
-                        <RadzenTextBox Disabled="createInvoiceButtonDisabled" Name="InvoiceCode" @bind-Value="addNewInvoiceModel.Code" />
-                        <RadzenRequiredValidator Component="InvoiceCode" Text="شماره فاکتور را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                    </RadzenFormField>
-                    <RadzenFormField Text="فروشنده" Variant="Variant.Outlined">
-                        <RadzenTextBox Disabled="createInvoiceButtonDisabled" Name="SellerName" @bind-Value="addNewInvoiceModel.Title" />
-                        <RadzenRequiredValidator Component="SellerName" Text="فروشنده را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                    </RadzenFormField>
-                </RadzenRow>
-                <br />
-                <RadzenRow>
-                    <RadzenFormField Text="تاریخ صدور" Variant="Variant.Outlined">
-                        <RadzenDatePicker Disabled="createInvoiceButtonDisabled" Name="InvoiceRegisterDate" @bind-Value="addNewInvoiceModel.RegisterDate" ShowTime="true" ShowSeconds="false" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="yyyy/MM/dd" />
-                        <RadzenRequiredValidator Component="InvoiceRegisterDate" Text="تاریخ صدور را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                    </RadzenFormField>
-                    <RadzenButton Text="افزودن" Disabled="createInvoiceButtonDisabled"
-                                  ButtonType="Radzen.ButtonType.Submit"
-                                  ButtonStyle="ButtonStyle.Success" Style="width: 180px" />
-                </RadzenRow>
-            </RadzenTemplateForm>
-
-        </RadzenColumn>
         <!-- sabte aghlame kharid-->
         <RadzenColumn Size="6">
             <RadzenTemplateForm TItem="AddNewInvoiceInventoryItemModel" Data="addNewInvoiceInventoryItemModel" Submit="OnSubmitAddNewInvoiceInventoryItem" InvalidSubmit="OnInvalidSubmitAddNewInvoiceInventoryItem">
-                <RadzenRow><RadzenText Text="ثبت اقلام خرید کالا" TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif" /></RadzenRow>
                 <RadzenRow>
                     <RadzenFormField Text="کد کالا" Variant="Variant.Outlined">
-
                         <RadzenAutoComplete ValueChanged="InventoryCodeItemAutoCompleteTextChanged" Name="Code" Data=@inventoryItems TextProperty="Code" Value="addNewInvoiceInventoryItemModel.Code" Style="width: 13rem" />
                         <RadzenRequiredValidator Component="Code" Text="کد کالا را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
                     </RadzenFormField>
-                    @*
-                    <RadzenButton Click=@(args => OnClick("Primary icon button")) Icon="add_circle_outline" ButtonStyle="ButtonStyle.Success" Variant="Variant.Outlined" />*@
+                    
+                    <RadzenButton Click=@(args => OnClick("Primary icon button")) Icon="add_circle_outline" Variant="Variant.Outlined" />
                     <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
 
                         <RadzenAutoComplete ValueChanged="InventoryItemNameAutoCompleteTextChanged" Name="Title" Data=@inventoryItems TextProperty="Title" Value="addNewInvoiceInventoryItemModel.Title" Style="width: 13rem" />
@@ -85,68 +48,22 @@
                         <RadzenTextBox Name="Count" @bind-Value="@addNewInvoiceInventoryItemModel.Count" Disabled="true"/>
                         <RadzenRequiredValidator Component="Count" Text="تعداد  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
                     </RadzenFormField>
-                    <RadzenFormField Text="تعداد خرید" Variant="Variant.Outlined">
-                        <RadzenTextBox Name="Count" @bind-Value="@addNewInvoiceInventoryItemModel.Count" />
-                        <RadzenRequiredValidator Component="Count" Text="تعداد  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                    <RadzenFormField Text="حداقل موجودی" Variant="Variant.Outlined">
+                        <RadzenTextBox Name="Limit" @bind-Value="@addNewInvoiceInventoryItemModel.Limit" />
+                        <RadzenRequiredValidator Component="Limit" Text="حداقل موجودی  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
                     </RadzenFormField>
-                    
-                    @* <RadzenFormField Text="حداقل موجودی" Variant="Variant.Outlined"> *@
-                    @*     <RadzenTextBox Name="Limit" @bind-Value="@addNewInvoiceInventoryItemModel.Limit" /> *@
-                    @*     <RadzenRequiredValidator Component="Limit" Text="حداقل موجودی  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" /> *@
-                    @* </RadzenFormField> *@
-                </RadzenRow>
-                <RadzenRow JustifyContent="JustifyContent.End">
-                    <RadzenButton Text="افزودن" ButtonType="Radzen.ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Style="width: 180px" />
                 </RadzenRow>
             </RadzenTemplateForm>
         </RadzenColumn>
     </RadzenRow>
 
-    <!-- Generated Invoice-->
-    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-        <RadzenText Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H5">
-            <p class="text-danger" style="font-size:13px">@error</p>
-            @*فاکتور ۹۲۹۱ - شرکت روغن گیران قرن*@
-            فاکتور @addNewInvoiceModel.Code - @addNewInvoiceModel.Title
+    
 
-        </RadzenText>
+    <RadzenRow JustifyContent="JustifyContent.SpaceEvenly" Style="margin-top:30px">
+        <RadzenButton Click="@((args) => dialogService.Close(false))" ButtonStyle="ButtonStyle.Danger" Text="لغو" />
+        <RadzenButton ButtonType="Radzen.ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Text="ثبت" />
     </RadzenRow>
-
-    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-        <table class="table table">
-            <thead>
-                <tr>
-                    <th>نام کالا</th>
-                    <th>کد</th>
-                    <th>قمیت خرید</th>
-                    <th>قیمت فروش</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in gridData)
-                {
-                    <tr>
-                        <td>@item.Title</td>
-                        <td>@item.Code</td>
-                        <td>@item.BuyPrice</td>
-                        @* Here in buy invoice, the sell price is not needed 
-                        and the important missing thing is "BuyCount" not the whole 
-                        count in inventory, but the specefic invoice buy items
-                        
-                        for example there are 80 of A in inventory, if now there is 85
-                        the buy count is 5
-                        <td></td>
-                        *@
-                        <td class="text-danger" @onclick="() => RemoveInvoiceInventoryItem(item.InventoryItemId)">X</td>
-                    </tr>
-                }
-            </tbody>
-
-        </table>
-        <RadzenButton Click="OnFinalClick" Text="ثبت نهایی" ButtonType="Radzen.ButtonType.Button" ButtonStyle="ButtonStyle.Success" Style="width: 180px" />
-        <RadzenButton Text="انصراف" Click="OnClickCancel" ButtonType="Radzen.ButtonType.Button" ButtonStyle="ButtonStyle.Danger" Style="width: 180px" />
-    </RadzenRow>
+    
 
 
 </MudRTLProvider>

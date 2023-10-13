@@ -3,8 +3,10 @@
 @using DialogOptions = Radzen.DialogOptions
 @using DialogService = Radzen.DialogService
 @using OAS.Application.Features.InvoiceFeatures.GetDailySellInvoices;
+@using OAS.Blazor.Pages.Inventory
 @using OAS.Blazor.Pages.Shared
 @using OAS.Blazor.Pages.Invoices
+@using Variant = Radzen.Variant
 @inject DialogService DialogService
 @inject MediatR.IMediator mediator;
 @inject NavigationManager NavigationManager
@@ -14,13 +16,9 @@
 
 <PageTitle>صفحه اصلی</PageTitle>
 
-<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-    <RadzenColumn>
-        <RadzenButton Click=@OpenRegisterCustomer Text="ثبت مشتری" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
-    </RadzenColumn>
-    <RadzenColumn>
-        <RadzenButton Click=@OpenVehicleEntrance Text="ورود ماشین" Icon="arrow_back" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
-    </RadzenColumn>
+<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
+        <RadzenButton Click=@OpenRegisterCustomer Text="ثبت مشتری" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;"/>
+        <RadzenButton Click=@OpenVehicleEntrance Text="ورود ماشین" Icon="arrow_back" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;"/>
 </RadzenRow>
 
 <br />
@@ -40,9 +38,26 @@
     </RadzenDataGrid>
 
 </RadzenRow>
-<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" />
-<RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" />
-<RadzenButton Click=@(args => NavToOpenInvoiceEdit(testInvoiceCode)) ButtonStyle="ButtonStyle.Warning" />
+<br/><br/>
+<p>----------انباری----------</p><br/>
+<p>---صفحه ها ها---</p>
+<RadzenRow>
+<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" Text="OpenDeleteConfirmation"/>
+<RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" Text="OpenPaySellInvoice" />
+<RadzenButton Click=@(args => NavToOpenInvoiceEdit(testInvoiceCode)) ButtonStyle="ButtonStyle.Warning" Text="NavToOpenInvoiceEdit"/>
+<RadzenButton Click=@OpenEditInventoryItemDialog ButtonStyle="ButtonStyle.Info" Text="OpenEditInventoryItemDialog" />
+
+</RadzenRow>
+<p>---آیکون ها---</p>
+<RadzenRow>
+<RadzenButton Icon="print"></RadzenButton>
+<RadzenButton Icon="edit"></RadzenButton>
+<RadzenButton Icon="backspace"></RadzenButton>
+</RadzenRow>
+
+
+
+
 
 @code {
 
@@ -93,6 +108,21 @@
             AutoFocusFirstElement = false,
             CloseDialogOnOverlayClick = true
         });
+
+    }
+    public async Task OpenEditInventoryItemDialog()
+    {
+        await DialogService.OpenAsync<EditInventoryItemDialog>("ویرایش کالا",
+            new Dictionary<string, object>() {  },
+
+            new DialogOptions()
+            {
+                Width = "550px",
+                Height = "260px",
+                Draggable = false,
+                AutoFocusFirstElement = false,
+                CloseDialogOnOverlayClick = true
+            });
 
     }
     public async Task OpenPaySellInvoice()

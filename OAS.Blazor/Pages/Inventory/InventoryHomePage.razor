@@ -11,22 +11,14 @@
 @inject MediatR.IMediator mediator;
 <MudRTLProvider RightToLeft="true">
 
-    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-        <RadzenColumn>
-            <RadzenButton Click=@(args => NavigationManager.NavigateTo("/purchase/inventoryitem")) Text="خرید کالا" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
-        </RadzenColumn>
-        <RadzenColumn>
-            <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ویرایش کالا" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
-        </RadzenColumn>
+    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
+            <RadzenButton Click=@(args => NavigationManager.NavigateTo("/purchase/inventoryitem")) Text="خرید کالا" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;"/>
+            <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ویرایش کالا" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;"/>
     </RadzenRow>
     <br />
-    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-        <RadzenColumn>
-            <RadzenButton Click="OpenRegisterServiceDialog" Text="ثبت خدمت جدید" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
-        </RadzenColumn>
-        <RadzenColumn>
-            <RadzenButton Click="OpenEditServiceDialog" Text="ویرایش خدمت" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" />
-        </RadzenColumn>
+    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
+            <RadzenButton Click="OpenRegisterServiceDialog" Text="ثبت خدمت جدید" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;"/>
+            <RadzenButton Click="OpenEditServiceDialog" Text="ویرایش خدمت" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;"/>
     </RadzenRow>
     <br />
     <RadzenRow>

@@ -138,6 +138,9 @@ namespace OAS.Persistence.Repositories
             var answer = data.Select((a, i) => new GetSellInvoiceInventoryItems_DTO
             (
                 RowNumber: i + 1,
+                InventoryItemCode:a.InventoryItem.Code.ToString(),
+                InvoiceInventoryItemId:a.Id,
+                InventoryItemId:a.InventoryItemId,
                 InventoryItemName: a.InventoryItem.Name,
                 InventoryItemCount: a.InventoryItem.Count.Value, //todo
                 UnitPrice: a.InventoryItem.SellPrice.Value,

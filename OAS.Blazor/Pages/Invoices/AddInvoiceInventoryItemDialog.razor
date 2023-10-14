@@ -1,0 +1,125 @@
+﻿@using OAS.Application.DomainModels;
+@using OAS.Application.Features.CustomerFeatures.AddCustomer;
+@using OAS.Application.Features.Inventory.GetInventoryItems;
+@using OAS.Application.Features.InventoryFeatures.AddService;
+@using OAS.Application.Features.InventoryFeatures.UpdateService;
+@using Variant = Radzen.Variant
+@using AlignItems = Radzen.AlignItems
+@inject Radzen.DialogService dialogService
+@inject MediatR.IMediator mediator;
+<MudRTLProvider RightToLeft="true">
+    <RadzenTemplateForm TItem="AddInvoiceInventoryItemModel" Data="addInvoiceInventoryItemModel" Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
+
+        <RadzenRow JustifyContent="JustifyContent.SpaceBetween">
+
+            <RadzenColumn Size="5">
+                <RadzenFormField Text="کد کالا" Variant="Variant.Outlined">
+
+                    <RadzenAutoComplete ValueChanged="InventoryCodeItemAutoCompleteTextChanged" Name="Code" Data=@inventoryItems TextProperty="Code" Value="addInvoiceInventoryItemModel.InventoryItemCode" Style="width: 13rem" />
+                    <RadzenRequiredValidator Component="Code" Text="کد کالا را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                </RadzenFormField>
+
+            </RadzenColumn>
+            <RadzenColumn Size="5">
+                <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
+
+                    <RadzenAutoComplete ValueChanged="InventoryItemNameAutoCompleteTextChanged" Name="Title" Data=@inventoryItems TextProperty="Title" Value="addInvoiceInventoryItemModel.InventoryItemTitle" Style="width: 13rem" />
+                    <RadzenRequiredValidator Component="Title" Text="عنوان کالا را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                </RadzenFormField>
+            </RadzenColumn>
+
+        </RadzenRow>
+        <RadzenRow JustifyContent="JustifyContent.Center" Style="margin-top:30px">
+            <RadzenButton Click="@((args) => dialogService.Close(false))" ButtonStyle="ButtonStyle.Danger" Text="لغو" />
+            <RadzenButton ButtonType="Radzen.ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Text="ثبت" />
+        </RadzenRow>
+        <span class="text-danger">@error</span>
+    </RadzenTemplateForm>
+</MudRTLProvider>
+
+@code {
+    class AddInvoiceInventoryItemModel
+    {
+        public Guid InventoryItemId { get; set; }
+        public string InventoryItemCode { get; set; }
+        public string InventoryItemTitle { get; set; }
+    }
+
+    [Parameter]
+    public Func<Guid, Task> AddInvoiceInventoryItemId { get; set; }
+    private AddInvoiceInventoryItemModel addInvoiceInventoryItemModel = new();
+    private string error = "";
+
+
+    private List<InventoryItemDTO> inventoryItems = new();
+
+    bool popup = false;
+    private async Task FetchInventoryData()
+    {
+        var request = new GetInventoryItemsRequest();
+        var response = await mediator.Send(request);
+        inventoryItems = response.InventoryItemDTOs;
+    }
+    private void InventoryItemNameAutoCompleteTextChanged(string newValue)
+    {
+        addInvoiceInventoryItemModel.InventoryItemTitle = newValue;
+        var inventoryItem = inventoryItems.FirstOrDefault(a => a.Title == newValue);
+        if (inventoryItem != null)
+        {
+            addInvoiceInventoryItemModel.InventoryItemId = inventoryItem.Id;
+            addInvoiceInventoryItemModel.InventoryItemCode = inventoryItem.Code;
+        }
+        else
+        {
+            addInvoiceInventoryItemModel.InventoryItemId = Guid.Empty;
+            addInvoiceInventoryItemModel.InventoryItemCode = string.Empty;
+        }
+
+    }
+    private void InventoryCodeItemAutoCompleteTextChanged(string newValue)
+    {
+        addInvoiceInventoryItemModel.InventoryItemCode = newValue;
+        var inventoryItem = inventoryItems.FirstOrDefault(a => a.Code == newValue);
+        if (inventoryItem != null)
+        {
+            addInvoiceInventoryItemModel.InventoryItemId = inventoryItem.Id;
+
+            addInvoiceInventoryItemModel.InventoryItemTitle = inventoryItem.Title;
+
+        }
+        else
+        {
+            addInvoiceInventoryItemModel.InventoryItemId = Guid.Empty;
+            addInvoiceInventoryItemModel.InventoryItemTitle = string.Empty;
+        }
+    }
+
+
+    void OnSubmit(AddInvoiceInventoryItemModel model)
+    {
+        if (string.IsNullOrEmpty(model.InventoryItemCode) || string.IsNullOrEmpty(model.InventoryItemTitle))
+        {
+            error = "لطفا نام یا کد کالا را وارد کنید";
+            return;
+        }
+        AddInvoiceInventoryItemId(model.InventoryItemId);
+    }
+
+    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
+    {
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await FetchInventoryData();
+        }
+        catch (Exception e)
+        {
+            error = "خطا هنگام خواندن اطلاعات";
+        }
+    }
+
+}

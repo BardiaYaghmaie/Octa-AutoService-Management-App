@@ -33,7 +33,14 @@
             <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="InvoiceCode" Title="شماره فاکتور" />
             <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="CustomerName" Title=" مشتری" />
             <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="VehicleName" Title="خودرو" />
-            <RadzenDataGridColumn TItem="string" Property="Vehicle" Title="عملیات" />
+            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Title="عملیات">
+                <Template Context="item">
+                    <RadzenButton Click="() => OnEditInvoice(item.InvoiceId)" Icon="edit"></RadzenButton>
+                    <RadzenButton Icon="print"></RadzenButton>
+
+
+                </Template>
+            </RadzenDataGridColumn>
         </Columns>
     </RadzenDataGrid>
 
@@ -44,7 +51,7 @@
 <RadzenRow>
 <RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" Text="OpenDeleteConfirmation"/>
 <RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" Text="OpenPaySellInvoice" />
-<RadzenButton Click=@(args => NavToOpenInvoiceEdit(testInvoiceCode)) ButtonStyle="ButtonStyle.Warning" Text="NavToOpenInvoiceEdit"/>
+<RadzenButton Click=@(args => NavToOpenInvoiceEdit(Guid.NewGuid())) ButtonStyle="ButtonStyle.Warning" Text="NavToOpenInvoiceEdit"/>
 <RadzenButton Click=@OpenEditInventoryItemDialog ButtonStyle="ButtonStyle.Info" Text="OpenEditInventoryItemDialog" />
 
 </RadzenRow>
@@ -60,7 +67,10 @@
 
 
 @code {
-
+    private void OnEditInvoice(Guid invoiceId)
+    {
+        NavToOpenInvoiceEdit(invoiceId);
+    }
     public async Task OpenRegisterCustomer()
     {
         await DialogService.OpenAsync<RegisterCustomerDialog>("ثبت مشتری",
@@ -142,10 +152,15 @@
     }
 
     private string testInvoiceCode { get; set; } = "0000";
-    private void NavToOpenInvoiceEdit(string invoiceCode)
+    //private void NavToOpenInvoiceEdit(string invoiceCode)
+    //{
+    //    NavigationManager.NavigateTo($"/OpenInvoiceEditPage/{invoiceCode}");
+    //}
+    private void NavToOpenInvoiceEdit(Guid  invoiceId)
     {
-        NavigationManager.NavigateTo($"/OpenInvoiceEditPage/{invoiceCode}");
+        NavigationManager.NavigateTo($"/OpenInvoiceEditPage/{invoiceId}");
     }
+
 
 
     private void OnClick(string text)

@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace OAS.Application.Features.InvoiceFeatures.GetSellInvoiceInventoryItems
 {
-    public sealed record GetSellInvoiceInventoryItems_DTO(int RowNumber, string InventoryItemName, float InventoryItemCount, long UnitPrice, double TotalPrice);
+    public sealed record GetSellInvoiceInventoryItems_DTO(Guid InventoryItemId,Guid InvoiceInventoryItemId,string InventoryItemCode,int RowNumber, string InventoryItemName, float InventoryItemCount, long UnitPrice, float TotalPrice);
 }

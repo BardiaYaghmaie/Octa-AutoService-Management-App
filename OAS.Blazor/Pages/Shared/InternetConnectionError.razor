@@ -1,0 +1,18 @@
+@page "/InternetConnectionError"
+@using AlignItems = Radzen.AlignItems
+@inject Radzen.DialogService dialogService
+<MudRTLProvider RightToLeft="true">
+<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Style="margin: auto">
+    <RadzenText>
+        اتصال اینترنت خود را بررسی کنید!
+    </RadzenText>
+</RadzenRow>
+<RadzenRow JustifyContent="JustifyContent.SpaceBetween">
+    <RadzenButton Click="@((args) => dialogService.Close())" ButtonStyle="ButtonStyle.Info" Text="اوکی" Style="width: 120px" />
+    <RadzenButton Click="@((args) => dialogService.Refresh())" ButtonStyle="ButtonStyle.Light" Text="رفرش" Style="width: 120px" />
+
+</RadzenRow>
+</MudRTLProvider>
+@code {
+    
+}

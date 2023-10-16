@@ -1,0 +1,163 @@
+﻿@using OAS.Application.DomainModels;
+@using OAS.Application.Features.CustomerFeatures.AddCustomer;
+@using OAS.Application.Features.Inventory.GetInventoryItems;
+@using OAS.Application.Features.Inventory.GetServices;
+@using OAS.Application.Features.InventoryFeatures.AddService;
+@using OAS.Application.Features.InventoryFeatures.UpdateService;
+@using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceInventoryItems;
+@using Variant = Radzen.Variant
+@using AlignItems = Radzen.AlignItems
+@inject Radzen.DialogService dialogService
+@inject MediatR.IMediator mediator;
+<MudRTLProvider RightToLeft="true">
+    <RadzenTemplateForm TItem="AddInvoiceServiceModel" Data="addInvoiceServiceModel" Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
+
+        <RadzenRow JustifyContent="JustifyContent.SpaceBetween">
+
+            <RadzenColumn Size="6">
+                <RadzenFormField Text="کد خدمت" Variant="Variant.Outlined">
+
+                    <RadzenAutoComplete ValueChanged="ServiceCodeAutoCompleteTextChanged" Name="Code" Data=@services TextProperty="Code" Value="addInvoiceServiceModel.ServiceCode" Style="width: 13rem" />
+                    <RadzenRequiredValidator Component="Code" Text="کد خدمت را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                </RadzenFormField>
+
+            </RadzenColumn>
+            <RadzenColumn Size="6">
+                <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
+
+                    <RadzenAutoComplete ValueChanged="ServiceNameAutoCompleteTextChanged" Name="Title" Data=@services TextProperty="Title" Value="addInvoiceServiceModel.ServiceName" Style="width: 13rem" />
+                    <RadzenRequiredValidator Component="Title" Text="عنوان خدمت را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                </RadzenFormField>
+            </RadzenColumn>
+            <RadzenColumn Size="6">
+                <RadzenFormField Text="قیمنت" Variant="Variant.Outlined">
+
+                    <RadzenTextBox @bind-Value="addInvoiceServiceModel.Price" Name="Price" Style="width: 13rem" />
+                    <RadzenRequiredValidator Component="Price" Text=" قیمت خدمت را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                </RadzenFormField>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow JustifyContent="JustifyContent.Center" Style="margin-top:30px">
+            <RadzenButton Click="@((args) => dialogService.Close(false))" ButtonStyle="ButtonStyle.Danger" Text="لغو" />
+            <RadzenButton ButtonType="Radzen.ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Text="ثبت" />
+        </RadzenRow>
+        <span class="text-danger">@error</span>
+    </RadzenTemplateForm>
+</MudRTLProvider>
+
+@code {
+    public class AddInvoiceServiceModel
+    {
+        public Guid ServiceId { get; set; }
+        public string ServiceCode { get; set; }
+        public string ServiceName { get; set; }
+        public string Price { get; set; }
+    }
+
+    [Parameter]
+    public Func<Guid, Guid,long,Task> AddInvoiceServiceId { get; set; }
+    [Parameter]
+
+    public Func<Guid,Guid, string, string, long, int> AddServiceToSellInvoiceGrid { get; set; }
+    private AddInvoiceServiceModel addInvoiceServiceModel = new();
+    private string error = "";
+
+
+    private List<ServiceDTO> services = new();
+
+    bool popup = false;
+    private async Task FetchServiceData()
+    {
+        var request = new GetServicesRequest();
+        var response = await mediator.Send(request);
+        services = response.ServiceDTOs;
+    }
+    private void ServiceNameAutoCompleteTextChanged(string newValue)
+    {
+        addInvoiceServiceModel.ServiceName = newValue;
+        var service = services.FirstOrDefault(a => a.Title == newValue);
+        if (service != null)
+        {
+            addInvoiceServiceModel.ServiceId = service.Id;
+            addInvoiceServiceModel.ServiceCode = service.Code;
+            addInvoiceServiceModel.Price = service.Price.ToString();
+        }
+        else
+        {
+            addInvoiceServiceModel.ServiceId = Guid.Empty;
+            addInvoiceServiceModel.ServiceCode = string.Empty;
+            addInvoiceServiceModel.Price = string.Empty;
+
+        }
+
+    }
+    private void ServiceCodeAutoCompleteTextChanged(string newValue)
+    {
+        addInvoiceServiceModel.ServiceCode = newValue;
+        var service = services.FirstOrDefault(a => a.Code == newValue);
+        if (service != null)
+        {
+            addInvoiceServiceModel.ServiceId = service.Id;
+            addInvoiceServiceModel.ServiceName = service.Title;
+            addInvoiceServiceModel.Price = service.Price.ToString();
+
+        }
+        else
+        {
+            addInvoiceServiceModel.ServiceId = Guid.Empty;
+            addInvoiceServiceModel.ServiceName = string.Empty;
+            addInvoiceServiceModel.Price = string.Empty;
+
+        }
+    }
+
+
+    void OnSubmit(AddInvoiceServiceModel model)
+    {
+        if (string.IsNullOrEmpty(model.ServiceCode) || string.IsNullOrEmpty(model.ServiceName))
+        {
+            error = "لطفا نام یا کد خدمت را وارد کنید";
+            return;
+        }
+
+        try
+        {
+            long price = long.Parse(model.Price);
+            if (price == 0)
+            {
+                error = "مبلغ وارد شده صحیح نمی باشد";
+                return;
+            }
+
+            var newGeneratedInvoiceServiceId = Guid.NewGuid();
+            AddInvoiceServiceId(newGeneratedInvoiceServiceId, model.ServiceId, price);
+
+            AddServiceToSellInvoiceGrid(newGeneratedInvoiceServiceId, model.ServiceId, model.ServiceName, model.ServiceCode, price);
+            dialogService.Close(true);
+
+        }
+        catch (Exception e)
+        {
+            error = "عملیات با خطا مواجه شد";
+        }
+
+    }
+
+    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
+    {
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await FetchServiceData();
+        }
+        catch (Exception e)
+        {
+            error = "خطا هنگام خواندن اطلاعات";
+        }
+    }
+
+}

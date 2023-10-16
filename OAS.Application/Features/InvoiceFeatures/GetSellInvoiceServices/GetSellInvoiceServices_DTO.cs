@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace OAS.Application.Features.InvoiceFeatures.GetSellInvoiceServices
 {
-    public sealed record GetSellInvoiceServices_DTO(int RowNumber,string ServiceName,int Count,long UnitPrice , long TotalPrice);    
+    public sealed record GetSellInvoiceServices_DTO(string Code,Guid ServiceId , Guid InvoiceServiceId,int RowNumber,string ServiceName,int Count,long UnitPrice , long TotalPrice);    
 }

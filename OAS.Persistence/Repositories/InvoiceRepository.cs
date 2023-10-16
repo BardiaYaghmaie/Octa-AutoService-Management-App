@@ -190,6 +190,9 @@ namespace OAS.Persistence.Repositories
             var data = await _dbContext.InvoiceServices.Include(a => a.Service).Where(a => a.InvoiceId == invoiceId).ToListAsync();
             var answer = data.Select((a, i) => new GetSellInvoiceServices_DTO
             (
+                Code:a.Service.Code.ToString(),
+                ServiceId:a.ServiceId,
+                InvoiceServiceId:a.Id,
                 RowNumber: i + 1,
                 ServiceName: a.Service.Name,
                 Count: 1, //todo

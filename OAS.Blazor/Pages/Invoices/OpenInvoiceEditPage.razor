@@ -1,7 +1,10 @@
 @page "/OpenInvoiceEditPage/{InvoiceId:guid}"
 @using AlignItems = Radzen.AlignItems
 @using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceInventoryItems;
+@using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceServices;
+@using OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInventoryItems;
 @using Variant = Radzen.Variant
+@using static OAS.Blazor.Pages.Invoices.AddInvoiceInventoryItemDialog;
 @inject Radzen.DialogService DialogService;
 @inject MediatR.IMediator mediator
 <MudRTLProvider>
@@ -16,63 +19,143 @@
         <RadzenButton Click="OpenAddInvoiceInventoryItemDialog" Text="اضافه کردن کالا" Variant="Variant.Flat" ButtonStyle="ButtonStyle.Info" Style="width: 180px" />
     </RadzenRow>
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-        <RadzenDataGrid Data="sellInvoiceGridData" TItem="GetSellInvoiceInventoryItems_DTO" AllowVirtualization="false" Style="height:400px"
-                        AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
-                        AllowSorting="true">
-            <Columns>
-                <RadzenDataGridColumn TItem="GetSellInvoiceInventoryItems_DTO" Property="RowNumber" Title="ردیف" />
-                <RadzenDataGridColumn TItem="GetSellInvoiceInventoryItems_DTO" Property="InventoryItemCode" Title="کد" />
-                <RadzenDataGridColumn TItem="GetSellInvoiceInventoryItems_DTO" Property="InventoryItemName" Title="عنوان" />
-                <RadzenDataGridColumn TItem="GetSellInvoiceInventoryItems_DTO" Property="InventoryItemCount" Title="تعداد" />
-                <RadzenDataGridColumn TItem="GetSellInvoiceInventoryItems_DTO" Property="UnitPrice" Title="فی" />
-                <RadzenDataGridColumn TItem="GetSellInvoiceInventoryItems_DTO" Property="TotalPrice" Title="قیمت کل" />
-                <RadzenDataGridColumn TItem="GetSellInvoiceInventoryItems_DTO" Title="عملیات">
-                    <Template Context="item">
-                        <RadzenButton Icon="delete" Click="() => RemoveInvoiceInventoryItem(item.InvoiceInventoryItemId)"></RadzenButton>
-                    </Template>
-                </RadzenDataGridColumn>
-            </Columns>
-        </RadzenDataGrid>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ردیف</th>
+                    <th>کد</th>
+                    <th>عنوان</th>
+                    <th>تعداد</th>
+                    <th>فی</th>
+                    <th>قیمت کل</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in inventoryItemsGridData)
+                {
+                    <tr>
+                        <td>@item.RowNumber</td>
+                        <td>@item.InventoryItemCode</td>
+                        <td>@item.InventoryItemName</td>
+                        <td>@item.InventoryItemCount</td>
+                        <td>@item.UnitPrice</td>
+                        <td>@item.TotalPrice</td>
+                        <td>
+                            <RadzenButton Icon="delete" Click="() => RemoveInvoiceInventoryItem(item.InvoiceInventoryItemId)"></RadzenButton>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
     </RadzenRow>
     <br />
     <br />
     <RadzenRow JustifyContent="JustifyContent.Left">
-        <RadzenButton Text="اضافه کردن خدمت" Variant="Variant.Flat" ButtonStyle="ButtonStyle.Info" />
+        <RadzenButton Click="OpenAddInvoiceServiceDialog" Text="اضافه کردن خدمت" Variant="Variant.Flat" ButtonStyle="ButtonStyle.Info" />
     </RadzenRow>
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-        @*     <RadzenDataGrid TItem="InvoicesPageSellReportModel" AllowVirtualization="false" Style="height:400px"
-        AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
-        AllowSorting="true">
-        <Columns>
-        <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="RowNumber" Title="ردیف"/>
-        <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="InvoiceCode" Title="کد"/>
-        <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="Date" Title="عنوان"/>
-        <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="Vehicle" Title="فی"/>
-        <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="TotalPrice" Title="قیمت کل"/>
-        <RadzenDataGridColumn TItem="InvoicesPageSellReportModel" Property="State" Title="عملیات"/>
-        </Columns>
-        </RadzenDataGrid>*@
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ردیف</th>
+                    <th>کد</th>
+                    <th>عنوان</th>
+                    <th>تعداد</th>
+                    <th>فی</th>
+                    <th>قیمت کل</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in servicesGridData)
+                {
+                    <tr>
+                        <td>@item.RowNumber</td>
+                        <td>@item.Code</td>
+                        <td>@item.ServiceName</td>
+                        <td>@item.Count</td>
+                        <td>@item.UnitPrice</td>
+                        <td>@item.TotalPrice</td>
+                        <td>
+                            <RadzenButton Icon="delete" Click="() => RemoveInvoiceService(item.InvoiceServiceId)"></RadzenButton>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
     </RadzenRow>
     <br />
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
         <RadzenColumn>
-            <RadzenCheckBox @bind-Value=@cb_value Name="BuyPrice_CB" />
+            <RadzenCheckBox @bind-Value=@useBuyPrice Name="BuyPrice_CB" />
             <RadzenLabel Text="قیمت خرید" Component="BuyPrice_CB" Style="margin-left: 8px; vertical-align: middle;" />
         </RadzenColumn>
 
-        <RadzenButton Style="width: 180px" Variant="Variant.Filled" ButtonStyle="ButtonStyle.Success" Text="ثبت" />
+        <RadzenButton Click="OnFinalSubmit" Style="width: 180px" Variant="Variant.Filled" ButtonStyle="ButtonStyle.Success" Text="ثبت" />
     </RadzenRow>
 
 
 </MudRTLProvider>
 <br />
 @code {
+    //first one : invoice inventory item id , 2nd : inventory item id , 3rd : invoiceinventoryitemcount
+    private List<(Guid, Guid, float)> inventoryItemIdsAndCounts = new();
+    // invoice service id , service id , service price
+    private List<(Guid, Guid, long)> serviceIdsAndPrices = new();
+    private List<Guid> toRemoveInvoiceServiceIds = new();
+    private List<Guid> toRemoveInvoiceInventoryItemIds = new();
     private string error = "";
+    private bool useBuyPrice = false;
+    private async Task OnFinalSubmit()
+    {
+        try
+        {
+
+            var request = new UpdateInvoiceServicesAndInventoryItemsRequest(InvoiceId, inventoryItemIdsAndCounts.Select(a => (a.Item2, a.Item3)).ToList(), serviceIdsAndPrices.Select(a => (a.Item2, a.Item3)).ToList(), toRemoveInvoiceInventoryItemIds, toRemoveInvoiceServiceIds, useBuyPrice);
+            var response = await mediator.Send(request);
+
+        }
+        catch (Exception)
+        {
+            error = "خطا هنگام ارسال اطلاعات";
+            throw;
+        }
+    }
+    private void RemoveInvoiceService(Guid invoiceServiceId)
+    {
+        try
+        {
+            servicesGridData.Remove(servicesGridData.First(a => a.InvoiceServiceId == invoiceServiceId));
+            if (serviceIdsAndPrices.Select(a => a.Item1).Any(a => a == invoiceServiceId))
+            {
+                // it was a newly created one : do nothng
+            }
+            else
+            {
+                toRemoveInvoiceServiceIds.Add(invoiceServiceId);
+            }
+        }
+        catch (Exception e)
+        {
+            error = "خطا هنگام انجام عملیات";
+        }
+    }
     private void RemoveInvoiceInventoryItem(Guid InvoiceInventoryItemId)
     {
         try
         {
-            sellInvoiceGridData.Remove(sellInvoiceGridData.First(a => a.InvoiceInventoryItemId == InvoiceInventoryItemId));
+            inventoryItemsGridData.Remove(inventoryItemsGridData.First(a => a.InvoiceInventoryItemId == InvoiceInventoryItemId));
+            if (inventoryItemIdsAndCounts.Select(a => a.Item1).Any(a => a == InvoiceInventoryItemId))
+            {
+                // it was a newly created one : do nothng
+            }
+            else
+            {
+                toRemoveInvoiceInventoryItemIds.Add(InvoiceInventoryItemId);
+            }
         }
         catch (Exception e)
         {
@@ -83,27 +166,69 @@
     {
         var request = new GetSellInvoiceInventoryItemsRequest(InvoiceId);
         var response = await mediator.Send(request);
-        sellInvoiceGridData = response.Data;
+        inventoryItemsGridData = response.Data;
+
+        var request2 = new GetSellInvoicecServicesRequest(InvoiceId);
+        var response2 = await mediator.Send(request2);
+        servicesGridData = response2.Data;
+
     }
     [Parameter]
     public Guid InvoiceId { get; set; }
 
-    public bool cb_value { get; set; } = true;
-    private List<GetSellInvoiceInventoryItems_DTO> sellInvoiceGridData = new();
+    private List<GetSellInvoiceInventoryItems_DTO> inventoryItemsGridData = new();
+    private List<GetSellInvoiceServices_DTO> servicesGridData = new();
 
-
-    private Task AddInvoiceInventoryItemId(Guid InventoryItemId)
+    private Task AddInvoiceServiceId(Guid InvoiceServiceId,Guid ServiceId,long price)
     {
+        serviceIdsAndPrices.Add((InvoiceServiceId, ServiceId, price));
         return Task.CompletedTask;
+    }
+    private Task AddInvoiceInventoryItemId(Guid InvoiceInventoryItemId,Guid InventoryItemId,float count)
+    {
+        inventoryItemIdsAndCounts.Add((InvoiceInventoryItemId, InventoryItemId, count));
+        return Task.CompletedTask;
+    }
+    private int AddServiceToSellInvoiceGrid(Guid invoiceServiceId,Guid serviceId, string serviceName, string serviecCode, long unitPrice)
+    {
+        var dto = new GetSellInvoiceServices_DTO(serviecCode, serviceId, invoiceServiceId, -1, serviceName, 1, unitPrice, unitPrice);
+        servicesGridData.Add(dto);
+        return 0;
+    }
+    private int AddItemToSellInvoiceGrid(Guid invoiceInventoryItemId,Guid inventoryItemId,string inventoryItemCode, string inventoryItemName, float count, long unitPrice)
+    {
+        var dto = new GetSellInvoiceInventoryItems_DTO(
+            inventoryItemId, invoiceInventoryItemId, inventoryItemCode, -1, inventoryItemName, count, unitPrice, count * unitPrice
+        );
+        inventoryItemsGridData.Add(dto);
+        //StateHasChanged();
+        return 0;
+    }
+    private async Task OpenAddInvoiceServiceDialog()
+    {
+        await DialogService.OpenAsync<AddInvoiceServiceDialog>("اضافه کردن خدمت", new Dictionary<string, object>()
+        {
+        {"AddServiceToSellInvoiceGrid",AddServiceToSellInvoiceGrid },
+        {"AddInvoiceServiceId",AddInvoiceServiceId }
+    }, new Radzen.DialogOptions()
+    {
+        Width = "600px",
+        Height = "250px",
+        Draggable = false,
+        AutoFocusFirstElement = false,
+        CloseDialogOnOverlayClick = true
+    }
+        );
     }
     private async Task OpenAddInvoiceInventoryItemDialog()
     {
         await DialogService.OpenAsync<AddInvoiceInventoryItemDialog>("اضافه کردن کالا",
            new Dictionary<string, object>()
-                               {
-               { "AddInvoiceInventoryItemId",AddInvoiceInventoryItemId }
+                                       {
+               { "AddInvoiceInventoryItemId",AddInvoiceInventoryItemId },
+               { "AddItemToSellInvoiceGrid",AddItemToSellInvoiceGrid }
 
-                               },
+                                       },
            new Radzen.DialogOptions()
                {
                    Width = "600px",

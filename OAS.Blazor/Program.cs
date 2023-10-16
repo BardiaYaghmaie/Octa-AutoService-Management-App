@@ -9,6 +9,8 @@ using OAS.Application;
 using OAS.Domain.Models;
 using System.Reflection;
 using MediatR;
+using Stimulsoft.Report.Blazor;
+using static Stimulsoft.Report.StiOptions;
 
 var builder = WebApplication.CreateBuilder(args);
 

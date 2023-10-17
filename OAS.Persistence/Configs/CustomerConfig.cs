@@ -29,5 +29,16 @@ public class CustomerConfig : IEntityTypeConfiguration<Customer>
             .WithOne(a => a.Customer)            
             .HasPrincipalKey(a => a.Id)            
             .HasForeignKey(a => a.CustomerId);
+
+        builder.HasData(new Customer
+        {
+            Code = 12345678,
+            Id = Guid.Parse("245db4b9-4aed-43e5-a02a-001202523e86"),
+            FirstName = "مشتری متفرقه",
+            LastName = "",
+            IsActive = true,
+            PhoneNumber = "00000000000",
+            RegisterDate = DateTime.Parse("2023-01-01")
+        });
     }
 }

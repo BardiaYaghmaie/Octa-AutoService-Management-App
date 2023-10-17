@@ -1,4 +1,5 @@
 @using OAS.Application.Features.InvoiceFeatures.CreateInvoice;
+@using OAS.Application.Features.InvoiceFeatures.CreateMiscellaneousSellInvoice;
 @using Variant = Radzen.Variant
 @using AlignItems = Radzen.AlignItems
 @using Application.Features.VehicleFeatures.GetVehiclesMinimal
@@ -13,14 +14,20 @@
     <br/>
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
         <RadzenButton Text="ثبت فاکتور" Click="CreateSellInvoice" ButtonStyle="ButtonStyle.Success" Style="width: 200px"/>
-        <RadzenButton Text="ثبت فاکتور متفرقه" ButtonStyle="ButtonStyle.Info" Variant="Variant.Outlined" Style="width: 180px"/>
+        <RadzenButton Text="ثبت فاکتور متفرقه" Click="CreateMiscellaneousSellInvoice" ButtonStyle="ButtonStyle.Info" Variant="Variant.Outlined" Style="width: 180px" />
     </RadzenRow>
     <p class="text-danger">@error</p>
 </MudRTLProvider>
 @code {
     [Parameter]
     public Func<Task> RefreshGridData { get; set; }
-
+    private async Task CreateMiscellaneousSellInvoice()
+    {
+        var request = new CreateMiscellaneousSellInvoiceRequest();
+        var response = await mediator.Send(request);
+        await RefreshGridData();
+        dialogService.Close();
+    }
     public string VehicleCode { get; set; }
     private List<GetVehiclesMinimal_DTO> vehicles = new ();
     private string error = "";

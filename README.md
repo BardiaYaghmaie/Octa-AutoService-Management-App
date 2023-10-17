@@ -1,14 +1,14 @@
 # Sat - 22 Mehr - Changes To Be Applied
 
 
-### Sell Invoice Generating Flow (Very Very High) - M first *
+### Sell Invoice Generating Flow (Very Very High) - M first * res
 
 
-##### - Printing Invoice in Invoices Page (Very High) - M first
+##### - Printing Invoice in Invoices Page (Very High) - M first res
 
 ##### - Paying Invoice in Invoices Page (Very High) - M first
 
-##### -  “The most important” Edit in Day Invoices Home Page (High) - M first
+##### -  “The most important” Edit in Day Invoices Home Page (High) - M first res
 
 ##### - Print and  Delete in Day Invoices Home Page (High) - M first
 
@@ -17,11 +17,11 @@
 ##### - Inventory Item Limit can only be changed in edit, not buying so default is zero. (Med-High) - M first 
 ##### - Edit and Delete in Inventory Data Grids (Med-High) - M first
 
-##### - Registering customer front-end has problems (Medium) - B first
+##### - Registering customer front-end has problems (Medium) - B first res
 
 ##### - Internet Connection Error & 404 Error Page (Low) - B first
 
-##### - Vehicle entrance ui has changes (Low) - B first
+##### - Vehicle entrance ui has changes (Low) - B first res
 
 ##### - Customer Page some basic layout, edit customer modal like registering (Low) - B first
 
@@ -29,3 +29,7 @@
 # =============================================================
 
 ##  * Vehicle Entrance -> Edit in Day Invoices -> Pay the Final Sell Invoice
+
+# ==============================================================
+##### - octa changed to arta everywhere in the ui
+##### - stimulsoft font should be ok with Vazirmatn in the publish

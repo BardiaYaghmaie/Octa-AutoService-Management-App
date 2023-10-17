@@ -137,7 +137,7 @@ namespace OAS.Persistence.Repositories
         {
             var invoice = await _dbContext.Invoices.Include(a => a.Vehicle).ThenInclude(a => a.Customer).Include(a => a.Customer).AsNoTracking().FirstAsync(a => a.Id == invoiceId);
             string invoiceCode = invoice.Code.ToString();
-            string invoiceDate = invoice.RegisterDate.Date.ToString();
+            DateTime invoiceDate = invoice.RegisterDate;
             string customerName = invoice.VehicleId.HasValue ? (invoice.Vehicle.Customer.FirstName + " " + invoice.Vehicle.Customer.LastName) : (invoice.CustomerId.HasValue ? invoice.Customer.FirstName + " " + invoice.Customer.LastName : throw new Exception("invoice does not have customer"));
             string customerCode = invoice.CustomerId.HasValue ? invoice.Customer.Code.ToString() : "";
             string vehicleName = invoice.VehicleId.HasValue ? (invoice.Vehicle.Name) : ("");

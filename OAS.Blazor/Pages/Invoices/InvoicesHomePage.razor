@@ -2,48 +2,57 @@
 @using AlignItems = Radzen.AlignItems
 @using OAS.Application.Features.InvoiceFeatures.GetBuyInvoices;
 @using OAS.Application.Features.InvoiceFeatures.GetSellInvoices;
+@using OAS.Blazor.Utils;
 @inject MediatR.IMediator mediator;
 <MudRTLProvider RightToLeft="true">
-<RadzenRow>
-    <RadzenText Text="لیست فاکتورهای فروش" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif"/>
-</RadzenRow>
-    <RadzenRow  AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-        <RadzenDataGrid Data="gridDataSell"  TItem="GetSellInvoices_InvoiceDTO" AllowVirtualization="false" Style="height:400px"
-                     AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
-                     AllowSorting="true">
-        <Columns>
+    <RadzenRow>
+        <RadzenText Text="لیست فاکتورهای فروش" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif" />
+    </RadzenRow>
+    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+        <RadzenDataGrid Data="gridDataSell" TItem="GetSellInvoices_InvoiceDTO" AllowVirtualization="false" Style="height:400px"
+                        AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
+                        AllowSorting="true">
+            <Columns>
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="RowNumber" Title="ردیف" />
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="InvoiceCode" Title="کد" />
-                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="InvoiceDateString" Title="تاریخ" />
+                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Title="تاریخ">
+                    <Template Context="item">
+                        @item.InvoiceDate.ToPersianDateString()
+                    </Template>
+                </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="VehicleName" Title="خودرو" />
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="CustomerName" Title="مشتری" />
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="InvoiceTotalPrice" Title="قیمت کل" />
-@*                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="State" Title="وضعیت" />
+                @*                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="State" Title="وضعیت" />
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="State" Title="عملیات" />*@
-        </Columns>
-    </RadzenDataGrid>
-</RadzenRow>
-<br/>
-<RadzenRow>
-    <RadzenText Text="لیست فاکتورهای خرید" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif"/>
-</RadzenRow>
-<RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenRow>
+    <br />
+    <RadzenRow>
+        <RadzenText Text="لیست فاکتورهای خرید" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif" />
+    </RadzenRow>
+    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
         <RadzenDataGrid Data="gridDataBuy" TItem="GetBuyInvoices_InvoiceDTO" AllowVirtualization="false" Style="height:400px"
-                     AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
-                     AllowSorting="true">
-        <Columns>
+                        AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
+                        AllowSorting="true">
+            <Columns>
                 <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="RowNumber" Title="ردیف" />
                 <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="InvoiceCode" Title="کد" />
-                <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="InvoiceDateString" Title="تاریخ" />
+                <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Title="تاریخ">
+                    <Template Context="item">
+                        @item.InvoiceDate.ToPersianDateString()
+                    </Template>
+                </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="SellerName" Title="شخص/شرکت" />
                 <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="InvoiceTotalPrice" Title="قیمت کل" />
-             @*   <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="State" Title="وضعیت" />*@
-               @* <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="State" Title="عملیات" />*@
-        </Columns>
-    </RadzenDataGrid>
-</RadzenRow>
+                @*   <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="State" Title="وضعیت" />*@
+                @* <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="State" Title="عملیات" />*@
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenRow>
 </MudRTLProvider>
-<br/>
+<br />
 @code {
 
     private string error = "";
@@ -58,7 +67,7 @@
             gridDataBuy = response.Data;
             var request2 = new GetSellInvoicesRequest();
             var response2 = await mediator.Send(request2);
-            gridDataSell = response2.Data;   
+            gridDataSell = response2.Data;
         }
         catch (Exception e)
         {

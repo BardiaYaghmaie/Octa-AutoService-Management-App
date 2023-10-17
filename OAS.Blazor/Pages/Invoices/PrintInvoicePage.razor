@@ -1,5 +1,6 @@
 ﻿@page "/printInvoice/{InvoiceId:guid}"
 @using OAS.Application.Features.InvoiceFeatures.GetInvoiceReportInfo;
+@using OAS.Blazor.Utils;
 @using Stimulsoft.Base
 @using Stimulsoft.Report
 @using Stimulsoft.Report.Blazor
@@ -26,7 +27,7 @@
 
 
         await base.OnInitializedAsync();
- 
+
         var request = new GetInvoiceReportInfoRequest(InvoiceId);
         var response = await mediator.Send(request);
         stiReport.RegData("InvoiceItem", response.Items);
@@ -42,8 +43,8 @@
             TotalPrice = response.TotalPrice,
             VehiclePlate = response.VehiclePlate,
             VehicleColor = response.VehicleColor,
-            InvoiceDate = response.InvoiceDate
-        });
+            InvoiceDate = response.InvoiceDate.ToPersianDateString()
+    });
         this.stiReport.Load("report_templates/invoice.mrt");
 
 

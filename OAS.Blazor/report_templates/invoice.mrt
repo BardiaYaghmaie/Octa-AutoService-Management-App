@@ -124,7 +124,7 @@
         </PageHeaderBand2>
         <Text3 Ref="10" type="Text" isKey="true">
           <Brush>Transparent</Brush>
-          <ClientRectangle>4.7,5.1,2.9,0.3</ClientRectangle>
+          <ClientRectangle>4.8,4.4,2.9,0.3</ClientRectangle>
           <Conditions isList="true" count="0" />
           <Expressions isList="true" count="0" />
           <Font>Vazirmatn Black,12</Font>
@@ -139,7 +139,7 @@
         </Text3>
         <Text9 Ref="11" type="Text" isKey="true">
           <Brush>Transparent</Brush>
-          <ClientRectangle>4.7,5.9,2.9,0.3</ClientRectangle>
+          <ClientRectangle>4.8,5.2,2.9,0.3</ClientRectangle>
           <Conditions isList="true" count="0" />
           <Expressions isList="true" count="0" />
           <Font>Vazirmatn Black,12</Font>
@@ -153,7 +153,7 @@
         </Text9>
         <Text10 Ref="12" type="Text" isKey="true">
           <Brush>Transparent</Brush>
-          <ClientRectangle>4.7,5.5,2.9,0.3</ClientRectangle>
+          <ClientRectangle>4.8,4.8,2.9,0.3</ClientRectangle>
           <Conditions isList="true" count="0" />
           <Expressions isList="true" count="0" />
           <Font>Vazirmatn Black,12</Font>
@@ -446,10 +446,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>10/18/2023 2:28:33 AM</ReportChanged>
+  <ReportChanged>10/18/2023 2:45:50 AM</ReportChanged>
   <ReportCreated>10/16/2023 11:13:40 PM</ReportCreated>
   <ReportFile>D:\projects\Octa-AutoService\OAS.Blazor\report_templates\invoice.mrt</ReportFile>
-  <ReportGuid>c205747e98b045609af3b62ace29a868</ReportGuid>
+  <ReportGuid>393b034756ee4c609533bc740c55c42e</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Inches</ReportUnit>
   <ReportVersion>2023.1.1.0</ReportVersion>

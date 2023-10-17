@@ -11,6 +11,7 @@
 @inject DialogService DialogService
 @inject MediatR.IMediator mediator;
 @inject NavigationManager NavigationManager
+@using OAS.Application.Features.InvoiceFeatures.GetInvoiceById;
 
 @*@using System.Net.Http.Json*@
 @*@inject HttpClient httpClient*@
@@ -19,8 +20,8 @@
 <PageTitle>صفحه اصلی</PageTitle>
 
 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
-        <RadzenButton Click=@OpenRegisterCustomer Text="ثبت مشتری" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;"/>
-        <RadzenButton Click=@OpenVehicleEntrance Text="ورود ماشین" Icon="arrow_back" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;"/>
+    <RadzenButton Click=@OpenRegisterCustomer Text="ثبت مشتری" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;" />
+    <RadzenButton Click=@OpenVehicleEntrance Text="ورود ماشین" Icon="arrow_back" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;" />
 </RadzenRow>
 
 <br />
@@ -39,6 +40,8 @@
                 <Template Context="item">
                     <RadzenButton Click="() => OnEditInvoice(item.InvoiceId)" Icon="edit"></RadzenButton>
                     <RadzenButton Click="() => OnPrintInvoice(item.InvoiceId)" Icon="print"></RadzenButton>
+                    <RadzenButton Click="() => OnDeleteInvoice(item.InvoiceId)" Icon="backspace"></RadzenButton>
+
 
 
                 </Template>
@@ -47,19 +50,20 @@
     </RadzenDataGrid>
 
 </RadzenRow>
-<br/><br/>
+<br />
+<br />
 <p>---صفحه ها ها---</p>
 <RadzenRow>
-<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" Text="OpenDeleteConfirmation"/>
-<RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" Text="OpenPaySellInvoice" />
-<RadzenButton Click=@OpenEditInventoryItemDialog ButtonStyle="ButtonStyle.Info" Text="OpenEditInventoryItemDialog" />
+    @*<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" Text="OpenDeleteConfirmation" />*@
+    <RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" Text="OpenPaySellInvoice" />
+    <RadzenButton Click=@OpenEditInventoryItemDialog ButtonStyle="ButtonStyle.Info" Text="OpenEditInventoryItemDialog" />
 
 </RadzenRow>
 <p>---آیکون ها---</p>
 <RadzenRow>
-<RadzenButton Icon="print"></RadzenButton>
-<RadzenButton Icon="edit"></RadzenButton>
-<RadzenButton Icon="backspace"></RadzenButton>
+    <RadzenButton Icon="print"></RadzenButton>
+    <RadzenButton Icon="edit"></RadzenButton>
+    <RadzenButton Icon="backspace"></RadzenButton>
 </RadzenRow>
 
 @code {
@@ -74,7 +78,28 @@
     //}
 
     #endregion
-   
+    private async Task OnDeleteInvoice(Guid invoiceId)
+    {
+        var request = new GetInvoiceByIdRequest(invoiceId);
+        var response = await mediator.Send(request);
+        await DialogService.OpenAsync<InvoiceDeleteConfirmationDialog>("حذف فاکتور",
+        new Dictionary<string, object>() { 
+            { "InvoiceCode", response.Code },
+            { "InvoiceId", invoiceId },
+            {"RefreshGridData",RefreshGridData }
+
+        },
+
+    new DialogOptions()
+        {
+            Width = "550px",
+            Height = "260px",
+            Draggable = false,
+            AutoFocusFirstElement = false,
+            CloseDialogOnOverlayClick = true
+        });
+
+    }
     private void OnPrintInvoice(Guid invoiceId)
     {
         NavigationManager.NavigateTo($"/printInvoice/{invoiceId}");
@@ -101,9 +126,9 @@
     {
         await DialogService.OpenAsync<VehicleEntranceDialog>("ورود خودرو",
             new Dictionary<string, object>()
-                {
+                    {
                 {"RefreshGridData",RefreshGridData }
-                },
+                    },
 
             new DialogOptions()
                 {
@@ -116,35 +141,19 @@
 
     }
 
-    string InvoiceCode = "39204";
-    public async Task OpenDeleteConfirmation()
-    {
-        await DialogService.OpenAsync<InvoiceDeleteConfirmationDialog>("حذف فاکتور",
-            new Dictionary<string, object>() { { "InvoiceCode", InvoiceCode } },
-
-    new DialogOptions()
-        {
-            Width = "550px",
-            Height = "260px",
-            Draggable = false,
-            AutoFocusFirstElement = false,
-            CloseDialogOnOverlayClick = true
-        });
-
-    }
     public async Task OpenEditInventoryItemDialog()
     {
         await DialogService.OpenAsync<EditInventoryItemDialog>("ویرایش کالا",
-            new Dictionary<string, object>() {  },
+            new Dictionary<string, object>() { },
 
             new DialogOptions()
-            {
-                Width = "850px",
-                Height = "360px",
-                Draggable = false,
-                AutoFocusFirstElement = false,
-                CloseDialogOnOverlayClick = true
-            });
+                {
+                    Width = "850px",
+                    Height = "360px",
+                    Draggable = false,
+                    AutoFocusFirstElement = false,
+                    CloseDialogOnOverlayClick = true
+                });
 
     }
     public async Task OpenPaySellInvoice()
@@ -163,12 +172,11 @@
 
     }
 
-    private string testInvoiceCode { get; set; } = "0000";
     //private void NavToOpenInvoiceEdit(string invoiceCode)
     //{
     //    NavigationManager.NavigateTo($"/OpenInvoiceEditPage/{invoiceCode}");
     //}
-    private void NavToOpenInvoiceEdit(Guid  invoiceId)
+    private void NavToOpenInvoiceEdit(Guid invoiceId)
     {
         NavigationManager.NavigateTo($"/OpenInvoiceEditPage/{invoiceId}");
     }
@@ -198,18 +206,18 @@
                 new Dictionary<string, object>() { },
 
                 new DialogOptions()
-                {
-                    Width = "500px",
-                    Height = "500px",
-                    Draggable = false,
-                    AutoFocusFirstElement = false,
-                    CloseDialogOnOverlayClick = true
-                });
-            
+                    {
+                        Width = "500px",
+                        Height = "500px",
+                        Draggable = false,
+                        AutoFocusFirstElement = false,
+                        CloseDialogOnOverlayClick = true
+                    });
+
         }
-        
+
         await RefreshGridData();
     }
 
-    
+
 }

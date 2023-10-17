@@ -128,6 +128,11 @@ namespace OAS.Persistence.Repositories
             return data1;
         }
 
+        public async Task<List<InvoiceInventoryItem>> GetInvoiceInventoryItemsByInvoiceId(Guid invoiceId)
+        {
+            return await _dbContext.InvoiceInventoryItems.Where(a => a.InvoiceId == invoiceId).ToListAsync();
+        }
+
         public async Task<GetInvoiceReportInfoResponse> GetInvoiceReportInfoAsync(Guid invoiceId)
         {
             var invoice = await _dbContext.Invoices.Include(a => a.Vehicle).ThenInclude(a => a.Customer).Include(a => a.Customer).AsNoTracking().FirstAsync(a => a.Id == invoiceId);

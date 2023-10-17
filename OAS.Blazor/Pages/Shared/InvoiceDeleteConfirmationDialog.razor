@@ -1,27 +1,49 @@
+@using OAS.Application.Features.InvoiceFeatures.DeleteSellInvoiuce;
 @using Variant = Radzen.Variant
 @using AlignItems = Radzen.AlignItems
 @inject Radzen.DialogService dialogService
+@inject MediatR.IMediator mediator
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
         <RadzenText TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif">
-            آیا از حذف فاکتور @InvoiceCode اطمینان دارید؟ 
+            آیا از حذف فاکتور @InvoiceCode اطمینان دارید؟
         </RadzenText>
     </RadzenRow>
-    
+
     <RadzenRow>
         <RadzenColumn Size="6"></RadzenColumn>
         <RadzenColumn Size="3">
-            <RadzenButton Click="@((args) => dialogService.Close(false))" ButtonStyle="ButtonStyle.Danger" Text="لغو" Style="width: 120px"/>
+            <RadzenButton Click="@((args) => dialogService.Close(false))" ButtonStyle="ButtonStyle.Danger" Text="لغو" Style="width: 120px" />
         </RadzenColumn>
         <RadzenColumn Size="3">
-            <RadzenButton Click=@OnClick ButtonStyle="ButtonStyle.Success" Text="بله" Style="width: 120px"/>
+            <RadzenButton Click=@OnClick ButtonStyle="ButtonStyle.Success" Text="بله" Style="width: 120px" />
         </RadzenColumn>
     </RadzenRow>
+    <span class="text-danger">@error</span>
 </MudRTLProvider>
 @code {
     [Parameter]
     public string InvoiceCode { get; set; }
-    
-    private void OnClick(){}
-    
+    [Parameter]
+    public Guid InvoiceId { get; set; }
+    [Parameter]
+    public Func<Task> RefreshGridData { get; set; }
+    private string error = "";
+    private async Task OnClick()
+    {
+        try
+        {
+            var request = new DeleteSellInvoiceRequest(InvoiceId);
+            var response = await mediator.Send(request);
+            await RefreshGridData();
+            dialogService.Close();
+        }
+
+        catch (Exception)
+        {
+            error = "خطا هنگام حذف فاکتور " + InvoiceCode;
+            throw;
+        }
+    }
+
 }

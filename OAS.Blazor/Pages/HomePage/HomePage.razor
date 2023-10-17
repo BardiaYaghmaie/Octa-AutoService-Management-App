@@ -37,7 +37,7 @@
             <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Title="عملیات">
                 <Template Context="item">
                     <RadzenButton Click="() => OnEditInvoice(item.InvoiceId)" Icon="edit"></RadzenButton>
-                    <RadzenButton Icon="print"></RadzenButton>
+                    <RadzenButton Click="() => OnPrintInvoice(item.InvoiceId)" Icon="print"></RadzenButton>
 
 
                 </Template>
@@ -64,6 +64,21 @@
 </RadzenRow>
 
 @code {
+    #region Internet Connection
+
+    private bool IsInternetConnected { get; set; } = true;
+
+    // Check internet connection status
+    private async Task CheckInternetConnection()
+    {
+        IsInternetConnected = await JSRuntime.InvokeAsync<bool>("checkInternetConnection");
+    }
+
+    #endregion
+    private void OnPrintInvoice(Guid invoiceId)
+    {
+        NavigationManager.NavigateTo($"/printInvoice/{invoiceId}");
+    }
     private void OnEditInvoice(Guid invoiceId)
     {
         NavToOpenInvoiceEdit(invoiceId);
@@ -175,7 +190,24 @@
     }
     protected override async Task OnInitializedAsync()
     {
+        //await CheckInternetConnection();
 
+        if (!IsInternetConnected)
+        {
+            await DialogService.OpenAsync<InternetConnectionError>("اتصال اینترنت ",
+                new Dictionary<string, object>() { },
+
+                new DialogOptions()
+                {
+                    Width = "500px",
+                    Height = "500px",
+                    Draggable = false,
+                    AutoFocusFirstElement = false,
+                    CloseDialogOnOverlayClick = true
+                });
+            
+        }
+        
         await RefreshGridData();
     }
 

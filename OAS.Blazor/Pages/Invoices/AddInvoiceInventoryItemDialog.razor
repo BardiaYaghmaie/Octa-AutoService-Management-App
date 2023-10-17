@@ -3,6 +3,7 @@
 @using OAS.Application.Features.Inventory.GetInventoryItems;
 @using OAS.Application.Features.InventoryFeatures.AddService;
 @using OAS.Application.Features.InventoryFeatures.UpdateService;
+@using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceInventoryItems;
 @using Variant = Radzen.Variant
 @using AlignItems = Radzen.AlignItems
 @inject Radzen.DialogService dialogService
@@ -12,7 +13,7 @@
 
         <RadzenRow JustifyContent="JustifyContent.SpaceBetween">
 
-            <RadzenColumn Size="5">
+            <RadzenColumn Size="6">
                 <RadzenFormField Text="کد کالا" Variant="Variant.Outlined">
 
                     <RadzenAutoComplete ValueChanged="InventoryCodeItemAutoCompleteTextChanged" Name="Code" Data=@inventoryItems TextProperty="Code" Value="addInvoiceInventoryItemModel.InventoryItemCode" Style="width: 13rem" />
@@ -20,11 +21,18 @@
                 </RadzenFormField>
 
             </RadzenColumn>
-            <RadzenColumn Size="5">
+            <RadzenColumn Size="6">
                 <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
 
                     <RadzenAutoComplete ValueChanged="InventoryItemNameAutoCompleteTextChanged" Name="Title" Data=@inventoryItems TextProperty="Title" Value="addInvoiceInventoryItemModel.InventoryItemTitle" Style="width: 13rem" />
                     <RadzenRequiredValidator Component="Title" Text="عنوان کالا را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                </RadzenFormField>
+            </RadzenColumn>
+            <RadzenColumn Size="6">
+                <RadzenFormField Text="تعداد" Variant="Variant.Outlined">
+
+                    <RadzenTextBox @bind-Value="addInvoiceInventoryItemModel.Count" Name="Count" Style="width: 13rem" />
+                    <RadzenRequiredValidator Component="Count" Text="تعداد کالا را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
                 </RadzenFormField>
             </RadzenColumn>
 
@@ -38,15 +46,19 @@
 </MudRTLProvider>
 
 @code {
-    class AddInvoiceInventoryItemModel
+    public class AddInvoiceInventoryItemModel
     {
         public Guid InventoryItemId { get; set; }
         public string InventoryItemCode { get; set; }
         public string InventoryItemTitle { get; set; }
+        public string Count { get; set; }
     }
 
     [Parameter]
-    public Func<Guid, Task> AddInvoiceInventoryItemId { get; set; }
+    public Func<Guid,Guid,float ,Task> AddInvoiceInventoryItemId { get; set; }
+    [Parameter]
+
+    public Func<Guid,Guid, string, string, float, long, int> AddItemToSellInvoiceGrid { get; set; }
     private AddInvoiceInventoryItemModel addInvoiceInventoryItemModel = new();
     private string error = "";
 
@@ -102,7 +114,27 @@
             error = "لطفا نام یا کد کالا را وارد کنید";
             return;
         }
-        AddInvoiceInventoryItemId(model.InventoryItemId);
+
+        try
+        {
+            if (inventoryItems.First(a => a.Id == model.InventoryItemId).Count < float.Parse(model.Count))
+            {
+                error = $"موجودی در انبار ${float.Parse(model.Count)} عدد است ، تعداد وارد شده غیر مجاز است";
+                return;
+
+            }
+            var newGeneratedInvoieInventoryItemId = Guid.NewGuid();
+            AddInvoiceInventoryItemId(newGeneratedInvoieInventoryItemId, model.InventoryItemId, float.Parse(model.Count));
+
+            AddItemToSellInvoiceGrid(newGeneratedInvoieInventoryItemId, model.InventoryItemId, model.InventoryItemCode, model.InventoryItemTitle, float.Parse(model.Count), inventoryItems.First(a => a.Id == model.InventoryItemId).SellPrice.Value);
+            dialogService.Close(true);
+
+        }
+        catch (Exception e)
+        {
+            error = "عملیات با خطا مواجه شد";
+        }
+
     }
 
     void OnInvalidSubmit(FormInvalidSubmitEventArgs args)

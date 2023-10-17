@@ -38,10 +38,11 @@ namespace OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInven
                 ServiceId = a.Item1
 
             }).ToList();
-            List<InvoiceInventoryItem> invoiceInventoryItems = request.InventoryItemIds.Select(a => new InvoiceInventoryItem
+            List<InvoiceInventoryItem > invoiceInventoryItems = request.InventoryItemIdsAndCounts.Select(a => new InvoiceInventoryItem
             {
                 Id = Guid.NewGuid(),
-                InventoryItemId = a,
+                InventoryItemId = a.Item1,
+                Count = a.Item2,
                 InvoiceId = invoice.Id
             }).ToList();
 

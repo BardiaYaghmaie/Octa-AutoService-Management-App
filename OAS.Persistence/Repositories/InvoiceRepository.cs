@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OAS.Application.Features.InvoiceFeatures.GetBuyInvoices;
 using OAS.Application.Features.InvoiceFeatures.GetDailySellInvoices;
+using OAS.Application.Features.InvoiceFeatures.GetInvoiceReportInfo;
 using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceInventoryItems;
 using OAS.Application.Features.InvoiceFeatures.GetSellInvoices;
 using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceServices;
@@ -10,6 +11,7 @@ using OAS.Persistence.Contexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -83,7 +85,7 @@ namespace OAS.Persistence.Repositories
                     float count = invoiceInventoryItem.Count;
                     DateTime registerDate = invoiceInventoryItem.RegisterDate;
                     var inventoryItemId = invoiceInventoryItem.InventoryItemId;
-                    var buyPrice = inventoryItemHistories.Where(b => b.InventoryItemId == inventoryItemId && b.BuyPrice.HasValue &&  b.UpdateDate <= registerDate).OrderByDescending(b => b.UpdateDate).Select(b => b.BuyPrice.Value).First();
+                    var buyPrice = inventoryItemHistories.Where(b => b.InventoryItemId == inventoryItemId && b.BuyPrice.HasValue && b.UpdateDate <= registerDate).OrderByDescending(b => b.UpdateDate).Select(b => b.BuyPrice.Value).First();
                     total += (count * buyPrice);
                 }
 
@@ -114,16 +116,46 @@ namespace OAS.Persistence.Repositories
                 .Include(a => a.Customer).Include(a => a.Vehicle).ThenInclude(a => a.Customer).Include(a => a.InvoiceInventoryItems).Include(a => a.InvoicePayments).Include(a => a.InvoiceServices).Where(a => a.Type == Domain.Enums.InvoiceType.Sell)
                 .Where(a => a.RegisterDate.Date == DateTime.Now.Date)
                 .ToListAsync();
-                var data1=data.Where(a=> a.VehicleId.HasValue || a.CustomerId.HasValue)
-                .Select((a,i) => new GetDailySellInvoices_DTO(
-                    a.Id,
-                    a.Code.ToString(),
-                    a.VehicleId.HasValue?a.Vehicle.Name:"",
-                    a.VehicleId.HasValue?(a.Vehicle.Customer.FirstName + a.Vehicle.Customer.LastName):a.CustomerId.HasValue?(a.Customer.FirstName + " " + a.Customer.LastName):"",
-                    i+1
+            var data1 = data.Where(a => a.VehicleId.HasValue || a.CustomerId.HasValue)
+            .Select((a, i) => new GetDailySellInvoices_DTO(
+                a.Id,
+                a.Code.ToString(),
+                a.VehicleId.HasValue ? a.Vehicle.Name : "",
+                a.VehicleId.HasValue ? (a.Vehicle.Customer.FirstName + a.Vehicle.Customer.LastName) : a.CustomerId.HasValue ? (a.Customer.FirstName + " " + a.Customer.LastName) : "",
+                i + 1
 
-                )).ToList();
+            )).ToList();
             return data1;
+        }
+
+        public async Task<GetInvoiceReportInfoResponse> GetInvoiceReportInfoAsync(Guid invoiceId)
+        {
+            var invoice = await _dbContext.Invoices.Include(a => a.Vehicle).ThenInclude(a => a.Customer).Include(a => a.Customer).AsNoTracking().FirstAsync(a => a.Id == invoiceId);
+            string invoiceCode = invoice.Code.ToString();
+            string invoiceDate = invoice.RegisterDate.Date.ToString();
+            string customerName = invoice.VehicleId.HasValue ? (invoice.Vehicle.Customer.FirstName + " " + invoice.Vehicle.Customer.LastName) : (invoice.CustomerId.HasValue ? invoice.Customer.FirstName + " " + invoice.Customer.LastName : throw new Exception("invoice does not have customer"));
+            string customerCode = invoice.CustomerId.HasValue ? invoice.Customer.Code.ToString() : "";
+            string vehicleName = invoice.VehicleId.HasValue ? (invoice.Vehicle.Name) : ("");
+            string vehiclePlate = invoice.VehicleId.HasValue ? (invoice.Vehicle.Plate) : ("");
+            string vehicleColor = invoice.VehicleId.HasValue ? (invoice.Vehicle.Color) : ("");
+            string vehicleCode = invoice.VehicleId.HasValue ? (invoice.Vehicle.Code.ToString()) : ("");
+            var invoiceInventoryItems = await _dbContext.InvoiceInventoryItems.Include(a => a.InventoryItem).AsNoTracking().Where(a => a.InvoiceId == invoiceId).ToListAsync();
+            var invoiceServices = await _dbContext.InvoiceServices.Include(a => a.Service).AsNoTracking().Where(a => a.InvoiceId == invoiceId).ToListAsync();
+            List<GetInvoiceReportInfo_ItemDTO> items = new();
+            int rowNumber = 1;
+            float invoiceTotal = 0;
+            float invoiceTax = 0;
+            float invoiceDiscount = invoice.DiscountAmount.HasValue? invoice.DiscountAmount.Value:0;
+            foreach (var item in invoiceInventoryItems)
+            {
+                float unitPrice = invoice.UseBuyPrice.HasValue && invoice.UseBuyPrice.Value ? (item.InventoryItem.BuyPrice.Value) : (item.InventoryItem.SellPrice.Value);
+                items.Add(new GetInvoiceReportInfo_ItemDTO(rowNumber.ToString(), item.InventoryItem.Name, item.Count.ToString(), unitPrice.ToString(), (item.Count * unitPrice).ToString()));
+                rowNumber++;
+                invoiceTotal += item.Count * unitPrice;                                                             
+            }
+            var answer = new GetInvoiceReportInfoResponse(invoiceCode, vehicleCode, customerName, vehicleName, vehiclePlate, vehicleColor, invoiceDate, invoiceTotal.ToString(), invoiceDiscount.ToString(), invoiceTax.ToString(), (invoiceTotal - invoiceTax - invoiceDiscount).ToString(),items);
+            return answer;
+
         }
 
         public async Task<int> GetNewInvoiceCode()
@@ -138,9 +170,9 @@ namespace OAS.Persistence.Repositories
             var answer = data.Select((a, i) => new GetSellInvoiceInventoryItems_DTO
             (
                 RowNumber: i + 1,
-                InventoryItemCode:a.InventoryItem.Code.ToString(),
-                InvoiceInventoryItemId:a.Id,
-                InventoryItemId:a.InventoryItemId,
+                InventoryItemCode: a.InventoryItem.Code.ToString(),
+                InvoiceInventoryItemId: a.Id,
+                InventoryItemId: a.InventoryItemId,
                 InventoryItemName: a.InventoryItem.Name,
                 InventoryItemCount: a.InventoryItem.Count.Value, //todo
                 UnitPrice: a.InventoryItem.SellPrice.Value,
@@ -151,7 +183,7 @@ namespace OAS.Persistence.Repositories
 
         public async Task<List<GetSellInvoices_InvoiceDTO>> GetSellInvoicesAsync()
         {
-            var invoices = await _dbContext.Invoices.Include(a=> a.Vehicle).ThenInclude(a=> a.Customer).Include(a=> a.Customer).ToListAsync();
+            var invoices = await _dbContext.Invoices.Include(a => a.Vehicle).ThenInclude(a => a.Customer).Include(a => a.Customer).ToListAsync();
             var inventoryItemHistories = await _dbContext.InventoryItemHistories.ToListAsync();
             var invoicePayments = await _dbContext.InvoicePayments.ToListAsync();
             var invoiceInventoryItems = await _dbContext.InvoiceInventoryItems.ToListAsync();
@@ -164,7 +196,7 @@ namespace OAS.Persistence.Repositories
                     float count = invoiceInventoryItem.Count;
                     DateTime registerDate = invoiceInventoryItem.RegisterDate;
                     var inventoryItemId = invoiceInventoryItem.InventoryItemId;
-                    var buyPrice = inventoryItemHistories.Where(b => b.InventoryItemId == inventoryItemId && b.BuyPrice.HasValue && b.UpdateDate <= registerDate).OrderByDescending(b => b.UpdateDate).Select(b => a.UseBuyPrice.HasValue && a.UseBuyPrice.Value?b.BuyPrice:b.SellPrice.Value).FirstOrDefault()??0;
+                    var buyPrice = inventoryItemHistories.Where(b => b.InventoryItemId == inventoryItemId && b.BuyPrice.HasValue && b.UpdateDate <= registerDate).OrderByDescending(b => b.UpdateDate).Select(b => a.UseBuyPrice.HasValue && a.UseBuyPrice.Value ? b.BuyPrice : b.SellPrice.Value).FirstOrDefault() ?? 0;
                     total += (count * buyPrice);
                 }
 
@@ -177,8 +209,8 @@ namespace OAS.Persistence.Repositories
                     RowNumber: i + 1,
                     InvoiceTotalPrice: total,
                     InvoicePaidAmount: paidAmount,
-                    VehicleName:a.Vehicle?.Name,
-                    CustomerName:a.VehicleId.HasValue?(a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName):(a.CustomerId.HasValue?(a.Customer.FirstName + " " + a.Customer.LastName):(""))
+                    VehicleName: a.Vehicle?.Name,
+                    CustomerName: a.VehicleId.HasValue ? (a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName) : (a.CustomerId.HasValue ? (a.Customer.FirstName + " " + a.Customer.LastName) : (""))
 
                 );
             }).ToList();
@@ -190,6 +222,9 @@ namespace OAS.Persistence.Repositories
             var data = await _dbContext.InvoiceServices.Include(a => a.Service).Where(a => a.InvoiceId == invoiceId).ToListAsync();
             var answer = data.Select((a, i) => new GetSellInvoiceServices_DTO
             (
+                Code: a.Service.Code.ToString(),
+                ServiceId: a.ServiceId,
+                InvoiceServiceId: a.Id,
                 RowNumber: i + 1,
                 ServiceName: a.Service.Name,
                 Count: 1, //todo

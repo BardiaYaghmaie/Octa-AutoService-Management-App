@@ -153,6 +153,13 @@ namespace OAS.Persistence.Repositories
                 rowNumber++;
                 invoiceTotal += item.Count * unitPrice;                                                             
             }
+            foreach (var item in invoiceServices)
+            {
+                float unitPrice = item.Price;
+                items.Add(new GetInvoiceReportInfo_ItemDTO(rowNumber.ToString(), item.Service.Name, "1", unitPrice.ToString(), (1* unitPrice).ToString()));
+                rowNumber++;
+                invoiceTotal += 1 * unitPrice;                
+            }
             var answer = new GetInvoiceReportInfoResponse(invoiceCode, vehicleCode, customerName, vehicleName, vehiclePlate, vehicleColor, invoiceDate, invoiceTotal.ToString(), invoiceDiscount.ToString(), invoiceTax.ToString(), (invoiceTotal - invoiceTax - invoiceDiscount).ToString(),items);
             return answer;
 

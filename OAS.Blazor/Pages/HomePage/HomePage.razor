@@ -69,10 +69,10 @@
     private bool IsInternetConnected { get; set; } = true;
 
     // Check internet connection status
-    private async Task CheckInternetConnection()
-    {
-        IsInternetConnected = await JSRuntime.InvokeAsync<bool>("checkInternetConnection");
-    }
+    //private async Task CheckInternetConnection()
+    //{
+    //    IsInternetConnected = await JSRuntime.InvokeAsync<bool>("checkInternetConnection");
+    //}
 
     #endregion
     private void OnPrintInvoice(Guid invoiceId)

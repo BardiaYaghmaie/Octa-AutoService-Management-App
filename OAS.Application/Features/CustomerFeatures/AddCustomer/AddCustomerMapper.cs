@@ -13,7 +13,7 @@ namespace OAS.Application.Features.CustomerFeatures.AddCustomer
     {
         public AddCustomerMapper()
         {
-            CreateMap<VehicleDTO, Vehicle>();
+            CreateMap<VehicleDTO, Vehicle>().ForMember(dest => dest.Code, opt => opt.Ignore());            
             CreateMap<AddCustomerRequest, Customer>().AfterMap((s, d) =>
             {
                 d.Id = Guid.NewGuid();

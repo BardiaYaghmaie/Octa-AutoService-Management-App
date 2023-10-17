@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using OAS.Application.DomainModels;
 using OAS.Application.Repositories;
 using OAS.Domain.Models;
 using System;
@@ -39,7 +40,7 @@ namespace OAS.Application.Features.CustomerFeatures.AddCustomer
             customer.Vehicles = vehicles;
             await _customerRepository.AddAsync(customer);
             await _unitOfWork.SaveAsync(cancellationToken);
-            var response = new AddCustomerResponse(customer.Id, customer.Vehicles.Select(a => a.Id).ToList());
+            var response = new AddCustomerResponse(customer.Id, customer.Vehicles.Select(a => new VehicleDTO(a.Name,a.Plate,a.Color,a.Code.ToString())).ToList());
             return response;
         }
     }

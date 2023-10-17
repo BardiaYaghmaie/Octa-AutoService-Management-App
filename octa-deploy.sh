@@ -15,7 +15,7 @@ echo "\n\e[36mLogging Into Chabokan...\e[0m \n\n"
 chabok login -u $1 -p $2
 cd $publish_path
 echo "\n\n \e[36mDeploying...\e[0m"
-chabok deploy
+chabok deploy -s octa-blazor
 
 echo "\n\n\e[36mDONE!\n\n\e[0m"
 exit

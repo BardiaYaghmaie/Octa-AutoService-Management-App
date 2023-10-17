@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace OAS.Application.DomainModels
 {
-    public sealed record VehicleDTO(string Name , string Plate , string Color);    
+    public sealed record VehicleDTO(string Name , string Plate , string Color , string Code = "");    
 }

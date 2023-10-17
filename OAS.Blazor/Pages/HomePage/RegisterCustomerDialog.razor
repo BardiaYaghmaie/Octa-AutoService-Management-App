@@ -13,29 +13,29 @@
                 <RadzenRow>
                     <RadzenColumn Size="6">
                         <RadzenFormField Text="نام" Variant="Variant.Outlined">
-                            <RadzenTextBox Name="FirstName" @bind-Value="newCustomerModel.FirstName" />
+                            <RadzenTextBox ReadOnly="success" Name="FirstName" @bind-Value="newCustomerModel.FirstName" />
                             <RadzenRequiredValidator Component="FirstName" Text="نام مشتری را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
                         </RadzenFormField>
                     </RadzenColumn>
                     <RadzenColumn Size="6">
                         <RadzenFormField Text="نام خانوادگی" Variant="Variant.Outlined">
-                            <RadzenTextBox Name="LastName" @bind-Value="newCustomerModel.LastName" />
+                            <RadzenTextBox ReadOnly="success" Name="LastName" @bind-Value="newCustomerModel.LastName" />
                             <RadzenRequiredValidator Component="LastName" Text="نام خانوادگی مشتری  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
                         </RadzenFormField>
                     </RadzenColumn>
                 </RadzenRow>
                 <br />
                 <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start">
-                        <RadzenFormField Text="موبایل" Variant="Variant.Outlined">
-                            <RadzenTextBox Name="PhoneNumber" @bind-Value="@newCustomerModel.PhoneNumber" />
-                            <RadzenRequiredValidator Component="PhoneNumber" Text="شماره موبایل مشتری  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                        </RadzenFormField>
-                   @* <RadzenColumn>
-                        <RadzenFormField Text="تاریخ" Variant="Variant.Outlined">
-                            <RadzenDatePicker Name="RegisterDate" @bind-Value=@newCustomerModel.RegisterDate ShowTime="true" ShowSeconds="false" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="yyyy/MM/dd" />
-                            <RadzenRequiredValidator Component="RegisterDate" Text="تاریخ ثبت  مشتری  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                    <RadzenFormField Text="موبایل" Variant="Variant.Outlined">
+                        <RadzenTextBox ReadOnly="success" Name="PhoneNumber" @bind-Value="@newCustomerModel.PhoneNumber" />
+                        <RadzenRequiredValidator Component="PhoneNumber" Text="شماره موبایل مشتری  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                    </RadzenFormField>
+                    @* <RadzenColumn>
+                    <RadzenFormField Text="تاریخ" Variant="Variant.Outlined">
+                    <RadzenDatePicker Name="RegisterDate" @bind-Value=@newCustomerModel.RegisterDate ShowTime="true" ShowSeconds="false" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="yyyy/MM/dd" />
+                    <RadzenRequiredValidator Component="RegisterDate" Text="تاریخ ثبت  مشتری  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
 
-                        </RadzenFormField>
+                    </RadzenFormField>
                     </RadzenColumn>*@
                 </RadzenRow>
                 <br />
@@ -44,23 +44,24 @@
                     <RadzenRow>
                         <RadzenText TextStyle="TextStyle.H6" Text="اضافه کردن خودرو" Style="font-family: Vazirmatn, serif" />
                     </RadzenRow>
-                    <RadzenRow  AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
-                            <RadzenFormField Text="خودرو" Variant="Variant.Outlined">
-                                <RadzenTextBox Name="VehicleName" @bind-Value="newVehicleModel.VehicleName" />
-                                <RadzenRequiredValidator Component="VehicleName" Text="عنوان خودرو را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                            </RadzenFormField>
-                            <RadzenFormField Text="رنگ" Variant="Variant.Outlined">
-                                <RadzenTextBox Name="VehicleColor" @bind-Value="newVehicleModel.VehicleColor" />
-                                <RadzenRequiredValidator Component="VehicleColor" Text="رنگ خودرو را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                            </RadzenFormField>
+                    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
+                        <RadzenFormField Text="خودرو" Variant="Variant.Outlined">
+                            <RadzenTextBox ReadOnly="success" Name="VehicleName" @bind-Value="newVehicleModel.VehicleName" />
+                            <RadzenRequiredValidator Component="VehicleName" Text="عنوان خودرو را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                        </RadzenFormField>
+                        <RadzenFormField Text="رنگ" Variant="Variant.Outlined">
+                            <RadzenTextBox ReadOnly="success" Name="VehicleColor" @bind-Value="newVehicleModel.VehicleColor" />
+                            <RadzenRequiredValidator Component="VehicleColor" Text="رنگ خودرو را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                        </RadzenFormField>
                     </RadzenRow>
                     <br />
                     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
-                            <RadzenFormField Text="پلاک" Variant="Variant.Outlined">
-                                <RadzenTextBox Name="VehiclePlate" @bind-Value="newVehicleModel.VehiclePlate" />
-                                <RadzenRequiredValidator Component="VehiclePlate" Text="پلاک خودرو را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                            </RadzenFormField>
-                            <RadzenButton ButtonType="Radzen.ButtonType.Submit" Text="افزودن" ButtonStyle="ButtonStyle.Success" Style="width: 200px" />
+                        <RadzenFormField Text="پلاک" Variant="Variant.Outlined">
+                            <RadzenTextBox ReadOnly="success" Name="VehiclePlate" @bind-Value="newVehicleModel.VehiclePlate" />
+                            <RadzenRequiredValidator Component="VehiclePlate" Text="پلاک خودرو را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                        </RadzenFormField>
+                        <RadzenButton ButtonType="Radzen.ButtonType.Submit" Text="افزودن" ButtonStyle="ButtonStyle.Success" Style="width: 200px" />
+
                     </RadzenRow>
                 </RadzenTemplateForm>
             </RadzenColumn>
@@ -76,6 +77,7 @@
                                 <th>عنوان</th>
                                 <th>رنگ</th>
                                 <th>پلاک</th>
+                                <th>کد</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -86,12 +88,23 @@
                                     <td>@item.Name</td>
                                     <td>@item.Color</td>
                                     <td>@item.Plate</td>
-                                    <td @onclick="() => RemoveVevhicle(item)" class="text-danger">X</td>
+                                    <td>@item.Code</td>
+                                    @if (!success)
+                                    {
+                                        <td @onclick="() => RemoveVevhicle(item)" class="text-danger">X</td>
+                                    }
                                 </tr>
                             }
 
                         </tbody>
                     </table>
+
+
+                    @if (success)
+                    {
+                        <p class="text-success">مشتری و خودرو ها با موفقیت ثبت شدند</p>
+                        <RadzenButton Click="() => {dialogService.Close();}" ButtonStyle="ButtonStyle.Info" Text="بازگشت به صفحه اصلی" Style="width: 200px" />
+                    }
                 </RadzenRow>
             </RadzenColumn>
         </RadzenRow>
@@ -100,8 +113,9 @@
             <RadzenColumn></RadzenColumn>
             <RadzenColumn>
                 <RadzenRow JustifyContent="JustifyContent.End">
-                    <RadzenButton Click="@((args) => navigationManager.NavigateTo("/"))" ButtonStyle="ButtonStyle.Danger" Text="لغو" Style="width: 120px" />
-                    <RadzenButton ButtonType="Radzen.ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Text="ثبت" Style="width: 120px" />
+                    <RadzenButton Disabled="success" Click="@((args) => navigationManager.NavigateTo("/"))" ButtonStyle="ButtonStyle.Danger" Text="لغو" Style="width: 120px" />
+                    <RadzenButton Disabled="success" ButtonType="Radzen.ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Text="ثبت" Style="width: 120px" />
+
                 </RadzenRow>
             </RadzenColumn>
         </RadzenRow>
@@ -111,6 +125,7 @@
 </MudRTLProvider>
 
 @code {
+    private bool success = false;
     public class AddNewVehicleModel
     {
         public string VehicleName { get; set; }
@@ -162,7 +177,9 @@
         {
             var response = await mediator.Send(request);
             //show success
-            dialogService.Close(true);
+            vehicles = response.VehicleDTOs;
+            success = true;
+            //dialogService.Close(true);
 
         }
         catch (Exception e)
@@ -173,7 +190,7 @@
         }
 
     }
-    
+
 
 
 }

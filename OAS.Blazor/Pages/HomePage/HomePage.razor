@@ -53,11 +53,11 @@
 <br />
 <br />
 <p>---صفحه ها ها---</p>
+@*
 <RadzenRow>
-    @*<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" Text="OpenDeleteConfirmation" />*@
+    @*<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" Text="OpenDeleteConfirmation" />
     <RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" Text="OpenPaySellInvoice" />
     <RadzenButton Click=@OpenEditInventoryItemDialog ButtonStyle="ButtonStyle.Info" Text="OpenEditInventoryItemDialog" />
-
 </RadzenRow>
 <p>---آیکون ها---</p>
 <RadzenRow>
@@ -65,6 +65,7 @@
     <RadzenButton Icon="edit"></RadzenButton>
     <RadzenButton Icon="backspace"></RadzenButton>
 </RadzenRow>
+    *@
 
 @code {
     #region Internet Connection
@@ -83,12 +84,12 @@
         var request = new GetInvoiceByIdRequest(invoiceId);
         var response = await mediator.Send(request);
         await DialogService.OpenAsync<InvoiceDeleteConfirmationDialog>("حذف فاکتور",
-        new Dictionary<string, object>() { 
+        new Dictionary<string, object>() {
             { "InvoiceCode", response.Code },
             { "InvoiceId", invoiceId },
             {"RefreshGridData",RefreshGridData }
 
-        },
+            },
 
     new DialogOptions()
         {
@@ -126,9 +127,9 @@
     {
         await DialogService.OpenAsync<VehicleEntranceDialog>("ورود خودرو",
             new Dictionary<string, object>()
-                    {
+                        {
                 {"RefreshGridData",RefreshGridData }
-                    },
+                        },
 
             new DialogOptions()
                 {

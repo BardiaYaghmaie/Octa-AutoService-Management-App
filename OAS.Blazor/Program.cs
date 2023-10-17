@@ -5,6 +5,7 @@ using MudBlazor.Services;
 using Radzen.Blazor;
 using Radzen;
 using OAS.Persistence;
+using Microsoft.JSInterop;
 using OAS.Application;
 using OAS.Domain.Models;
 using System.Reflection;
@@ -20,6 +21,7 @@ builder.Services.AddMudServices();
 builder.Services.AddRadzenComponents();
 builder.Services.ConfigurePersistence(builder.Configuration);
 builder.Services.ConfigureApplication();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

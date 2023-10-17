@@ -10,7 +10,6 @@
 @inject DialogService DialogService
 @inject MediatR.IMediator mediator;
 @inject NavigationManager NavigationManager
-@inject IJSRuntime JSRuntime
 
 @*@using System.Net.Http.Json*@
 @*@inject HttpClient httpClient*@
@@ -65,17 +64,6 @@
 </RadzenRow>
 
 @code {
-    #region Internet Connection
-    
-    private bool IsInternetConnected { get; set; } = true;
-
-    // Check internet connection status
-    private async Task CheckInternetConnection()
-    {
-        IsInternetConnected = await JSRuntime.InvokeAsync<bool>("checkInternetConnection");
-    }
-    
-    #endregion
     private void OnEditInvoice(Guid invoiceId)
     {
         NavToOpenInvoiceEdit(invoiceId);
@@ -187,24 +175,7 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        await CheckInternetConnection();
 
-        if (!IsInternetConnected)
-        {
-            await DialogService.OpenAsync<InternetConnectionError>("اتصال اینترنت ",
-                new Dictionary<string, object>() { },
-
-                new DialogOptions()
-                {
-                    Width = "500px",
-                    Height = "500px",
-                    Draggable = false,
-                    AutoFocusFirstElement = false,
-                    CloseDialogOnOverlayClick = true
-                });
-            
-        }
-        
         await RefreshGridData();
     }
 

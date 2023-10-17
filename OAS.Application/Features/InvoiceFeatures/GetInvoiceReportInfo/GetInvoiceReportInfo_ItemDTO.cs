@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace OAS.Application.Features.InvoiceFeatures.GetInvoiceReportInfo
 {
-    public sealed record GetInvoiceReportInfo_ItemDTO(string RowNumber , string Title , string Count , string UnitPrice , string TotalPrice);
+    public sealed record GetInvoiceReportInfo_ItemDTO(string RowNumber , string Name , string Count , string UnitPrice , string TotalPrice);
 }

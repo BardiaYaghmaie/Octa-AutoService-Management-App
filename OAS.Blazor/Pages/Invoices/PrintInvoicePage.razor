@@ -25,39 +25,7 @@
 
 
         await base.OnInitializedAsync();
-        //stiReport = new();
-        //var inovoiceInfoObj = new
-        //{
-        //    CustomerName = "بردیا یغمایی",
-        //    VehicleName = "206 تیپ 5 سفید",
-        //    VehicleCode = "1243",
-        //    InvoiceCode = "675467",
-        //    InvoiceDate = "1402/05/01"
-        //};
-
-        //var invoiceItems = new List<InvoiceItemModel>
-        //{
-        //    new()
-        //    {
-        //        RowNumber = "1",
-        //        Name = "روغن مکسا",
-        //        Count = "24 لیتر",
-        //        TotalPrice = "4500000",
-        //        UnitPrice = "1000"
-        //    },
-        //     new()
-        //    {
-        //        RowNumber = "2",
-        //        Name = "روغن مکسا",
-        //        Count = "24 لیتر",
-        //        TotalPrice = "4500000",
-        //        UnitPrice = "1000"
-        //    }
-        //};
-        //stiReport.RegData("InvoiceInfo", inovoiceInfoObj);
-        //stiReport.RegData("InvoiceItem", invoiceItems);
-
-
+ 
         var request = new GetInvoiceReportInfoRequest(InvoiceId);
         var response = await mediator.Send(request);
         stiReport.RegData("InvoiceItem", response.Items);
@@ -67,7 +35,12 @@
             VehicleName = response.VehicleTitle,
             VehicleCode = response.VehicleCode,
             InvoiceCode = response.InvoiceCode,
-            InvoiceDate = response.InvoiceDate
+            ToPay = response.ToPay,
+            Tax = response.Tax,
+            Discount = response.Discount,
+            TotalPrice = response.TotalPrice,
+            VehiclePlate = response.VehiclePlate,
+            VehicleColor = response.VehicleColor
         });
         this.stiReport.Load("report_templates/invoice.mrt");
 

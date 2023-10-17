@@ -15,12 +15,16 @@ namespace OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInven
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IInventoryItemRepository _inventoryItemRepository;
+        private readonly IInventoryItemHistoryRepository _inventoryItemHistoryRepository;
 
-        public UpdateInvoiceServicesAndInventoryItemsHandler(IMapper mapper, IUnitOfWork unitOfWork, IInvoiceRepository invoiceRepository)
+        public UpdateInvoiceServicesAndInventoryItemsHandler(IMapper mapper, IUnitOfWork unitOfWork, IInvoiceRepository invoiceRepository, IInventoryItemHistoryRepository inventoryItemHistoryRepository, IInventoryItemRepository inventoryItemRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _invoiceRepository = invoiceRepository;
+            _inventoryItemHistoryRepository = inventoryItemHistoryRepository;
+            _inventoryItemRepository = inventoryItemRepository;
         }
 
         public async Task<UpdateInvoiceServicesAndInventoryItemsResponse> Handle(UpdateInvoiceServicesAndInventoryItemsRequest request, CancellationToken cancellationToken)
@@ -45,11 +49,51 @@ namespace OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInven
                 Count = a.Item2,
                 InvoiceId = invoice.Id
             }).ToList();
+            List<InvoiceInventoryItem> toRemoveInvoiceInventoryItems = new();
+            foreach (var toRemoveInvoiceInventoryItemId in request.ToRemoveInvoiceInventoryItemIds)
+            {
+                var invoiceInventoryItemToRemove = await _invoiceRepository.GetInvoiceInventoryItemById(toRemoveInvoiceInventoryItemId);
+                if (invoiceInventoryItemToRemove == null) throw new Exception("");
+                toRemoveInvoiceInventoryItems.Add(invoiceInventoryItemToRemove);
 
+            }
+           var items =  toRemoveInvoiceInventoryItems.Concat(new List<InvoiceInventoryItem>(invoiceInventoryItems).Select(a=>
+           {
+               a.Count *= (-1);
+               return a;
+           }).ToList()).GroupBy(a => a.InventoryItemId).Select(a => new
+            {
+                InventoryItemId = a.Key,
+                Count = a.Sum(a => a.Count)
+            }).ToList();
+            var datetimeNow = DateTime.Now;
+            foreach (var item in items)
+            {
+                var inventoryItem = await _inventoryItemRepository.GetByIdAsync(item.InventoryItemId);
+                if (inventoryItem == null) throw new Exception("");
+                inventoryItem.Count += item.Count;
+                //if (inventoryItem.Count < inventoryItem.CountLowerBound) throw new Exception(""); //todo
+                var inventoryItemHistory = new InventoryItemHistory
+                {
+                    BuyPrice = inventoryItem.BuyPrice,
+                    Code = inventoryItem.Code,
+                    Count = inventoryItem.Count,
+                    Id = Guid.NewGuid(),
+                    CountLowerBound = inventoryItem.CountLowerBound,
+                    IsActive = inventoryItem.IsActive,
+                    Name = inventoryItem.Name,
+                    SellPrice = inventoryItem.SellPrice,
+                    UpdateDate = datetimeNow,
+                    InventoryItemId = inventoryItem.Id
+                };
+                await _inventoryItemHistoryRepository.AddAsync(inventoryItemHistory);
+                _inventoryItemRepository.Update(inventoryItem);
+            }
             await _invoiceRepository.DeleteInvoiceInventoryItemsAsync(request.ToRemoveInvoiceInventoryItemIds);
             await _invoiceRepository.DeleteInvoiceServicesAsync(request.ToRemoveInvoiceServiceIds);
             await _invoiceRepository.AddInvoiceInventoryItemsAsync(invoiceInventoryItems);
             await _invoiceRepository.AddInvoiceServicesAsync(invoiceServices);
+
             _invoiceRepository.Update(invoice);
             await _unitOfWork.SaveAsync(cancellationToken);
             var response = new UpdateInvoiceServicesAndInventoryItemsResponse(invoice.Id);

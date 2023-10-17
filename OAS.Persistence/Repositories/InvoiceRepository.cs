@@ -128,6 +128,13 @@ namespace OAS.Persistence.Repositories
             return data1;
         }
 
+
+        public async Task<InvoiceInventoryItem?> GetInvoiceInventoryItemById(Guid invoiceInventoryItemId)
+        {
+            return await  _dbContext.InvoiceInventoryItems.FirstOrDefaultAsync(a => a.Id == invoiceInventoryItemId);
+        }
+
+
         public async Task<List<InvoiceInventoryItem>> GetInvoiceInventoryItemsByInvoiceId(Guid invoiceId)
         {
             return await _dbContext.InvoiceInventoryItems.Where(a => a.InvoiceId == invoiceId).ToListAsync();
@@ -150,28 +157,29 @@ namespace OAS.Persistence.Repositories
             int rowNumber = 1;
             float invoiceTotal = 0;
             float invoiceTax = 0;
-            float invoiceDiscount = invoice.DiscountAmount.HasValue? invoice.DiscountAmount.Value:0;
+            float invoiceDiscount = invoice.DiscountAmount.HasValue ? invoice.DiscountAmount.Value : 0;
             foreach (var item in invoiceInventoryItems)
             {
                 float unitPrice = invoice.UseBuyPrice.HasValue && invoice.UseBuyPrice.Value ? (item.InventoryItem.BuyPrice.Value) : (item.InventoryItem.SellPrice.Value);
                 items.Add(new GetInvoiceReportInfo_ItemDTO(rowNumber.ToString(), item.InventoryItem.Name, item.Count.ToString(), unitPrice.ToString(), (item.Count * unitPrice).ToString()));
                 rowNumber++;
-                invoiceTotal += item.Count * unitPrice;                                                             
+                invoiceTotal += item.Count * unitPrice;
             }
             foreach (var item in invoiceServices)
             {
                 float unitPrice = item.Price;
-                items.Add(new GetInvoiceReportInfo_ItemDTO(rowNumber.ToString(), item.Service.Name, "1", unitPrice.ToString(), (1* unitPrice).ToString()));
+                items.Add(new GetInvoiceReportInfo_ItemDTO(rowNumber.ToString(), item.Service.Name, "1", unitPrice.ToString(), (1 * unitPrice).ToString()));
                 rowNumber++;
-                invoiceTotal += 1 * unitPrice;                
+                invoiceTotal += 1 * unitPrice;
             }
-            var answer = new GetInvoiceReportInfoResponse(invoiceCode, vehicleCode, customerName, vehicleName, vehiclePlate, vehicleColor, invoiceDate, invoiceTotal.ToString(), invoiceDiscount.ToString(), invoiceTax.ToString(), (invoiceTotal - invoiceTax - invoiceDiscount).ToString(),items);
+            var answer = new GetInvoiceReportInfoResponse(invoiceCode, vehicleCode, customerName, vehicleName, vehiclePlate, vehicleColor, invoiceDate, invoiceTotal.ToString(), invoiceDiscount.ToString(), invoiceTax.ToString(), (invoiceTotal - invoiceTax - invoiceDiscount).ToString(), items);
             return answer;
 
         }
 
         public async Task<int> GetNewInvoiceCode()
         {
+            if (await _dbContext.Invoices.CountAsync() == 0) return 1;
             return await _dbContext.Invoices.Select(a => a.Code).MaxAsync() + 1;
 
         }

@@ -38,7 +38,7 @@ namespace OAS.Application.Features.InvoiceFeatures.DeleteSellInvoiuce
             {
                 var inventoryItem = await _inventoryItemRepository.GetByIdAsync(item.InventoryItemId);
                 if (inventoryItem == null) throw new Exception("");
-                inventoryItem.Count -= item.Count;                
+                inventoryItem.Count += item.Count;                
                 var inventoryItemHistory = new InventoryItemHistory
                 {
                     BuyPrice = inventoryItem.BuyPrice,

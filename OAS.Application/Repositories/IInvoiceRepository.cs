@@ -15,7 +15,9 @@ namespace OAS.Application.Repositories
 {
     public interface IInvoiceRepository
     {
-        Task <GetInvoiceReportInfoResponse> GetInvoiceReportInfoAsync(Guid invoiceId);
+        Task<InvoiceInventoryItem?> GetInvoiceInventoryItemById(Guid invoiceInventoryItemId);
+
+        Task<GetInvoiceReportInfoResponse> GetInvoiceReportInfoAsync(Guid invoiceId);
         Task<List<GetDailySellInvoices_DTO>> GetDailySellInvoicesAsync();
         Task<List<GetSellInvoiceServices_DTO>> GetSellInvoicesServicesAsync(Guid invoiceId);
         Task<List<GetSellInvoiceInventoryItems_DTO>> GetSellInvoiceInventoryItemsAsync(Guid invoiceId);

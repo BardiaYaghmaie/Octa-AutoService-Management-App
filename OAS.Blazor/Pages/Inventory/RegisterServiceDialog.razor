@@ -30,9 +30,11 @@
             <RadzenButton ButtonType="Radzen.ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Text="ثبت" />
         </RadzenRow>
     </RadzenTemplateForm>
+    <p class="text-danger">@error</p>
 </MudRTLProvider>
 
 @code {
+    private string error = "";
     [Parameter]
     public Func<Task> RefreshServicesGridData { get; set; }
     [Parameter]
@@ -69,8 +71,7 @@
         }
         catch (Exception e)
         {
-            //show error message
-            throw e;
+            error = "خطا هنگام ثبت اطلاعات";
         }
 
     }

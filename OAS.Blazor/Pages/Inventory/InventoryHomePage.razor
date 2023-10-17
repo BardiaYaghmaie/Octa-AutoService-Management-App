@@ -12,13 +12,13 @@
 <MudRTLProvider RightToLeft="true">
 
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
-            <RadzenButton Click=@(args => NavigationManager.NavigateTo("/purchase/inventoryitem")) Text="خرید کالا" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;"/>
-            <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ویرایش کالا" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;"/>
+        <RadzenButton Click=@(args => NavigationManager.NavigateTo("/purchase/inventoryitem")) Text="خرید کالا" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;" />
+        <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ویرایش کالا" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;" />
     </RadzenRow>
     <br />
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
-            <RadzenButton Click="OpenRegisterServiceDialog" Text="ثبت خدمت جدید" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;"/>
-            <RadzenButton Click="OpenEditServiceDialog" Text="ویرایش خدمت" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;"/>
+        <RadzenButton Click="OpenRegisterServiceDialog" Text="ثبت خدمت جدید" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;" />
+        <RadzenButton Click="OpenEditServiceDialog" Text="ویرایش خدمت" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;" />
     </RadzenRow>
     <br />
     <RadzenRow>
@@ -54,9 +54,11 @@
             </Columns>
         </RadzenDataGrid>
     </RadzenRow>
+    <p>@error</p>
 </MudRTLProvider>
 
 @code {
+    private string error = "";
     private void OnClick(string text)
     {
         //
@@ -65,13 +67,28 @@
     IEnumerable<ServiceDTO> services;
     private async Task GetServicesGridData()
     {
-        var data = await mediator.Send(new GetServicesRequest());
-        services = data.ServiceDTOs;
+        try
+        {
+            var data = await mediator.Send(new GetServicesRequest());
+            services = data.ServiceDTOs;
+        }
+        catch (Exception)
+        {
+            error = "خطا هنگام خواندن اطلاعات";
+        }
+
     }
     private async Task GetInventoryItemsGridData()
     {
-        var data = await mediator.Send(new GetInventoryItemsRequest());
-        inventoryItems = data.InventoryItemDTOs;
+        try
+        {
+            var data = await mediator.Send(new GetInventoryItemsRequest());
+            inventoryItems = data.InventoryItemDTOs;
+        }
+        catch (Exception)
+        {
+            error = "خطا هنگام خواندن اطلاعات";
+        }
     }
     protected override async Task OnInitializedAsync()
     {
@@ -83,11 +100,11 @@
     {
         await DialogService.OpenAsync<EditServiceDialog>("ویرایش خدمت",
            new Dictionary<string, object>()
-                   {
+                       {
                { "RefreshServicesGridData",GetServicesGridData },
               { "Services",services}
 
-                   },
+                       },
            new Radzen.DialogOptions()
                {
                    Width = "600px",
@@ -102,10 +119,10 @@
     {
         await DialogService.OpenAsync<RegisterServiceDialog>("ثبت خدمت",
             new Dictionary<string, object>()
-                {
+                    {
                { "RefreshServicesGridData",GetServicesGridData },
                { "RefreshInventoryItemsGridData",GetInventoryItemsGridData }
-                },
+                    },
             new Radzen.DialogOptions()
                 {
                     Width = "600px",

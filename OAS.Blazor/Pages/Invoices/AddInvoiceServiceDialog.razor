@@ -68,9 +68,17 @@
     bool popup = false;
     private async Task FetchServiceData()
     {
-        var request = new GetServicesRequest();
-        var response = await mediator.Send(request);
-        services = response.ServiceDTOs;
+        try
+        {
+            var request = new GetServicesRequest();
+            var response = await mediator.Send(request);
+            services = response.ServiceDTOs;
+        }
+        catch (Exception e)
+        {
+            error = "خطا هنگام خواندن اطلاعات";
+        }
+       
     }
     private void ServiceNameAutoCompleteTextChanged(string newValue)
     {

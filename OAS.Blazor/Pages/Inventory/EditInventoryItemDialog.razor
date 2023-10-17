@@ -200,9 +200,17 @@
     }
     private async Task FetchInventoryData()
     {
-        var request = new GetInventoryItemsRequest();
-        var response = await mediator.Send(request);
-        inventoryItems = response.InventoryItemDTOs;
+        try
+        {
+            var request = new GetInventoryItemsRequest();
+            var response = await mediator.Send(request);
+            inventoryItems = response.InventoryItemDTOs;
+        }
+        catch (Exception e)
+        {
+            error = "خطا هنگام خواندن اطلاعات";
+        }
+
     }
     protected override async Task OnInitializedAsync()
     {
@@ -238,7 +246,8 @@
         {
             if (invoiceInventoryItems.Any(a => a.Id == addNewInvoiceInventoryItemModel.Id))
             {
-                throw new Exception("");
+                error = "لطفا کالای تکراری ثبت نکنید";
+                return;
             }
             CreateBuyInvoice_InventoryItemDTO dto = new(addNewInvoiceInventoryItemModel.Id, long.Parse(addNewInvoiceInventoryItemModel.BuyPrice), long.Parse(addNewInvoiceInventoryItemModel.SellPrice), float.Parse(addNewInvoiceInventoryItemModel.Count), float.Parse(addNewInvoiceInventoryItemModel.Limit));
             invoiceInventoryItems.Add(dto);
@@ -254,7 +263,7 @@
         }
         catch (Exception e)
         {
-            error = "لطفا کالای تکراری ثبت نکنید";
+            error = "خطا هنگام انجام عملیات";
         }
     }
     private async Task AddNewInventoryItem()

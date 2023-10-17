@@ -52,8 +52,9 @@
 </RadzenRow>
 <br />
 <br />
-<p>---صفحه ها ها---</p>
+<p class="text-danger">@error</p>
 @*
+<p>---صفحه ها ها---</p>
 <RadzenRow>
     @*<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" Text="OpenDeleteConfirmation" />
     <RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" Text="OpenPaySellInvoice" />
@@ -68,6 +69,7 @@
     *@
 
 @code {
+    private string error = "";
     #region Internet Connection
 
     private bool IsInternetConnected { get; set; } = true;
@@ -81,24 +83,32 @@
     #endregion
     private async Task OnDeleteInvoice(Guid invoiceId)
     {
-        var request = new GetInvoiceByIdRequest(invoiceId);
-        var response = await mediator.Send(request);
-        await DialogService.OpenAsync<InvoiceDeleteConfirmationDialog>("حذف فاکتور",
-        new Dictionary<string, object>() {
+        try
+        {
+
+            var request = new GetInvoiceByIdRequest(invoiceId);
+            var response = await mediator.Send(request);
+            await DialogService.OpenAsync<InvoiceDeleteConfirmationDialog>("حذف فاکتور",
+            new Dictionary<string, object>() {
             { "InvoiceCode", response.Code },
             { "InvoiceId", invoiceId },
             {"RefreshGridData",RefreshGridData }
 
-            },
+                        },
 
-    new DialogOptions()
+        new DialogOptions()
+            {
+                Width = "550px",
+                Height = "260px",
+                Draggable = false,
+                AutoFocusFirstElement = false,
+                CloseDialogOnOverlayClick = true
+            });
+        }
+        catch (Exception e)
         {
-            Width = "550px",
-            Height = "260px",
-            Draggable = false,
-            AutoFocusFirstElement = false,
-            CloseDialogOnOverlayClick = true
-        });
+            error = "خطا در خواندن اطلاعات";
+        }
 
     }
     private void OnPrintInvoice(Guid invoiceId)
@@ -127,9 +137,9 @@
     {
         await DialogService.OpenAsync<VehicleEntranceDialog>("ورود خودرو",
             new Dictionary<string, object>()
-                        {
+                            {
                 {"RefreshGridData",RefreshGridData }
-                        },
+                            },
 
             new DialogOptions()
                 {
@@ -186,16 +196,24 @@
 
     private void OnClick(string text)
     {
-        //
+    //
     }
 
     private List<GetDailySellInvoices_DTO> gridData = new();
 
     private async Task RefreshGridData()
     {
-        var request = new GetDailySellInvoicesRequest();
-        var response = await mediator.Send(request);
-        gridData = response.Data;
+        try
+        {
+            var request = new GetDailySellInvoicesRequest();
+            var response = await mediator.Send(request);
+            gridData = response.Data;
+        }
+        catch (Exception e)
+        {
+            error = "خطا در خواندن اطلاعات";
+        }
+        
     }
     protected override async Task OnInitializedAsync()
     {

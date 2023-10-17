@@ -284,9 +284,9 @@
             addNewInvoiceInventoryItemModel.Limit = "";
         }
     }
-   
-    
-    
+
+
+
     private async Task FetchInventoryData()
     {
         var request = new GetInventoryItemsRequest();
@@ -327,7 +327,8 @@
         {
             if (invoiceInventoryItems.Any(a => a.Id == addNewInvoiceInventoryItemModel.Id))
             {
-                throw new Exception("");
+                error = "لطفا کالای تکراری ثبت نکنید";
+                return;
             }
             CreateBuyInvoice_InventoryItemDTO dto = new(addNewInvoiceInventoryItemModel.Id, long.Parse(addNewInvoiceInventoryItemModel.BuyPrice), long.Parse(addNewInvoiceInventoryItemModel.SellPrice), float.Parse(addNewInvoiceInventoryItemModel.Count) , 0);
             invoiceInventoryItems.Add(dto);

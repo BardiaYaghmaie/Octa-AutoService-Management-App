@@ -1,5 +1,5 @@
-﻿@page "/Customers"
-@using OAS.Application.Features.CustomerFeatures.GetCustomersMinimal
+﻿@page "/Vehicles"
+@using OAS.Application.Features.VehicleFeatures.GetVehiclesMinimal;
 @inject MediatR.IMediator mediator
 
 <MudRTLProvider RightToLeft="true">
@@ -10,31 +10,31 @@
         }
     </ul>
     <p class="text-danger">@error</p>
-
 </MudRTLProvider>
 
 
 
 @code {
-    private List<GetCustomersMinimal_DTO> _customers = new();
+    private List<GetVehiclesMinimal_DTO> _customers = new();
     private string error = "";
-
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            var request = new GetCustomersMinimalRequest();
+
+
+            var request = new GetVehiclesMinimalRequest();
             var response = await mediator.Send(request);
 
             var customers = response.Data;
             _customers = customers;
-
         }
         catch (Exception)
         {
 
             error = "خطا هنگام خواندن اطلاعات";
         }
+
     }
 
 }

@@ -42,8 +42,16 @@
                         <td>@item.InventoryItemCode</td>
                         <td>@item.InventoryItemName</td>
                         <td>@item.InventoryItemCount</td>
-                        <td>@item.UnitPrice</td>
-                        <td>@item.TotalPrice</td>
+                        @if (useBuyPrice)
+                        {
+                            <td>@item.UnitBuyPrice</td>
+                            <td>@(item.UnitBuyPrice*item.InventoryItemCount)</td>
+                        }
+                        else
+                        {
+                            <td>@item.UnitSellPrice</td>
+                            <td>@(item.UnitSellPrice * item.InventoryItemCount)</td>
+                        }
                         <td>
                             <RadzenButton Icon="delete" Click="() => RemoveInvoiceInventoryItem(item.InvoiceInventoryItemId)"></RadzenButton>
                         </td>
@@ -219,10 +227,10 @@
         servicesGridData.Add(dto);
         return 0;
     }
-    private int AddItemToSellInvoiceGrid(Guid invoiceInventoryItemId, Guid inventoryItemId, string inventoryItemCode, string inventoryItemName, float count, long unitPrice)
+    private int AddItemToSellInvoiceGrid(Guid invoiceInventoryItemId, Guid inventoryItemId, string inventoryItemCode, string inventoryItemName, float count, long unitBuyPrice,long unitSellPrice)
     {
         var dto = new GetSellInvoiceInventoryItems_DTO(
-            inventoryItemId, invoiceInventoryItemId, inventoryItemCode, -1, inventoryItemName, count, unitPrice, count * unitPrice
+            inventoryItemId, invoiceInventoryItemId, inventoryItemCode, -1, inventoryItemName, count, unitBuyPrice,unitSellPrice,0
         );
         inventoryItemsGridData.Add(dto);
         //StateHasChanged();

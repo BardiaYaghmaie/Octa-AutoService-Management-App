@@ -58,7 +58,7 @@
     public Func<Guid,Guid,float ,Task> AddInvoiceInventoryItemId { get; set; }
     [Parameter]
 
-    public Func<Guid,Guid, string, string, float, long, int> AddItemToSellInvoiceGrid { get; set; }
+    public Func<Guid,Guid, string, string, float, long,long, int> AddItemToSellInvoiceGrid { get; set; }
     private AddInvoiceInventoryItemModel addInvoiceInventoryItemModel = new();
     private string error = "";
 
@@ -126,7 +126,7 @@
             var newGeneratedInvoieInventoryItemId = Guid.NewGuid();
             AddInvoiceInventoryItemId(newGeneratedInvoieInventoryItemId, model.InventoryItemId, float.Parse(model.Count));
 
-            AddItemToSellInvoiceGrid(newGeneratedInvoieInventoryItemId, model.InventoryItemId, model.InventoryItemCode, model.InventoryItemTitle, float.Parse(model.Count), inventoryItems.First(a => a.Id == model.InventoryItemId).SellPrice.Value);
+            AddItemToSellInvoiceGrid(newGeneratedInvoieInventoryItemId, model.InventoryItemId, model.InventoryItemCode, model.InventoryItemTitle, float.Parse(model.Count), inventoryItems.First(a => a.Id == model.InventoryItemId).BuyPrice.Value, inventoryItems.First(a => a.Id == model.InventoryItemId).SellPrice.Value);
             dialogService.Close(true);
 
         }

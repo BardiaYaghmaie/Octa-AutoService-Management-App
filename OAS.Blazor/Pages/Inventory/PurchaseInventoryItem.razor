@@ -80,14 +80,14 @@
                 </RadzenRow>
                 <br />
 
-                <RadzenRow Style="border: #6a1a21 solid 2px; padding: 2px;">
+                <RadzenRow>
                     <RadzenFormField Text="تعداد موجود" Variant="Variant.Outlined">
-                        <RadzenTextBox Name="Count" @bind-Value="@addNewInvoiceInventoryItemModel.Count" Disabled="true"/>
-                        <RadzenRequiredValidator Component="Count" Text="تعداد  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                        <RadzenTextBox Name="CurrentCount" @bind-Value="@addNewInvoiceInventoryItemModel.CurrentCount" Disabled="true" />
+                        <RadzenRequiredValidator Component="CurrentCount" Text="تعداد موجود را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
                     </RadzenFormField>
                     <RadzenFormField Text="تعداد خرید" Variant="Variant.Outlined">
                         <RadzenTextBox Name="Count" @bind-Value="@addNewInvoiceInventoryItemModel.Count" />
-                        <RadzenRequiredValidator Component="Count" Text="تعداد  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                        <RadzenRequiredValidator Component="Count" Text="تعداد خرید را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
                     </RadzenFormField>
                     
                     @* <RadzenFormField Text="حداقل موجودی" Variant="Variant.Outlined"> *@
@@ -183,6 +183,7 @@
         public string SellPrice { get; set; }
         public string Count { get; set; }
         public string Limit { get; set; }
+        public string CurrentCount { get; set; } = "0";
     }
     class GridDataModel
     {
@@ -328,7 +329,7 @@
             {
                 throw new Exception("");
             }
-            CreateBuyInvoice_InventoryItemDTO dto = new(addNewInvoiceInventoryItemModel.Id, long.Parse(addNewInvoiceInventoryItemModel.BuyPrice), long.Parse(addNewInvoiceInventoryItemModel.SellPrice), float.Parse(addNewInvoiceInventoryItemModel.Count), float.Parse(addNewInvoiceInventoryItemModel.Limit));
+            CreateBuyInvoice_InventoryItemDTO dto = new(addNewInvoiceInventoryItemModel.Id, long.Parse(addNewInvoiceInventoryItemModel.BuyPrice), long.Parse(addNewInvoiceInventoryItemModel.SellPrice), float.Parse(addNewInvoiceInventoryItemModel.Count) , 0);
             invoiceInventoryItems.Add(dto);
             gridData.Add(new GridDataModel()
                 {

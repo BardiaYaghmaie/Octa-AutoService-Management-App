@@ -57,7 +57,7 @@ namespace OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInven
                 toRemoveInvoiceInventoryItems.Add(invoiceInventoryItemToRemove);
 
             }
-           var items =  toRemoveInvoiceInventoryItems.Concat(new List<InvoiceInventoryItem>(invoiceInventoryItems).Select(a=>
+           var items =  toRemoveInvoiceInventoryItems.Concat(invoiceInventoryItems.Select(a=>
            {
                a.Count *= (-1);
                return a;
@@ -91,7 +91,11 @@ namespace OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInven
             }
             await _invoiceRepository.DeleteInvoiceInventoryItemsAsync(request.ToRemoveInvoiceInventoryItemIds);
             await _invoiceRepository.DeleteInvoiceServicesAsync(request.ToRemoveInvoiceServiceIds);
-            await _invoiceRepository.AddInvoiceInventoryItemsAsync(invoiceInventoryItems);
+            await _invoiceRepository.AddInvoiceInventoryItemsAsync(invoiceInventoryItems.Select(a=>
+            {
+                a.Count = a.Count < 0 ? (-1) * a.Count : a.Count;
+                return a;
+            }).ToList());
             await _invoiceRepository.AddInvoiceServicesAsync(invoiceServices);
 
             _invoiceRepository.Update(invoice);

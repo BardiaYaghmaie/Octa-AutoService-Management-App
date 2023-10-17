@@ -384,18 +384,11 @@
               <Tag>DATA</Tag>
               <Text>{InvoiceItem.RowNumber}</Text>
               <TextBrush>[43:43:43]</TextBrush>
-              <TextFormat Ref="26" type="CurrencyFormat" isKey="true">
-                <DecimalDigits>0</DecimalDigits>
-                <GroupSeparator>,</GroupSeparator>
-                <NegativePattern>0</NegativePattern>
-                <PositivePattern>0</PositivePattern>
-                <State>DecimalDigits</State>
-              </TextFormat>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text53>
-            <Text7 Ref="27" type="Text" isKey="true">
+            <Text7 Ref="26" type="Text" isKey="true">
               <Border>All;[43:43:43];1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
@@ -453,10 +446,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>10/17/2023 4:53:31 PM</ReportChanged>
+  <ReportChanged>10/18/2023 2:28:33 AM</ReportChanged>
   <ReportCreated>10/16/2023 11:13:40 PM</ReportCreated>
   <ReportFile>D:\projects\Octa-AutoService\OAS.Blazor\report_templates\invoice.mrt</ReportFile>
-  <ReportGuid>04e3c8c98e5c4b19aa1569a5eced9068</ReportGuid>
+  <ReportGuid>c205747e98b045609af3b62ace29a868</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Inches</ReportUnit>
   <ReportVersion>2023.1.1.0</ReportVersion>

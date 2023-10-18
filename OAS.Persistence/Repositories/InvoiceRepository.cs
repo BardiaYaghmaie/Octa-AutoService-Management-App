@@ -194,7 +194,7 @@ namespace OAS.Persistence.Repositories
                 InvoiceInventoryItemId: a.Id,
                 InventoryItemId: a.InventoryItemId,
                 InventoryItemName: a.InventoryItem.Name,
-                InventoryItemCount: a.InventoryItem.Count.Value, //todo
+                InventoryItemCount:a.Count,
                 UnitBuyPrice: a.InventoryItem.BuyPrice.Value,
                 UnitSellPrice: a.InventoryItem.SellPrice.Value,
                 TotalPrice: a.InventoryItem.Count.Value * a.InventoryItem.SellPrice.Value

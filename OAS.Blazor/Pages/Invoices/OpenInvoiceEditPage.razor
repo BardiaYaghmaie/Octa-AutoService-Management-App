@@ -196,6 +196,8 @@
             var request3 = new GetInvoiceByIdRequest(InvoiceId);
             var response3 = await mediator.Send(request3);
             invoiceCode = response3.Code;
+
+            useBuyPrice = response3.UseBuyPrice;
         }
 
         catch (Exception e)

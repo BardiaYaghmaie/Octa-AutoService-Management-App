@@ -22,7 +22,11 @@
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="VehicleName" Title="خودرو" />
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="CustomerName" Title="مشتری" />
-                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="InvoiceTotalPrice" Title="قیمت کل" />
+                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO"  Title="قیمت کل">
+                    <Template Context="item">
+                        @item.InvoiceTotalPrice.ToString("#,##0")
+                    </Template>
+                </RadzenDataGridColumn>
                 @*                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="State" Title="وضعیت" />
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="State" Title="عملیات" />*@
             </Columns>
@@ -45,7 +49,11 @@
                     </Template>
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="SellerName" Title="شخص/شرکت" />
-                <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="InvoiceTotalPrice" Title="قیمت کل" />
+                <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Title="قیمت کل">
+                    <Template Context="item">
+                        @item.InvoiceTotalPrice.ToString("#,##0")
+                    </Template>    
+                </RadzenDataGridColumn>
                 @*   <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="State" Title="وضعیت" />*@
                 @* <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="State" Title="عملیات" />*@
             </Columns>

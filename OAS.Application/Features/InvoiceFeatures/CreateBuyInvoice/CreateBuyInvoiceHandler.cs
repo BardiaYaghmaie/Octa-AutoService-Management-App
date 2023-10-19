@@ -34,7 +34,7 @@ namespace OAS.Application.Features.InvoiceFeatures.CreateBuyInvoice
             {
                 var original = await _inventoryItemRepository.GetByIdAsync(item.Id);
                 if (item.SellPrice == original.SellPrice && item.BuyPrice == original.BuyPrice
-                    && item.Count == original.Count && item.LowerBoundCount == original.CountLowerBound
+                    && item.Count == 0&& item.LowerBoundCount == original.CountLowerBound
                     )
                 {
                     //this means no change happened to the inventory item
@@ -44,7 +44,7 @@ namespace OAS.Application.Features.InvoiceFeatures.CreateBuyInvoice
                     original.SellPrice = item.SellPrice;
                     original.BuyPrice = item.BuyPrice;
                     original.CountLowerBound = item.LowerBoundCount;
-                    original.Count = item.Count;                   
+                    original.Count += item.Count;                   
 
                     InventoryItemHistory history = new()
                     {
@@ -70,7 +70,7 @@ namespace OAS.Application.Features.InvoiceFeatures.CreateBuyInvoice
                 Id = Guid.NewGuid(),
                 InventoryItemId = a.Id,
                 InvoiceId = invoiceId,
-                Count = a.Count - (inventoryItems.First(b=> b.Id == a.Id).Count??0)// front end should check this to be  a positive number
+                Count = a.Count
                 ,RegisterDate = DateTime.Now
                 
             }).ToList();            

@@ -244,7 +244,8 @@
             addNewInvoiceInventoryItemModel.Code = inventoryItem.Code;
             addNewInvoiceInventoryItemModel.BuyPrice = inventoryItem.BuyPrice.ToString();
             addNewInvoiceInventoryItemModel.SellPrice = inventoryItem.SellPrice.ToString();
-            addNewInvoiceInventoryItemModel.Count = inventoryItem.Count.ToString();
+            addNewInvoiceInventoryItemModel.CurrentCount = inventoryItem.Count.ToString();
+            addNewInvoiceInventoryItemModel.Count = "";
             addNewInvoiceInventoryItemModel.Limit = inventoryItem.Limit.ToString();
         }
         else
@@ -254,6 +255,7 @@
             addNewInvoiceInventoryItemModel.Code = "";
             addNewInvoiceInventoryItemModel.BuyPrice = "";
             addNewInvoiceInventoryItemModel.SellPrice = "";
+            addNewInvoiceInventoryItemModel.CurrentCount = "";
             addNewInvoiceInventoryItemModel.Count = "";
             addNewInvoiceInventoryItemModel.Limit = "";
         }
@@ -270,7 +272,8 @@
             addNewInvoiceInventoryItemModel.Title = inventoryItem.Title;
             addNewInvoiceInventoryItemModel.BuyPrice = inventoryItem.BuyPrice.ToString();
             addNewInvoiceInventoryItemModel.SellPrice = inventoryItem.SellPrice.ToString();
-            addNewInvoiceInventoryItemModel.Count = inventoryItem.Count.ToString();
+            addNewInvoiceInventoryItemModel.CurrentCount = inventoryItem.Count.ToString();
+            addNewInvoiceInventoryItemModel.Count = "0";
             addNewInvoiceInventoryItemModel.Limit = inventoryItem.Limit.ToString();
 
         }
@@ -281,6 +284,7 @@
             addNewInvoiceInventoryItemModel.Title = "";
             addNewInvoiceInventoryItemModel.BuyPrice = "";
             addNewInvoiceInventoryItemModel.SellPrice = "";
+            addNewInvoiceInventoryItemModel.CurrentCount = "";
             addNewInvoiceInventoryItemModel.Count = "";
             addNewInvoiceInventoryItemModel.Limit = "";
         }

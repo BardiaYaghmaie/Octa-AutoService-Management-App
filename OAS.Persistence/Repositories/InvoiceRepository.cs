@@ -161,7 +161,7 @@ namespace OAS.Persistence.Repositories
             foreach (var item in invoiceInventoryItems)
             {
                 float unitPrice = invoice.UseBuyPrice.HasValue && invoice.UseBuyPrice.Value ? (item.InventoryItem.BuyPrice.Value) : (item.InventoryItem.SellPrice.Value);
-                items.Add(new GetInvoiceReportInfo_ItemDTO(rowNumber.ToString(), item.InventoryItem.Name, item.Count.ToString(), unitPrice.ToString(), (item.Count * unitPrice).ToString()));
+                items.Add(new GetInvoiceReportInfo_ItemDTO(rowNumber.ToString(), item.InventoryItem.Name, item.Count.ToString("#,##0"), unitPrice.ToString("#,##0"), (item.Count * unitPrice).ToString("#,##0")));
                 rowNumber++;
                 invoiceTotal += item.Count * unitPrice;
             }

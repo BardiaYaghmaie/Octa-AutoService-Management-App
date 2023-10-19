@@ -1,16 +1,8 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Services;
-using Radzen.Blazor;
 using Radzen;
 using OAS.Persistence;
-using Microsoft.JSInterop;
 using OAS.Application;
-using OAS.Domain.Models;
-using System.Reflection;
-using MediatR;
-using Stimulsoft.Report.Blazor;
-using static Stimulsoft.Report.StiOptions;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

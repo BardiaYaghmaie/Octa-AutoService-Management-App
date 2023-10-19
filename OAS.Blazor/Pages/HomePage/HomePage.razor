@@ -53,10 +53,10 @@
 <br />
 <br />
 <p class="text-danger">@error</p>
-@*
+
 <p>---صفحه ها ها---</p>
 <RadzenRow>
-    @*<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" Text="OpenDeleteConfirmation" />
+    @*<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" Text="OpenDeleteConfirmation" />*@
     <RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" Text="OpenPaySellInvoice" />
     <RadzenButton Click=@OpenEditInventoryItemDialog ButtonStyle="ButtonStyle.Info" Text="OpenEditInventoryItemDialog" />
 </RadzenRow>
@@ -66,7 +66,7 @@
     <RadzenButton Icon="edit"></RadzenButton>
     <RadzenButton Icon="backspace"></RadzenButton>
 </RadzenRow>
-    *@
+    
 
 @code {
     private string error = "";

@@ -11,3 +11,39 @@
 @using Radzen
 @using Radzen.Blazor
 @using MudBlazor
+@using AlignItems = Radzen.AlignItems
+@using DialogOptions = Radzen.DialogOptions
+@using DialogService = Radzen.DialogService
+@using OAS.Application.Features.InvoiceFeatures.CreateMiscellaneousSellInvoice;
+@using OAS.Application.Features.InvoiceFeatures.GetDailySellInvoices;
+@using OAS.Blazor.Pages.Inventory
+@using OAS.Blazor.Pages.Shared
+@using OAS.Blazor.Pages.Invoices
+@using Variant = Radzen.Variant
+@using OAS.Application.DomainModels;
+@using OAS.Application.Features.CustomerFeatures.AddCustomer;
+@using OAS.Application.Features.InvoiceFeatures.GetInvoiceById;
+@using OAS.Application.Features.InvoiceFeatures.CreateInvoice;
+@using Application.Features.VehicleFeatures.GetVehiclesMinimal
+@using OAS.Application.Features.Inventory.GetInventoryItems;
+@using OAS.Application.Features.InventoryFeatures.AddInventoryItem;
+@using OAS.Application.Features.InventoryFeatures.UpdateInventoryItem;
+@using OAS.Application.Features.InvoiceFeatures.CreateBuyInvoice;
+@using OAS.Application.Features.InventoryFeatures.AddService;
+@using OAS.Application.Features.InventoryFeatures.UpdateService;
+@using OAS.Application.Features.Inventory.GetServices;
+@using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceInventoryItems;
+@using OAS.Application.Features.InvoiceFeatures.GetBuyInvoices;
+@using OAS.Application.Features.InvoiceFeatures.GetSellInvoices;
+@using OAS.Blazor.Utils;
+@using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceServices;
+@using OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInventoryItems;
+@using static OAS.Blazor.Pages.Invoices.AddInvoiceInventoryItemDialog;
+@using OAS.Application.Features.InvoiceFeatures.GetInvoiceReportInfo;
+@using Stimulsoft.Base
+@using Stimulsoft.Report
+@using Stimulsoft.Report.Blazor
+@using Stimulsoft.Report.Dictionary;
+@using OAS.Application.Features.CustomerFeatures.GetCustomersMinimal
+@using OAS.Application.Features.InvoiceFeatures.DeleteSellInvoiuce;
+@using MediatR;

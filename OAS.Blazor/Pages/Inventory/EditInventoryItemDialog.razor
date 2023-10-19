@@ -1,17 +1,7 @@
-@using OAS.Application.DomainModels;
-@using OAS.Application.Features.Inventory.GetInventoryItems;
-@using OAS.Application.Features.InventoryFeatures.AddInventoryItem;
-@using OAS.Application.Features.InventoryFeatures.UpdateInventoryItem;
-@using OAS.Application.Features.InvoiceFeatures.CreateBuyInvoice;
-@using Variant = Radzen.Variant
-@using AlignItems = Radzen.AlignItems
-@inject MediatR.IMediator mediator;
-@inject NavigationManager navigationManager;
-@using OAS.Application.DomainModels;
-@using OAS.Application.Features.CustomerFeatures.AddCustomer;
-@using OAS.Application.Features.InventoryFeatures.AddService;
-@using OAS.Application.Features.InventoryFeatures.UpdateService;
+
 @inject Radzen.DialogService dialogService
+@inject IMediator mediator;
+@inject NavigationManager navigationManager;
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
         <!-- sabte aghlame kharid-->

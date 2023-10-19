@@ -1,10 +1,6 @@
-@using OAS.Application.Features.InvoiceFeatures.CreateInvoice;
-@using OAS.Application.Features.InvoiceFeatures.CreateMiscellaneousSellInvoice;
-@using Variant = Radzen.Variant
-@using AlignItems = Radzen.AlignItems
-@using Application.Features.VehicleFeatures.GetVehiclesMinimal
+
 @inject Radzen.DialogService dialogService
-@inject MediatR.IMediator mediator;
+@inject IMediator mediator;
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
         <RadzenFormField Text="کد اشتراک خودرو" Variant="Variant.Outlined">

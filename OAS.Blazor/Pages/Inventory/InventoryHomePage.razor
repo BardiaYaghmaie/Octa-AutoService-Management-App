@@ -1,14 +1,8 @@
 @page "/inventory"
-@using AlignItems = Radzen.AlignItems
-@using DialogOptions = Radzen.DialogOptions
-@using DialogService = Radzen.DialogService
-@using OAS.Blazor.Pages.Shared
-@using OAS.Application.DomainModels;
-@using OAS.Application.Features.Inventory.GetInventoryItems;
-@using OAS.Application.Features.Inventory.GetServices;
+
 @inject NavigationManager NavigationManager
 @inject DialogService DialogService
-@inject MediatR.IMediator mediator;
+@inject IMediator mediator;
 <MudRTLProvider RightToLeft="true">
 
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">

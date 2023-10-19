@@ -1,13 +1,7 @@
 @page "/OpenInvoiceEditPage/{InvoiceId:guid}"
-@using AlignItems = Radzen.AlignItems
-@using OAS.Application.Features.InvoiceFeatures.GetInvoiceById;
-@using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceInventoryItems;
-@using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceServices;
-@using OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInventoryItems;
-@using Variant = Radzen.Variant
-@using static OAS.Blazor.Pages.Invoices.AddInvoiceInventoryItemDialog;
+
 @inject Radzen.DialogService DialogService;
-@inject MediatR.IMediator mediator
+@inject IMediator mediator
 @inject NavigationManager NavigationManager
 
 <MudRTLProvider>

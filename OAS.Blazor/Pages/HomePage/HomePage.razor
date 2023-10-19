@@ -1,21 +1,8 @@
 ﻿@page "/"
-@using AlignItems = Radzen.AlignItems
-@using DialogOptions = Radzen.DialogOptions
-@using DialogService = Radzen.DialogService
-@using OAS.Application.Features.InvoiceFeatures.CreateMiscellaneousSellInvoice;
-@using OAS.Application.Features.InvoiceFeatures.GetDailySellInvoices;
-@using OAS.Blazor.Pages.Inventory
-@using OAS.Blazor.Pages.Shared
-@using OAS.Blazor.Pages.Invoices
-@using Variant = Radzen.Variant
+
 @inject DialogService DialogService
-@inject MediatR.IMediator mediator;
+@inject IMediator mediator;
 @inject NavigationManager NavigationManager
-@using OAS.Application.Features.InvoiceFeatures.GetInvoiceById;
-
-@*@using System.Net.Http.Json*@
-@*@inject HttpClient httpClient*@
-
 
 <PageTitle>صفحه اصلی</PageTitle>
 

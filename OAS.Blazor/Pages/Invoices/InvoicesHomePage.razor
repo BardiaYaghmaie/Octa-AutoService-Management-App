@@ -1,9 +1,6 @@
 @page "/invoices"
-@using AlignItems = Radzen.AlignItems
-@using OAS.Application.Features.InvoiceFeatures.GetBuyInvoices;
-@using OAS.Application.Features.InvoiceFeatures.GetSellInvoices;
-@using OAS.Blazor.Utils;
-@inject MediatR.IMediator mediator;
+
+@inject IMediator mediator;
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
         <RadzenText Text="لیست فاکتورهای فروش" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif" />

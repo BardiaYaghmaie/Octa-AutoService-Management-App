@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Data\" />
       <Folder Include="wwwroot\css\fonts\VazirMatn\" />
     </ItemGroup>
 

@@ -1,11 +1,6 @@
-﻿@using OAS.Application.DomainModels;
-@using OAS.Application.Features.CustomerFeatures.AddCustomer;
-@using OAS.Application.Features.InventoryFeatures.AddService;
-@using OAS.Application.Features.InventoryFeatures.UpdateService;
-@using Variant = Radzen.Variant
-@using AlignItems = Radzen.AlignItems
+﻿
 @inject Radzen.DialogService dialogService
-@inject MediatR.IMediator mediator;
+@inject IMediator mediator;
 <MudRTLProvider RightToLeft="true">
     <RadzenTemplateForm TItem="Model" Data=@model Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
 

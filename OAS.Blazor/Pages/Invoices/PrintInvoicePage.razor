@@ -1,12 +1,6 @@
 ﻿@page "/printInvoice/{InvoiceId:guid}"
-@using OAS.Application.Features.InvoiceFeatures.GetInvoiceReportInfo;
-@using OAS.Blazor.Utils;
-@using Stimulsoft.Base
-@using Stimulsoft.Report
-@using Stimulsoft.Report.Blazor
-@using Stimulsoft.Report.Dictionary;
-@using Stimulsoft.Base
-@inject MediatR.IMediator mediator;
+
+@inject IMediator mediator;
 <p>@error</p>
 <StiBlazorViewer Report="@stiReport" />
 @code {

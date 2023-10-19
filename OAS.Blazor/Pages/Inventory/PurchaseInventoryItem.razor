@@ -1,12 +1,6 @@
 @page "/purchase/inventoryitem"
-@using OAS.Application.DomainModels;
-@using OAS.Application.Features.Inventory.GetInventoryItems;
-@using OAS.Application.Features.InventoryFeatures.AddInventoryItem;
-@using OAS.Application.Features.InventoryFeatures.UpdateInventoryItem;
-@using OAS.Application.Features.InvoiceFeatures.CreateBuyInvoice;
-@using Variant = Radzen.Variant
-@using AlignItems = Radzen.AlignItems
-@inject MediatR.IMediator mediator;
+
+@inject IMediator mediator;
 @inject NavigationManager navigationManager;
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>

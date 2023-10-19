@@ -32,9 +32,21 @@
                 <RadzenDataGridColumn TItem="InventoryItemDTO" Property="RowNumber" Title="ردیف" />
                 <RadzenDataGridColumn TItem="InventoryItemDTO" Property="Code" Title="کد " />
                 <RadzenDataGridColumn TItem="InventoryItemDTO" Property="Title" Title="عنوان " />
-                <RadzenDataGridColumn TItem="InventoryItemDTO" Property="Count" Title="تعداد" />
-                <RadzenDataGridColumn TItem="InventoryItemDTO" Property="BuyPrice" Title="قیمت خرید" />
-                <RadzenDataGridColumn TItem="InventoryItemDTO" Property="SellPrice" Title="قیمت فروش" />
+                <RadzenDataGridColumn TItem="InventoryItemDTO"  Title="تعداد">
+                    <Template Context="item">
+                        @(item.Count.HasValue?item.Count.Value.ToString("#,##0"):"")
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="InventoryItemDTO"  Title="قیمت خرید">
+                    <Template Context="item">
+                        @(item.BuyPrice.HasValue ? item.BuyPrice.Value.ToString("#,##0") : "")
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="InventoryItemDTO" Title="قیمت فروش">
+                    <Template Context="item">
+                        @(item.SellPrice.HasValue ? item.SellPrice.Value.ToString("#,##0") : "")
+                    </Template>
+                </RadzenDataGridColumn>
             </Columns>
         </RadzenDataGrid>
     </RadzenRow>
@@ -50,7 +62,11 @@
                 <RadzenDataGridColumn TItem="ServiceDTO" Property="RowNumber" Title="ردیف" />
                 <RadzenDataGridColumn TItem="ServiceDTO" Property="Code" Title="کد" />
                 <RadzenDataGridColumn TItem="ServiceDTO" Property="Title" Title="عنوان" />
-                <RadzenDataGridColumn TItem="ServiceDTO" Property="Price" Title="قیمت خرید" />
+                <RadzenDataGridColumn TItem="ServiceDTO"  Title="قیمت خرید">
+                    <Template Context="item">
+                        @item.Price.ToString("#,##0")
+                    </Template>
+                </RadzenDataGridColumn>
             </Columns>
         </RadzenDataGrid>
     </RadzenRow>

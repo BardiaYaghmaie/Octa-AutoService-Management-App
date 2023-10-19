@@ -172,7 +172,7 @@ namespace OAS.Persistence.Repositories
                 rowNumber++;
                 invoiceTotal += 1 * unitPrice;
             }
-            var answer = new GetInvoiceReportInfoResponse(invoiceCode, vehicleCode, customerName, vehicleName, vehiclePlate, vehicleColor, invoiceDate, invoiceTotal.ToString(), invoiceDiscount.ToString(), invoiceTax.ToString(), (invoiceTotal - invoiceTax - invoiceDiscount).ToString(), items);
+            var answer = new GetInvoiceReportInfoResponse(invoiceCode, vehicleCode, customerName, vehicleName, vehiclePlate, vehicleColor, invoiceDate, invoiceTotal, invoiceDiscount, invoiceTax, (invoiceTotal - invoiceTax - invoiceDiscount), items);
             return answer;
 
         }

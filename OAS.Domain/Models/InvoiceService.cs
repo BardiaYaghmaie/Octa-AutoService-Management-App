@@ -8,5 +8,6 @@ public class InvoiceService
     public long Price { get; set; } //new
     public virtual Invoice Invoice { get; set; }
     public virtual Service Service { get; set; }
+    public DateTime RegisterDate { get; set; }
 
 }

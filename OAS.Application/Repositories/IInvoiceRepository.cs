@@ -34,7 +34,8 @@ namespace OAS.Application.Repositories
         Task AddInvoiceInventoryItemsAsync(List<InvoiceInventoryItem> invoiceInventoryItems);    
         Task AddInvoiceServicesAsync(List<InvoiceService> invoiceServices);
         Task AddInvoicePaymentsAsync(List<InvoicePayment> invoicePayments);
-
+        Task<List<InvoicePayment>> GetInvoicePaymentsByInvoiceIdAsync(Guid invoiceId);
+        Task<List<InvoiceService>> GetInvoiceServicesByInvoiceIdAsync(Guid invoiceId);
         Task<List<InvoiceInventoryItem>> GetInvoiceInventoryItemsByInvoiceId(Guid invoiceId);
     }
 }

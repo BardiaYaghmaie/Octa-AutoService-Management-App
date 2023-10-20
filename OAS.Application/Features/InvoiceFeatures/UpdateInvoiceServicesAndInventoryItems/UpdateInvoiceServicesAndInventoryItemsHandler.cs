@@ -29,17 +29,20 @@ namespace OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInven
 
         public async Task<UpdateInvoiceServicesAndInventoryItemsResponse> Handle(UpdateInvoiceServicesAndInventoryItemsRequest request, CancellationToken cancellationToken)
         {
+            var datetimeNow = DateTime.Now;
+
             Invoice? invoice = await _invoiceRepository.GetById(request.InvoiceId);
             if (invoice == null && invoice?.Type != Domain.Enums.InvoiceType.Sell)
                 throw new Exception("invalid invoice");
             invoice.UseBuyPrice = request.UseBuyPrice;
-            invoice.UpdateDate = DateTime.UtcNow;
+            invoice.UpdateDate = datetimeNow;
             List<InvoiceService> invoiceServices = request.ServiceIdsAndPrices.Select(a => new InvoiceService
             {
                 Id = Guid.NewGuid(),
                 InvoiceId = invoice.Id,
                 Price = a.Item2,
-                ServiceId = a.Item1
+                ServiceId = a.Item1,
+                RegisterDate = datetimeNow
 
             }).ToList();
             List<InvoiceInventoryItem > invoiceInventoryItems = request.InventoryItemIdsAndCounts.Select(a => new InvoiceInventoryItem
@@ -47,7 +50,8 @@ namespace OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInven
                 Id = Guid.NewGuid(),
                 InventoryItemId = a.Item1,
                 Count = a.Item2,
-                InvoiceId = invoice.Id
+                InvoiceId = invoice.Id,
+                RegisterDate = datetimeNow,
             }).ToList();
             List<InvoiceInventoryItem> toRemoveInvoiceInventoryItems = new();
             foreach (var toRemoveInvoiceInventoryItemId in request.ToRemoveInvoiceInventoryItemIds)
@@ -66,7 +70,6 @@ namespace OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInven
                 InventoryItemId = a.Key,
                 Count = a.Sum(a => a.Count)
             }).ToList();
-            var datetimeNow = DateTime.Now;
             foreach (var item in items)
             {
                 var inventoryItem = await _inventoryItemRepository.GetByIdAsync(item.InventoryItemId);

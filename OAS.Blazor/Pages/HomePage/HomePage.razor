@@ -28,6 +28,7 @@
                     <RadzenButton Click="() => OnEditInvoice(item.InvoiceId)" Icon="edit"></RadzenButton>
                     <RadzenButton Click="() => OnPrintInvoice(item.InvoiceId)" Icon="print"></RadzenButton>
                     <RadzenButton Click="() => OnDeleteInvoice(item.InvoiceId)" Icon="backspace"></RadzenButton>
+                    <RadzenButton Click="() => OpenPaySellInvoice(item.InvoiceId)">$</RadzenButton>
 
 
 
@@ -44,7 +45,7 @@
 <p>---صفحه ها ها---</p>
 <RadzenRow>
     @*<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" Text="OpenDeleteConfirmation" />*@
-    <RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" Text="OpenPaySellInvoice" />
+    @*<RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" Text="OpenPaySellInvoice" />*@
     <RadzenButton Click=@OpenEditInventoryItemDialog ButtonStyle="ButtonStyle.Info" Text="OpenEditInventoryItemDialog" />
 </RadzenRow>
 <p>---آیکون ها---</p>
@@ -68,6 +69,7 @@
     //}
 
     #endregion
+
     private async Task OnDeleteInvoice(Guid invoiceId)
     {
         try
@@ -154,10 +156,13 @@
                 });
 
     }
-    public async Task OpenPaySellInvoice()
+    public async Task OpenPaySellInvoice(Guid InvoiceId)
     {
         await DialogService.OpenAsync<PaySellInvoiceDialog>("پرداخت فاکتور ",
-            new Dictionary<string, object>() { },
+            new Dictionary<string, object>()
+            {
+                {"InvoiceId",InvoiceId}                
+            },
 
             new DialogOptions()
                 {

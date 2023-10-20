@@ -1,4 +1,5 @@
-﻿using OAS.Application.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using OAS.Application.Repositories;
 using OAS.Domain.Models;
 using OAS.Persistence.Contexts;
 using System;
@@ -21,6 +22,12 @@ namespace OAS.Persistence.Repositories
         public async Task AddAsync(InventoryItemHistory entity)
         {
             await _context.InventoryItemHistories.AddAsync(entity);
+        }
+
+        public async Task<InventoryItemHistory?> GetLatestByInventoryItemIdAndDateAsync(Guid inventoryItemId, DateTime dateTime)
+        {
+            var data = await _context.InventoryItemHistories.Where(a => a.InventoryItemId == inventoryItemId && a.UpdateDate <= dateTime).OrderByDescending(a => a.UpdateDate).FirstOrDefaultAsync();
+            return data;
         }
     }
 }

@@ -1,64 +1,116 @@
-
+@using OAS.Application.Features.InvoiceFeatures.GetInvoicePaymentInfo;
+@inject IMediator mediator
 @inject Radzen.DialogService dialogService
 
 <MudRTLProvider RightToLeft="true">
-    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-        <RadzenText Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H5">
-            فاکتور ۹۲۹۱ - شرکت روغن گیران قرن 
-        </RadzenText>
-    </RadzenRow>
-    <br/>
+    @if (Response == null)
+    {
+        <p>در حال بارگزاری ...</p>
+    }
+    else
+    {
 
-    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-        <RadzenFormField Text="مقدار کل" Variant="Variant.Outlined">
-            <RadzenTextBox @bind-Value="@test"/>
-        </RadzenFormField>
-        <RadzenFormField Text="پرداخت شده" Variant="Variant.Outlined">
-            <RadzenTextBox @bind-Value="@test"/>
-        </RadzenFormField>
-        <RadzenFormField Text="مانده" Variant="Variant.Outlined">
-            <RadzenTextBox @bind-Value="@test"/>
-        </RadzenFormField>
-    </RadzenRow>
-    <br/><br/>
-    <MudDivider/>
-    <br/><br/>
-    <RadzenRow> 
-        <RadzenText Text="پرداخت" Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H6"/>  
-    </RadzenRow>
-    <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-        <RadzenFormField Text="مقدار پرداخت" Variant="Variant.Outlined">
-            <RadzenTextBox @bind-Value="@test"/>
-        </RadzenFormField>
-        <RadzenFormField Text="شماره رهگیری" Variant="Variant.Outlined">
-            <RadzenTextBox @bind-Value="@test"/>
-        </RadzenFormField>
-        <RadzenButton Text="ثبت" ButtonStyle="ButtonStyle.Success" Style="width: 200px"/>
-    </RadzenRow>
-    <br/><br/>
-        <MudDivider/>
-    <br/><br/>
-    <RadzenRow> 
-        <RadzenText Text="لیست پرداخت‌های قبلی" Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H6"/>  
-    </RadzenRow>
-    <RadzenRow>
-        @* <RadzenDataList></RadzenDataList> *@
-        <br/>
-    </RadzenRow>
-    <RadzenRow JustifyContent="JustifyContent.Left">
-        <RadzenButton Text="ثبت" ButtonStyle="ButtonStyle.Success" Style="width: 200px"/>
-    </RadzenRow>
-    
-    
-    
-    
-    
-    
+        <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+            @if (Response.InvoiceType == Domain.Enums.InvoiceType.Buy)
+            {
+                <RadzenText Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H5">
 
-    
+                    فاکتور @Response.InvoiceCode -@Response.SellerName
+
+                </RadzenText>
+            }
+            else
+            {
+                <RadzenText Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H5">
+
+                    فاکتور @Response.InvoiceCode -@Response.VehicleName - @Response.CustomerName
+
+                </RadzenText>
+            }
+        </RadzenRow>
+        <br />
+
+        <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+            <RadzenFormField Text="مقدار کل" Variant="Variant.Outlined">
+                <RadzenTextBox ReadOnly="true" Value="@Response.Total.ToString("#,##0").En2Fa()" />
+            </RadzenFormField>
+            <RadzenFormField Text="پرداخت شده" Variant="Variant.Outlined">
+                <RadzenTextBox ReadOnly="true" Value="@Response.PaidAmoutSoFar.ToString("#,##0").En2Fa()" />
+            </RadzenFormField>
+            <RadzenFormField Text="مانده" Variant="Variant.Outlined">
+                <RadzenTextBox ReadOnly="true" Value="@((Response.Total - Response.PaidAmoutSoFar).ToString("#,##0").En2Fa())" />
+            </RadzenFormField>
+        </RadzenRow>
+        <br />
+
+        <br />
+        <MudDivider />
+        <br />
+
+        <br />
+        <RadzenRow>
+            <RadzenText Text="پرداخت" Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H6" />
+        </RadzenRow>
+        <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+            <RadzenFormField Text="مقدار پرداخت" Variant="Variant.Outlined">
+                <RadzenTextBox @bind-Value="@test" />
+            </RadzenFormField>
+            <RadzenFormField Text="شماره رهگیری" Variant="Variant.Outlined">
+                <RadzenTextBox @bind-Value="@test" />
+            </RadzenFormField>
+            <RadzenButton Text="ثبت" ButtonStyle="ButtonStyle.Success" Style="width: 200px" />
+        </RadzenRow>
+        <br />
+
+        <br />
+        <MudDivider />
+        <br />
+
+        <br />
+        <RadzenRow>
+            <RadzenText Text="لیست پرداخت‌های قبلی" Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H6" />
+        </RadzenRow>
+        <RadzenRow>
+            <ul>
+                @foreach (var item in Response.PaymentHistoryDTOs)
+                {
+                    <li>@item.TrackCode - @item.PaidAmount.ToString("#,##0").En2Fa() - @item.PaidDate.ToPersianDateString().En2Fa()</li>
+                }
+            </ul>
+        </RadzenRow>
+        <RadzenRow JustifyContent="JustifyContent.Left">
+            <RadzenButton Text="ثبت" ButtonStyle="ButtonStyle.Success" Style="width: 200px" />
+        </RadzenRow>
+
+
+    }
+
+
+
+
+
 </MudRTLProvider>
 
 @code {
+    [Parameter]
+    public Guid InvoiceId { get; set; }
+    public GetInvoicePaymentInfoResponse? Response { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var request = new GetInvoicePaymentInfoRequest(InvoiceId);
+            var response = await mediator.Send(request);
+            Response = response;
+        }
+      
+       
+      catch (Exception e)
+        {
+
+            throw e;
+        }
+    }
     public string test;
 
 }

@@ -1,4 +1,5 @@
-﻿using OAS.Application.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using OAS.Application.Repositories;
 using OAS.Domain.Models;
 using OAS.Persistence.Contexts;
 using System;
@@ -23,6 +24,10 @@ namespace OAS.Persistence.Repositories
             await _context.ServiceHistories.AddAsync(entity);
         }
 
-        
+        public async Task<ServiceHistory?> GetLatestServiceHistoryByServiceIdAndDate(Guid serviceId, DateTime dateTime)
+        {
+            return await _context.ServiceHistories.Where(a => a.ServiceId == serviceId && a.UpdateDate <= dateTime)
+                .OrderByDescending(a => a.UpdateDate).FirstOrDefaultAsync();
+        }
     }
 }

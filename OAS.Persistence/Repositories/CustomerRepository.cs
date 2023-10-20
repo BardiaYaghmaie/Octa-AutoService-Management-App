@@ -41,6 +41,11 @@ namespace OAS.Persistence.Repositories
             return await _dbContext.Customers.ToListAsync();
         }
 
+        public async Task<Customer?> GetByIdAsync(Guid id)
+        {
+            return await _dbContext.Customers.FirstOrDefaultAsync(a => a.Id == id);
+        }
+
         public async Task<int> GetNewCustomerCode()
         {
             if (_dbContext.Customers.Count() == 0)

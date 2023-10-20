@@ -140,6 +140,11 @@ namespace OAS.Persistence.Repositories
             return await _dbContext.InvoiceInventoryItems.Where(a => a.InvoiceId == invoiceId).ToListAsync();
         }
 
+        public async Task<List<InvoicePayment>> GetInvoicePaymentsByInvoiceIdAsync(Guid invoiceId)
+        {
+            return await _dbContext.InvoicePayments.Where(a => a.InvoiceId == invoiceId).ToListAsync();
+        }
+
         public async Task<GetInvoiceReportInfoResponse> GetInvoiceReportInfoAsync(Guid invoiceId)
         {
             var invoice = await _dbContext.Invoices.Include(a => a.Vehicle).ThenInclude(a => a.Customer).Include(a => a.Customer).AsNoTracking().FirstAsync(a => a.Id == invoiceId);
@@ -175,6 +180,11 @@ namespace OAS.Persistence.Repositories
             var answer = new GetInvoiceReportInfoResponse(invoiceCode, vehicleCode, customerName, vehicleName, vehiclePlate, vehicleColor, invoiceDate, invoiceTotal, invoiceDiscount, invoiceTax, (invoiceTotal - invoiceTax - invoiceDiscount), items);
             return answer;
 
+        }
+
+        public async Task<List<InvoiceService>> GetInvoiceServicesByInvoiceIdAsync(Guid invoiceId)
+        {
+            return await _dbContext.InvoiceServices.Where(a => a.InvoiceId == invoiceId).ToListAsync();
         }
 
         public async Task<int> GetNewInvoiceCode()

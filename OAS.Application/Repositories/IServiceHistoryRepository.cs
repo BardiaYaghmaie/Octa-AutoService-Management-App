@@ -10,5 +10,6 @@ namespace OAS.Application.Repositories
     public interface IServiceHistoryRepository
     {
         Task AddAsync(ServiceHistory entity);
+        Task<ServiceHistory?> GetLatestServiceHistoryByServiceIdAndDate(Guid serviceId, DateTime dateTime);
     }
 }

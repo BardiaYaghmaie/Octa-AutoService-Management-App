@@ -76,8 +76,8 @@
 
                 <RadzenRow>
                     <RadzenFormField Text="تعداد موجود" Variant="Variant.Outlined">
-                        <RadzenTextBox Name="CurrentCount" @bind-Value="@addNewInvoiceInventoryItemModel.CurrentCount" Disabled="true" />
-                        <RadzenRequiredValidator Component="CurrentCount" Text="تعداد موجود را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                        <RadzenTextBox ReadOnly="true" Name="CurrentCount" @bind-Value="@addNewInvoiceInventoryItemModel.CurrentCount" Disabled="true" />
+                        @*<RadzenRequiredValidator Component="CurrentCount" Text="تعداد موجود را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />*@
                     </RadzenFormField>
                     <RadzenFormField Text="تعداد خرید" Variant="Variant.Outlined">
                         <RadzenTextBox Name="Count" @bind-Value="@addNewInvoiceInventoryItemModel.Count" />

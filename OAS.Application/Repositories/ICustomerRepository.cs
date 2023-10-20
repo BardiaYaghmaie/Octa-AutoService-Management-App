@@ -11,6 +11,7 @@ namespace OAS.Application.Repositories
     public interface ICustomerRepository
     {
         Task<List<GetCustomersMinimal_DTO>> Get();
+        Task<Customer?> GetByIdAsync(Guid id);
         Task AddAsync(Customer entity);
         Task<List<Customer>> GetAllAsync();
         void Delete(Customer entity);

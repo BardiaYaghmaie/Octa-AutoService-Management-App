@@ -10,5 +10,6 @@ namespace OAS.Application.Repositories
     public interface IInventoryItemHistoryRepository
     {
         Task AddAsync(InventoryItemHistory entity);
+        Task<InventoryItemHistory?> GetLatestByInventoryItemIdAndDateAsync(Guid inventoryItemId, DateTime dateTime);        
     }
 }

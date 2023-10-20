@@ -23,22 +23,26 @@
                         AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
                         AllowSorting="true">
             <Columns>
-                <RadzenDataGridColumn TItem="InventoryItemDTO" Property="RowNumber" Title="ردیف" />
-                <RadzenDataGridColumn TItem="InventoryItemDTO" Property="Code" Title="کد " />
+                <RadzenDataGridColumn TItem="InventoryItemDTO" Title="ردیف">
+                    <Template Context="item">@item.RowNumber.ToString().En2Fa()</Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="InventoryItemDTO" Title="کد">
+                    <Template Context="item">@item.Code.ToString().En2Fa()</Template>
+                </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="InventoryItemDTO" Property="Title" Title="عنوان " />
                 <RadzenDataGridColumn TItem="InventoryItemDTO"  Title="تعداد">
                     <Template Context="item">
-                        @(item.Count.HasValue?item.Count.Value.ToString("#,##0"):"")
+                        @(item.Count.HasValue ? item.Count.Value.ToString("#,##0").En2Fa() : "")
                     </Template>
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="InventoryItemDTO"  Title="قیمت خرید">
                     <Template Context="item">
-                        @(item.BuyPrice.HasValue ? item.BuyPrice.Value.ToString("#,##0") : "")
+                        @(item.BuyPrice.HasValue ? item.BuyPrice.Value.ToString("#,##0").En2Fa() : "")
                     </Template>
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="InventoryItemDTO" Title="قیمت فروش">
                     <Template Context="item">
-                        @(item.SellPrice.HasValue ? item.SellPrice.Value.ToString("#,##0") : "")
+                        @(item.SellPrice.HasValue ? item.SellPrice.Value.ToString("#,##0").En2Fa() : "")
                     </Template>
                 </RadzenDataGridColumn>
             </Columns>
@@ -53,12 +57,16 @@
                         AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
                         AllowSorting="true">
             <Columns>
-                <RadzenDataGridColumn TItem="ServiceDTO" Property="RowNumber" Title="ردیف" />
-                <RadzenDataGridColumn TItem="ServiceDTO" Property="Code" Title="کد" />
+                <RadzenDataGridColumn TItem="ServiceDTO"Title="ردیف" >
+                    <Template Context="item">@item.RowNumber.ToString().En2Fa()</Template>   
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="ServiceDTO"Title="کد">
+                    <Template Context="item">@item.Code.ToString().En2Fa()</Template>    
+                </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="ServiceDTO" Property="Title" Title="عنوان" />
                 <RadzenDataGridColumn TItem="ServiceDTO"  Title="قیمت خرید">
                     <Template Context="item">
-                        @item.Price.ToString("#,##0")
+                        @item.Price.ToString("#,##0").En2Fa()
                     </Template>
                 </RadzenDataGridColumn>
             </Columns>

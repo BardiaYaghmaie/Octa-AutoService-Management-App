@@ -30,20 +30,21 @@
 
             var request = new GetInvoiceReportInfoRequest(InvoiceId);
             var response = await mediator.Send(request);
+            
             stiReport.RegData("InvoiceItem", response.Items);
             stiReport.RegData("InvoiceInfo", new
             {
                 CustomerName = response.CustomerTitle,
                 VehicleName = response.VehicleTitle,
-                VehicleCode = response.VehicleCode,
-                InvoiceCode = response.InvoiceCode,
-                ToPay = response.ToPay.ToString("#,##0"),
-                Tax = response.Tax.ToString("#,##0"),
-                Discount = response.Discount.ToString("#,##0"),
-                TotalPrice = response.TotalPrice.ToString("#,##0"),
-                VehiclePlate = response.VehiclePlate,
+                VehicleCode = response.VehicleCode.En2Fa(),
+                InvoiceCode = response.InvoiceCode.En2Fa(),
+                ToPay = response.ToPay.ToString("#,##0").En2Fa(),
+                Tax = response.Tax.ToString("#,##0").En2Fa(),
+                Discount = response.Discount.ToString("#,##0").En2Fa(),
+                TotalPrice = response.TotalPrice.ToString("#,##0").En2Fa(),
+                VehiclePlate = response.VehiclePlate.En2Fa(),
                 VehicleColor = response.VehicleColor,
-                InvoiceDate = response.InvoiceDate.ToPersianDateString()
+                InvoiceDate = response.InvoiceDate.ToPersianDateString().En2Fa()
             });
             this.stiReport.Load("report_templates/invoice.mrt");
         }

@@ -85,7 +85,7 @@
                                     <td>@item.Name</td>
                                     <td>@item.Color</td>
                                     <td>@item.Plate</td>
-                                    <td>@item.Code</td>
+                                    <td>@item.Code.En2Fa()</td>
                                     @if (!success)
                                     {
                                         <td @onclick="() => RemoveVevhicle(item)" class="text-danger">X</td>

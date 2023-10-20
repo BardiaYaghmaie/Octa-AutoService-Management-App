@@ -7,7 +7,7 @@
 <MudRTLProvider>
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
         <RadzenText Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H5">
-            فاکتور @invoiceCode
+            فاکتور @invoiceCode.ToString().En2Fa()
         </RadzenText>
     </RadzenRow>
     <br /><br />
@@ -32,19 +32,19 @@
                 @foreach (var item in inventoryItemsGridData)
                 {
                     <tr>
-                        <td>@item.RowNumber</td>
-                        <td>@item.InventoryItemCode</td>
+                        <td>@item.RowNumber.ToString().En2Fa()</td>
+                        <td>@item.InventoryItemCode.ToString().En2Fa()</td>
                         <td>@item.InventoryItemName</td>
-                        <td>@item.InventoryItemCount</td>
+                        <td>@item.InventoryItemCount.ToString("#:##0")..En2Fa()</td>
                         @if (useBuyPrice)
                         {
-                            <td>@item.UnitBuyPrice.ToString("#,##0")</td>
-                            <td>@((item.UnitBuyPrice * item.InventoryItemCount).ToString("#,##0"))</td>
+                            <td>@item.UnitBuyPrice.ToString("#,##0").En2Fa()</td>
+                            <td>@((item.UnitBuyPrice * item.InventoryItemCount).ToString("#,##0").En2Fa())</td>
                         }
                         else
                         {
-                            <td>@item.UnitSellPrice.ToString("#,##0")</td>
-                            <td>@((item.UnitSellPrice * item.InventoryItemCount).ToString("#,##0"))</td>
+                            <td>@item.UnitSellPrice.ToString("#,##0").En2Fa()</td>
+                            <td>@((item.UnitSellPrice * item.InventoryItemCount).ToString("#,##0").En2Fa())</td>
                         }
                         <td>
                             <RadzenButton Icon="delete" Click="() => RemoveInvoiceInventoryItem(item.InvoiceInventoryItemId)"></RadzenButton>
@@ -77,12 +77,12 @@
                 @foreach (var item in servicesGridData)
                 {
                     <tr>
-                        <td>@item.RowNumber</td>
-                        <td>@item.Code</td>
+                        <td>@item.RowNumber..En2Fa()</td>
+                        <td>@item.Code.En2Fa()</td>
                         <td>@item.ServiceName</td>
-                        <td>@item.Count</td>
-                        <td>@item.UnitPrice</td>
-                        <td>@item.TotalPrice</td>
+                        <td>@item.Count.ToString("#,##0")..En2Fa()</td>
+                        <td>@item.UnitPrice.ToString("#,##0").En2Fa()</td>
+                        <td>@item.TotalPrice.ToString("#,##0").En2Fa()</td>
                         <td>
                             <RadzenButton Icon="delete" Click="() => RemoveInvoiceService(item.InvoiceServiceId)"></RadzenButton>
                         </td>

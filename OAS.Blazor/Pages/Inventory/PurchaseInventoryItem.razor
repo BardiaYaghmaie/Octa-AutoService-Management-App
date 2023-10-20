@@ -122,9 +122,9 @@
                 {
                     <tr>
                         <td>@item.Title</td>
-                        <td>@item.Code</td>
-                        <td>@long.Parse(item.BuyPrice).ToString("#,##0")</td>
-                        <td>@long.Parse(item.SellPrice).ToString("#,##0")</td>
+                        <td>@item.Code.En2Fa()</td>
+                        <td>@long.Parse(item.BuyPrice).ToString("#,##0").En2Fa()</td>
+                        <td>@long.Parse(item.SellPrice).ToString("#,##0").En2Fa()</td>
                         @* Here in buy invoice, the sell price is not needed 
                         and the important missing thing is "BuyCount" not the whole 
                         count in inventory, but the specefic invoice buy items

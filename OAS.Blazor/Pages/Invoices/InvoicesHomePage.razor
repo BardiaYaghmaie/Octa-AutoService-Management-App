@@ -10,18 +10,26 @@
                         AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
                         AllowSorting="true">
             <Columns>
-                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="RowNumber" Title="ردیف" />
-                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="InvoiceCode" Title="کد" />
+                <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Title="ردیف">
+                    <Template Context="item">
+                        @item.RowNumber.ToString().En2Fa()
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Title="کد">
+                    <Template Context="item">
+                        @item.InvoiceCode.ToString().En2Fa()
+                    </Template>
+                </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Title="تاریخ">
                     <Template Context="item">
-                        @item.InvoiceDate.ToPersianDateString()
+                        @item.InvoiceDate.ToPersianDateString().En2Fa()
                     </Template>
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="VehicleName" Title="خودرو" />
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="CustomerName" Title="مشتری" />
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO"  Title="قیمت کل">
                     <Template Context="item">
-                        @item.InvoiceTotalPrice.ToString("#,##0")
+                        @item.InvoiceTotalPrice.ToString("#,##0").En2Fa()
                     </Template>
                 </RadzenDataGridColumn>
                 @*                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="State" Title="وضعیت" />
@@ -38,17 +46,25 @@
                         AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
                         AllowSorting="true">
             <Columns>
-                <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="RowNumber" Title="ردیف" />
-                <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="InvoiceCode" Title="کد" />
+                <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Title="ردیف">
+                <Template Context="item">
+                        @item.RowNumber.ToString().En2Fa()
+                </Template>    
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Title="کد">
+                    <Template Context="item">
+                        @item.InvoiceCode.ToString().En2Fa()
+                    </Template>
+                </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Title="تاریخ">
                     <Template Context="item">
-                        @item.InvoiceDate.ToPersianDateString()
+                        @item.InvoiceDate.ToPersianDateString().En2Fa()
                     </Template>
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="SellerName" Title="شخص/شرکت" />
                 <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Title="قیمت کل">
                     <Template Context="item">
-                        @item.InvoiceTotalPrice.ToString("#,##0")
+                        @item.InvoiceTotalPrice.ToString("#,##0").En2Fa()
                     </Template>    
                 </RadzenDataGridColumn>
                 @*   <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="State" Title="وضعیت" />*@

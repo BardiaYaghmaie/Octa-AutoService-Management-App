@@ -29,7 +29,7 @@
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="CustomerName" Title="مشتری" />
                 <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO"  Title="قیمت کل">
                     <Template Context="item">
-                        @item.InvoiceTotalPrice.ToString("#,##0").En2Fa()
+                        @item.InvoiceTotalPrice.ToString("#,##0").En2Fa().AppendRialIran()
                     </Template>
                 </RadzenDataGridColumn>
                 @*                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="State" Title="وضعیت" />
@@ -64,7 +64,7 @@
                 <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="SellerName" Title="شخص/شرکت" />
                 <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Title="قیمت کل">
                     <Template Context="item">
-                        @item.InvoiceTotalPrice.ToString("#,##0").En2Fa()
+                        @item.InvoiceTotalPrice.ToString("#,##0").En2Fa().AppendRialIran()
                     </Template>    
                 </RadzenDataGridColumn>
                 @*   <RadzenDataGridColumn TItem="GetBuyInvoices_InvoiceDTO" Property="State" Title="وضعیت" />*@

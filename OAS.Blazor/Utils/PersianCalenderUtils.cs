@@ -4,6 +4,10 @@ namespace OAS.Blazor.Utils
 {
     public static class PersianFormatting
     {
+        public static string AppendRialIran(this string price)
+        {
+            return price + " ریال";
+        }
         public static string Fa2En(this string str)
         {
             return str.Replace("۰", "0")

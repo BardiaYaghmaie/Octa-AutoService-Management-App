@@ -37,12 +37,12 @@
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="InventoryItemDTO" Title="قیمت خرید">
                     <Template Context="item">
-                        @(item.BuyPrice.HasValue ? item.BuyPrice.Value.ToString("#,##0").En2Fa() : "")
+                        @(item.BuyPrice.HasValue ? item.BuyPrice.Value.ToString("#,##0").En2Fa().AppendRialIran() : "")
                     </Template>
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="InventoryItemDTO" Title="قیمت فروش">
                     <Template Context="item">
-                        @(item.SellPrice.HasValue ? item.SellPrice.Value.ToString("#,##0").En2Fa() : "")
+                        @(item.SellPrice.HasValue ? item.SellPrice.Value.ToString("#,##0").En2Fa().AppendRialIran() : "")
                     </Template>
                 </RadzenDataGridColumn>
             </Columns>
@@ -66,7 +66,7 @@
                 <RadzenDataGridColumn TItem="ServiceDTO" Property="Title" Title="عنوان" />
                 <RadzenDataGridColumn TItem="ServiceDTO" Title="قیمت خرید">
                     <Template Context="item">
-                        @item.Price.ToString("#,##0").En2Fa()
+                        @item.Price.ToString("#,##0").En2Fa().AppendRialIran()
                     </Template>
                 </RadzenDataGridColumn>
             </Columns>

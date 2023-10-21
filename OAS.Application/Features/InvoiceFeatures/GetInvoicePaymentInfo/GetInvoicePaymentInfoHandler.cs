@@ -57,16 +57,16 @@ namespace OAS.Application.Features.InvoiceFeatures.GetInvoicePaymentInfo
                 vehicle = await _vehicleRepository.GetByIdAsync(invoice.VehicleId.Value);
                 if (vehicle == null) throw new Exception("");
                 response.VehicleId = vehicle.Id;
-                response.VehicleName = "";
-                response.VehiclePlate = "";
-                response.VehicleColor = "";
-            }
-            else
-            {
-                response.VehicleId = vehicle.Id;
                 response.VehicleName = vehicle.Name;
                 response.VehiclePlate = vehicle.Plate;
                 response.VehicleColor = vehicle.Color;
+            }
+            else
+            {
+                response.VehicleName = "";
+                response.VehiclePlate = "";
+                response.VehicleColor = "";
+
             }
 
             var invoicePayments = await _invoiceRepository.GetInvoicePaymentsByInvoiceIdAsync(request.InvoiceId);

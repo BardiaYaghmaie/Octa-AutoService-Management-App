@@ -7,7 +7,7 @@
 
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
         <RadzenButton Click=@(args => NavigationManager.NavigateTo("/purchase/inventoryitem")) Text="خرید کالا" Icon="add" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;" />
-        <RadzenButton Click=@(args => OnClick("Large button with text and icon")) Text="ویرایش کالا" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;" />
+        <RadzenButton Click="OpenEditInventoryItemDialog" Text="ویرایش کالا" Icon="edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Large" Style="width: 300px;" />
     </RadzenRow>
     <br />
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
@@ -30,12 +30,12 @@
                     <Template Context="item">@item.Code.ToString().En2Fa()</Template>
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="InventoryItemDTO" Property="Title" Title="عنوان " />
-                <RadzenDataGridColumn TItem="InventoryItemDTO"  Title="تعداد">
+                <RadzenDataGridColumn TItem="InventoryItemDTO" Title="تعداد">
                     <Template Context="item">
                         @(item.Count.HasValue ? item.Count.Value.ToString("#,##0").En2Fa() : "")
                     </Template>
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="InventoryItemDTO"  Title="قیمت خرید">
+                <RadzenDataGridColumn TItem="InventoryItemDTO" Title="قیمت خرید">
                     <Template Context="item">
                         @(item.BuyPrice.HasValue ? item.BuyPrice.Value.ToString("#,##0").En2Fa() : "")
                     </Template>
@@ -57,14 +57,14 @@
                         AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
                         AllowSorting="true">
             <Columns>
-                <RadzenDataGridColumn TItem="ServiceDTO"Title="ردیف" >
-                    <Template Context="item">@item.RowNumber.ToString().En2Fa()</Template>   
+                <RadzenDataGridColumn TItem="ServiceDTO" Title="ردیف">
+                    <Template Context="item">@item.RowNumber.ToString().En2Fa()</Template>
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="ServiceDTO"Title="کد">
-                    <Template Context="item">@item.Code.ToString().En2Fa()</Template>    
+                <RadzenDataGridColumn TItem="ServiceDTO" Title="کد">
+                    <Template Context="item">@item.Code.ToString().En2Fa()</Template>
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="ServiceDTO" Property="Title" Title="عنوان" />
-                <RadzenDataGridColumn TItem="ServiceDTO"  Title="قیمت خرید">
+                <RadzenDataGridColumn TItem="ServiceDTO" Title="قیمت خرید">
                     <Template Context="item">
                         @item.Price.ToString("#,##0").En2Fa()
                     </Template>
@@ -118,11 +118,11 @@
     {
         await DialogService.OpenAsync<EditServiceDialog>("ویرایش خدمت",
            new Dictionary<string, object>()
-                       {
+                           {
                { "RefreshServicesGridData",GetServicesGridData },
               { "Services",services}
 
-                       },
+                           },
            new Radzen.DialogOptions()
                {
                    Width = "600px",
@@ -137,10 +137,10 @@
     {
         await DialogService.OpenAsync<RegisterServiceDialog>("ثبت خدمت",
             new Dictionary<string, object>()
-                    {
+                        {
                { "RefreshServicesGridData",GetServicesGridData },
                { "RefreshInventoryItemsGridData",GetInventoryItemsGridData }
-                    },
+                        },
             new Radzen.DialogOptions()
                 {
                     Width = "600px",
@@ -150,8 +150,21 @@
                     CloseDialogOnOverlayClick = true
                 });
 
+    }
+    private async Task OpenEditInventoryItemDialog()
+    {
+        await DialogService.OpenAsync<EditInventoryItemDialog>("ویرایش کالا", new Dictionary<string, object>()
+        {
+               { "RefreshInventoryItemsGridData",GetInventoryItemsGridData }
 
-
+        }, new Radzen.DialogOptions()
+            {
+                Width = "600px",
+                Height = "450px",
+                Draggable = false,
+                AutoFocusFirstElement = false,
+                CloseDialogOnOverlayClick = true
+            });
     }
 }
 

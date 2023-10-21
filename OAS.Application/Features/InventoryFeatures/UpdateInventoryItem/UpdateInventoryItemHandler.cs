@@ -31,9 +31,15 @@ namespace OAS.Application.Features.InventoryFeatures.UpdateInventoryItem
             InventoryItem? inventoryItem = await _inventoryItemRepository.GetByIdAsync(request.Id);
             if (inventoryItem == null)
                 throw new Exception("");
-            var inventoryItemNew = _mapper.Map<InventoryItem>(request);
-            _inventoryItemRepository.Update(inventoryItemNew);
-            var inventoryItemHistory = _mapper.Map<InventoryItemHistory>(inventoryItemNew);
+            //var inventoryItemNew = _mapper.Map<InventoryItem>(request);
+            //inventoryItem.Code = inventoryItem.Code;
+            inventoryItem.SellPrice = request.SellPrice;
+            inventoryItem.BuyPrice = request.BuyPrice;
+            inventoryItem.Count = request.Count;
+            inventoryItem.CountLowerBound = request.CountLowerBound;
+            inventoryItem.Name = request.Name;            
+            _inventoryItemRepository.Update(inventoryItem);
+            var inventoryItemHistory = _mapper.Map<InventoryItemHistory>(inventoryItem);
             await _inventoryItemHistoryRepository.AddAsync(inventoryItemHistory);
             await _unitOfWork.SaveAsync(cancellationToken);
 

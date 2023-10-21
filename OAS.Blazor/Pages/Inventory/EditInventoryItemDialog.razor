@@ -1,84 +1,61 @@
-
 @inject Radzen.DialogService dialogService
 @inject IMediator mediator;
 @inject NavigationManager navigationManager;
+@inject Radzen.DialogService dialogService
+
 <MudRTLProvider RightToLeft="true">
-    <RadzenRow>
-        <!-- sabte aghlame kharid-->
-            <RadzenTemplateForm TItem="AddNewInvoiceInventoryItemModel" Data="addNewInvoiceInventoryItemModel" Submit="OnSubmitAddNewInvoiceInventoryItem" InvalidSubmit="OnInvalidSubmitAddNewInvoiceInventoryItem">
-                <RadzenRow>
-                    <RadzenFormField Text="کد کالا" Variant="Variant.Outlined">
-                        <RadzenAutoComplete ValueChanged="InventoryCodeItemAutoCompleteTextChanged" Name="Code" Data=@inventoryItems TextProperty="Code" Value="addNewInvoiceInventoryItemModel.Code" Style="width: 13rem" />
-                        <RadzenRequiredValidator Component="Code" Text="کد کالا را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                    </RadzenFormField>
-                    
-                    <RadzenButton Click=@(args => OnClick("Primary icon button")) Icon="add_circle_outline" Variant="Variant.Outlined" />
-                    <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
+    <RadzenTemplateForm TItem="EditInvoiceInventoryItemModel" Data="editInvoiceInventoryItemModel" Submit="OnSubmit" InvalidSubmit="OnInvalidSubmit">
+        <RadzenRow><RadzenText Text="ثبت اقلام خرید کالا" TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif" /></RadzenRow>
+        <p class="text-danger">@error</p>
+        <RadzenRow>
+            <RadzenFormField Text="کد کالا" Variant="Variant.Outlined">
 
-                        <RadzenAutoComplete ValueChanged="InventoryItemNameAutoCompleteTextChanged" Name="Title" Data=@inventoryItems TextProperty="Title" Value="addNewInvoiceInventoryItemModel.Title" Style="width: 13rem" />
-                        <RadzenRequiredValidator Component="Title" Text="عنوان کالا را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                    </RadzenFormField>
-                </RadzenRow>
-                <br />
-                <RadzenRow>
-                    <RadzenFormField Text="قیمت خرید" Variant="Variant.Outlined">
-                        <RadzenTextBox Name="BuyPrice" @bind-Value="@addNewInvoiceInventoryItemModel.BuyPrice" />
-                        <RadzenRequiredValidator Component="BuyPrice" Text="قیمت خرید را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                    </RadzenFormField>
-                    <RadzenFormField Text="قیمت فروش" Variant="Variant.Outlined">
-                        <RadzenTextBox Name="SellPrice" @bind-Value="@addNewInvoiceInventoryItemModel.SellPrice" />
-                        <RadzenRequiredValidator Component="SellPrice" Text="قیمت فروش را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                    </RadzenFormField>
-                </RadzenRow>
-                <br />
+                <RadzenAutoComplete ValueChanged="InventoryCodeItemAutoCompleteTextChanged" Name="Code" Data=@inventoryItems TextProperty="Code" Value="editInvoiceInventoryItemModel.Code" Style="width: 13rem" />
+                <RadzenRequiredValidator Component="Code" Text="کد کالا را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+            </RadzenFormField>
+            @*
+            <RadzenButton Click=@(args => OnClick("Primary icon button")) Icon="add_circle_outline" ButtonStyle="ButtonStyle.Success" Variant="Variant.Outlined" />*@
+            <RadzenFormField Text="عنوان" Variant="Variant.Outlined">
 
-                <RadzenRow Style="border: #6a1a21 solid 2px; padding: 2px;">
-                    <RadzenFormField Text="تعداد موجود" Variant="Variant.Outlined">
-                        <RadzenTextBox Name="Count" @bind-Value="@addNewInvoiceInventoryItemModel.Count" Disabled="true"/>
-                        <RadzenRequiredValidator Component="Count" Text="تعداد  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                    </RadzenFormField>
-                    <RadzenFormField Text="حداقل موجودی" Variant="Variant.Outlined">
-                        <RadzenTextBox Name="Limit" @bind-Value="@addNewInvoiceInventoryItemModel.Limit" />
-                        <RadzenRequiredValidator Component="Limit" Text="حداقل موجودی  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
-                    </RadzenFormField>
-                </RadzenRow>
-            </RadzenTemplateForm>
-    </RadzenRow>
+                <RadzenAutoComplete ValueChanged="InventoryItemNameAutoCompleteTextChanged" Name="Title" Data=@inventoryItems TextProperty="Title" Value="editInvoiceInventoryItemModel.Title" Style="width: 13rem" />
+                <RadzenRequiredValidator Component="Title" Text="عنوان کالا را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+            </RadzenFormField>
+        </RadzenRow>
+        <br />
+        <RadzenRow>
+            <RadzenFormField Text="قیمت خرید" Variant="Variant.Outlined">
+                <RadzenTextBox Name="BuyPrice" @bind-Value="@editInvoiceInventoryItemModel.BuyPrice" />
+                <RadzenRequiredValidator Component="BuyPrice" Text="قیمت خرید را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+            </RadzenFormField>
+            <RadzenFormField Text="قیمت فروش" Variant="Variant.Outlined">
+                <RadzenTextBox Name="SellPrice" @bind-Value="@editInvoiceInventoryItemModel.SellPrice" />
+                <RadzenRequiredValidator Component="SellPrice" Text="قیمت فروش را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+            </RadzenFormField>
+        </RadzenRow>
+        <br />
 
-    
-
-    <RadzenRow JustifyContent="JustifyContent.SpaceEvenly" Style="margin-top:30px">
-        <RadzenButton Click="@((args) => dialogService.Close(false))" ButtonStyle="ButtonStyle.Danger" Text="لغو" />
-        <RadzenButton ButtonType="Radzen.ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Text="ثبت" />
-    </RadzenRow>
-    
+        <RadzenRow>
+            <RadzenFormField Text="تعداد موجود" Variant="Variant.Outlined">
+                <RadzenTextBox Name="Count" @bind-Value="@editInvoiceInventoryItemModel.Count" />
+                <RadzenRequiredValidator Component="Count" Text="تعداد موجود را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+            </RadzenFormField>
 
 
+            <RadzenFormField Text="حداقل موجودی" Variant="Variant.Outlined">
+                <RadzenTextBox Name="Limit" @bind-Value="@editInvoiceInventoryItemModel.Limit" />
+                <RadzenRequiredValidator Component="Limit" Text="حداقل موجودی  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+            </RadzenFormField>
+        </RadzenRow>
+        <RadzenRow JustifyContent="JustifyContent.End" class="mt-5">
+            <RadzenButton Text="اعمال تغییرات" ButtonType="Radzen.ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Style="width: 180px" />
+            <RadzenButton Text="انصراف" Click="OnClickCancel" ButtonStyle="ButtonStyle.Danger" Style="width: 180px" />
+        </RadzenRow>
+    </RadzenTemplateForm>
 </MudRTLProvider>
 @code {
-    bool popup = false;
-    string error = "";
-    bool createInvoiceButtonDisabled = false;
-    private List<InventoryItemDTO> inventoryItems = new();
-    private AddNewInventoryItemModel newInventoryItemModel = new();
-    private AddNewInvoiceInventoryItemModel addNewInvoiceInventoryItemModel = new();
-    private AddNewInvoiceModel addNewInvoiceModel = new();
-    private List<CreateBuyInvoice_InventoryItemDTO> invoiceInventoryItems = new();
-    private List<GridDataModel> gridData = new();
-
-    class AddNewInvoiceModel
-    {
-        public string Title { get; set; }
-        public string Code { get; set; }
-        public DateTime RegisterDate { get; set; }
-    }
-
-
-    class AddNewInventoryItemModel
-    {
-        public string Title { get; set; }
-    }
-    class AddNewInvoiceInventoryItemModel
+    [Parameter]
+    public Func<Task> RefreshInventoryItemsGridData { get; set; }
+    class EditInvoiceInventoryItemModel
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
@@ -89,119 +66,10 @@
         public string Count { get; set; }
         public string Limit { get; set; }
     }
-    class GridDataModel
-    {
-        public Guid InventoryItemId { get; set; }
-        public string Title { get; set; }
-        public string Code { get; set; }
-        public string BuyPrice { get; set; }
-        public string SellPrice { get; set; }
-    }
-    private void OnClickCancel()
-    {
-        navigationManager.NavigateTo("/inventory");
-    }
-    private async void OnFinalClick()
-    {
-        try
-        {
-            if (invoiceInventoryItems.Count == 0)
-            {
-                error = "لطفا قسمت ثبت اقلام خرید کالا را انجام دهید";
-                return;
-            }
-            if (string.IsNullOrEmpty(addNewInvoiceModel.Code) || string.IsNullOrEmpty(addNewInvoiceModel.Title) || addNewInvoiceModel.RegisterDate == null)
-            {
-                error = "لطفا قسمت ثبت فاکتور را انجام دهید";
-                return;
-
-            }
-            var request = new CreateBuyInvoiceRequest(invoiceInventoryItems, int.Parse(addNewInvoiceModel.Code), addNewInvoiceModel.Title, addNewInvoiceModel.RegisterDate);
-            var response = await mediator.Send(request);
-            navigationManager.NavigateTo("/invoices");
-        }
-        catch (Exception e)
-        {
-            error = "خطا هنگام ثبت نهایی اطلاعات";
-        }
-    }
-    private void OnSubmitAddNewInvoice()
-    {
-        createInvoiceButtonDisabled = true;
-    }
-    private void OnInvalidSubmitAddNewInvoice()
-    {
-
-    }
-    private async Task OnSubmitNewInventoryItem()
-    {
-        await AddNewInventoryItem();
-    }
-    private void InventoryItemNameAutoCompleteTextChanged(string newValue)
-    {
-        addNewInvoiceInventoryItemModel.Title = newValue;
-        var inventoryItem = inventoryItems.FirstOrDefault(a => a.Title == newValue);
-        if (inventoryItem != null)
-        {
-            addNewInvoiceInventoryItemModel.Id = inventoryItem.Id;
-            addNewInvoiceInventoryItemModel.Code = inventoryItem.Code;
-            addNewInvoiceInventoryItemModel.BuyPrice = inventoryItem.BuyPrice.ToString();
-            addNewInvoiceInventoryItemModel.SellPrice = inventoryItem.SellPrice.ToString();
-            addNewInvoiceInventoryItemModel.Count = inventoryItem.Count.ToString();
-            addNewInvoiceInventoryItemModel.Limit = inventoryItem.Limit.ToString();
-        }
-        else
-        {
-            addNewInvoiceInventoryItemModel.Id = Guid.Empty;
-
-            addNewInvoiceInventoryItemModel.Code = "";
-            addNewInvoiceInventoryItemModel.BuyPrice = "";
-            addNewInvoiceInventoryItemModel.SellPrice = "";
-            addNewInvoiceInventoryItemModel.Count = "";
-            addNewInvoiceInventoryItemModel.Limit = "";
-        }
-
-    }
-    private void InventoryCodeItemAutoCompleteTextChanged(string newValue)
-    {
-        addNewInvoiceInventoryItemModel.Code = newValue;
-        var inventoryItem = inventoryItems.FirstOrDefault(a => a.Code == newValue);
-        if (inventoryItem != null)
-        {
-            addNewInvoiceInventoryItemModel.Id = inventoryItem.Id;
-
-            addNewInvoiceInventoryItemModel.Title = inventoryItem.Title;
-            addNewInvoiceInventoryItemModel.BuyPrice = inventoryItem.BuyPrice.ToString();
-            addNewInvoiceInventoryItemModel.SellPrice = inventoryItem.SellPrice.ToString();
-            addNewInvoiceInventoryItemModel.Count = inventoryItem.Count.ToString();
-            addNewInvoiceInventoryItemModel.Limit = inventoryItem.Limit.ToString();
-
-        }
-        else
-        {
-            addNewInvoiceInventoryItemModel.Id = Guid.Empty;
-
-            addNewInvoiceInventoryItemModel.Title = "";
-            addNewInvoiceInventoryItemModel.BuyPrice = "";
-            addNewInvoiceInventoryItemModel.SellPrice = "";
-            addNewInvoiceInventoryItemModel.Count = "";
-            addNewInvoiceInventoryItemModel.Limit = "";
-        }
-    }
-    private async Task FetchInventoryData()
-    {
-        try
-        {
-            var request = new GetInventoryItemsRequest();
-            var response = await mediator.Send(request);
-            inventoryItems = response.InventoryItemDTOs;
-        }
-        catch (Exception e)
-        {
-            error = "خطا هنگام خواندن اطلاعات";
-        }
-
-    }
+    private bool popup = false;
+    private string error = "";
+    EditInvoiceInventoryItemModel editInvoiceInventoryItemModel = new();
+    private List<InventoryItemDTO> inventoryItems = new();
     protected override async Task OnInitializedAsync()
     {
         try
@@ -213,75 +81,87 @@
             error = "خطا هنگام خواندن اطلاعات";
         }
     }
-    private async Task OnInvalidSubmitNewInventoryItem()
+    private async Task OnInvalidSubmit()
     {
 
     }
-    private async Task OnSubmitAddNewInvoiceInventoryItem()
-    {
-        AddInvoiceInventoryItem();
-    }
-    private async Task OnInvalidSubmitAddNewInvoiceInventoryItem()
-    {
-
-    }
-    private void OnClick(string x)
-    {
-
-    }
-
-    private void AddInvoiceInventoryItem()
+    private async Task OnSubmit()
     {
         try
         {
-            if (invoiceInventoryItems.Any(a => a.Id == addNewInvoiceInventoryItemModel.Id))
-            {
-                error = "لطفا کالای تکراری ثبت نکنید";
-                return;
-            }
-            CreateBuyInvoice_InventoryItemDTO dto = new(addNewInvoiceInventoryItemModel.Id, long.Parse(addNewInvoiceInventoryItemModel.BuyPrice), long.Parse(addNewInvoiceInventoryItemModel.SellPrice), float.Parse(addNewInvoiceInventoryItemModel.Count), float.Parse(addNewInvoiceInventoryItemModel.Limit));
-            invoiceInventoryItems.Add(dto);
-            gridData.Add(new GridDataModel()
-                {
-                    InventoryItemId = addNewInvoiceInventoryItemModel.Id,
-                    Title = addNewInvoiceInventoryItemModel.Title,
-                    Code = addNewInvoiceInventoryItemModel.Code,
-                    BuyPrice = addNewInvoiceInventoryItemModel.BuyPrice,
-                    SellPrice = addNewInvoiceInventoryItemModel.SellPrice
-                });
-            error = "";
-        }
-        catch (Exception e)
-        {
-            error = "خطا هنگام انجام عملیات";
-        }
-    }
-    private async Task AddNewInventoryItem()
-    {
-        try
-        {
-
-            var request = new AddInventoryItemRequest(newInventoryItemModel.Title);
+            var request = new UpdateInventoryItemRequest(editInvoiceInventoryItemModel.Id, editInvoiceInventoryItemModel.Title,
+       long.Parse(editInvoiceInventoryItemModel.BuyPrice), long.Parse(editInvoiceInventoryItemModel.SellPrice),
+       float.Parse(editInvoiceInventoryItemModel.Count), float.Parse(editInvoiceInventoryItemModel.Limit));
             var response = await mediator.Send(request);
-            newInventoryItemModel.Title = "";
-            await FetchInventoryData();
-            //success
+            await RefreshInventoryItemsGridData();
+            dialogService.Close();
         }
         catch (Exception e)
         {
-            error = "خطا در حین انجام عملیات";
+            error = "خطا در بروزرسانی اطلاعات";
         }
+
     }
-    private void RemoveInvoiceInventoryItem(Guid inventoryItemId)
+    private void OnClickCancel()
     {
-        try
+        navigationManager.NavigateTo("/inventory");
+    }
+    private async Task FetchInventoryData()
+    {
+        var request = new GetInventoryItemsRequest();
+        var response = await mediator.Send(request);
+        inventoryItems = response.InventoryItemDTOs;
+    }
+    private void InventoryItemNameAutoCompleteTextChanged(string newValue)
+    {
+        editInvoiceInventoryItemModel.Title = newValue;
+        var inventoryItem = inventoryItems.FirstOrDefault(a => a.Title == newValue);
+        if (inventoryItem != null)
         {
-            invoiceInventoryItems.Remove(invoiceInventoryItems.First(b => b.Id == inventoryItemId));
-            gridData.Remove(gridData.First(b => b.InventoryItemId == inventoryItemId));
+            editInvoiceInventoryItemModel.Id = inventoryItem.Id;
+            editInvoiceInventoryItemModel.Code = inventoryItem.Code;
+            editInvoiceInventoryItemModel.BuyPrice = inventoryItem.BuyPrice.ToString();
+            editInvoiceInventoryItemModel.SellPrice = inventoryItem.SellPrice.ToString();
+            editInvoiceInventoryItemModel.Count = inventoryItem.Count.ToString();
+            editInvoiceInventoryItemModel.Limit = inventoryItem.Limit.ToString();
         }
-        catch (Exception)
+        else
         {
-            error = "خطا در حین انجام عملیات";
+            editInvoiceInventoryItemModel.Id = Guid.Empty;
+
+            editInvoiceInventoryItemModel.Code = "";
+            editInvoiceInventoryItemModel.BuyPrice = "";
+            editInvoiceInventoryItemModel.SellPrice = "";
+            editInvoiceInventoryItemModel.Count = "";
+            editInvoiceInventoryItemModel.Limit = "";
+        }
+
+    }
+    private void InventoryCodeItemAutoCompleteTextChanged(string newValue)
+    {
+        editInvoiceInventoryItemModel.Code = newValue;
+        var inventoryItem = inventoryItems.FirstOrDefault(a => a.Code == newValue);
+        if (inventoryItem != null)
+        {
+            editInvoiceInventoryItemModel.Id = inventoryItem.Id;
+
+            editInvoiceInventoryItemModel.Title = inventoryItem.Title;
+            editInvoiceInventoryItemModel.BuyPrice = inventoryItem.BuyPrice.ToString();
+            editInvoiceInventoryItemModel.SellPrice = inventoryItem.SellPrice.ToString();
+            editInvoiceInventoryItemModel.Count = inventoryItem.Count.ToString();
+            editInvoiceInventoryItemModel.Limit = inventoryItem.Limit.ToString();
+
+        }
+        else
+        {
+            editInvoiceInventoryItemModel.Id = Guid.Empty;
+
+            editInvoiceInventoryItemModel.Title = "";
+            editInvoiceInventoryItemModel.BuyPrice = "";
+            editInvoiceInventoryItemModel.SellPrice = "";
+            editInvoiceInventoryItemModel.Count = "";
+            editInvoiceInventoryItemModel.Limit = "";
         }
     }
+
 }

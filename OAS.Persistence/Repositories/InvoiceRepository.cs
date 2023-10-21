@@ -207,7 +207,7 @@ namespace OAS.Persistence.Repositories
                 InventoryItemCount:a.Count,
                 UnitBuyPrice: a.InventoryItem.BuyPrice.Value,
                 UnitSellPrice: a.InventoryItem.SellPrice.Value,
-                TotalPrice: a.InventoryItem.Count.Value * a.InventoryItem.SellPrice.Value
+                TotalPrice: a.Count * a.InventoryItem.SellPrice.Value
             )).ToList();
             return answer;
         }

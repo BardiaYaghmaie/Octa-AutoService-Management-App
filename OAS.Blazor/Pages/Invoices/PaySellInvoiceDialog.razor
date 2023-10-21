@@ -1,3 +1,4 @@
+@using OAS.Application.Features.InvoiceFeatures.AddSellInvoicePayment;
 @using OAS.Application.Features.InvoiceFeatures.GetInvoicePaymentInfo;
 @inject IMediator mediator
 @inject Radzen.DialogService dialogService
@@ -23,13 +24,13 @@
             {
                 <RadzenText Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H5">
 
-                    فاکتور @Response.InvoiceCode -@Response.VehicleName - @Response.CustomerName
+                    فاکتور @Response.InvoiceCode - @Response.VehicleName - @Response.CustomerName
 
                 </RadzenText>
             }
         </RadzenRow>
         <br />
-
+        <span class="text-danger">@error</span>
         <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
             <RadzenFormField Text="مقدار کل" Variant="Variant.Outlined">
                 <RadzenTextBox ReadOnly="true" Value="@Response.Total.ToString("#,##0").En2Fa()" />
@@ -51,14 +52,20 @@
         <RadzenRow>
             <RadzenText Text="پرداخت" Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H6" />
         </RadzenRow>
+
         <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-            <RadzenFormField Text="مقدار پرداخت" Variant="Variant.Outlined">
-                <RadzenTextBox @bind-Value="@test" />
-            </RadzenFormField>
-            <RadzenFormField Text="شماره رهگیری" Variant="Variant.Outlined">
-                <RadzenTextBox @bind-Value="@test" />
-            </RadzenFormField>
-            <RadzenButton Text="ثبت" ButtonStyle="ButtonStyle.Success" Style="width: 200px" />
+            <RadzenTemplateForm TItem="AddPaymentModel" Data="addPaymentModel" Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
+                <RadzenFormField Text="مقدار پرداخت" Variant="Variant.Outlined">
+                    <RadzenTextBox Name="Amount" @bind-Value="addPaymentModel.Amount" />
+                    <RadzenRequiredValidator Component="Amount" Text="مبلغ را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
+                </RadzenFormField>
+                <RadzenFormField Text="شماره رهگیری" Variant="Variant.Outlined">
+                    <RadzenTextBox @bind-Value="addPaymentModel.TrackCode" />                   
+                </RadzenFormField>
+                
+                <RadzenButton ButtonType="Radzen.ButtonType.Submit" Text="ثبت" ButtonStyle="ButtonStyle.Success" Style="width: 200px;margin-top:30px" />
+            </RadzenTemplateForm>
+
         </RadzenRow>
         <br />
 
@@ -68,9 +75,16 @@
 
         <br />
         <RadzenRow>
-            <RadzenText Text="لیست پرداخت‌های قبلی" Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H6" />
+            <RadzenText Text="لیست پرداخت‌های تازه اضافه شده" Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H6" />
+            <ul>
+                @foreach (var item in newPayments)
+                {
+                    <li>@item.TrackCode - @item.PaidAmount.ToString("#,##0").En2Fa() - @item.PaidDate.ToPersianDateString().En2Fa() - <span class="text-danger" @onclick="() => RemoveNewPayment(item)">X</span></li>
+                }
+            </ul>
         </RadzenRow>
         <RadzenRow>
+            <RadzenText Text="لیست پرداخت‌های قبلی" Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H6" />
             <ul>
                 @foreach (var item in Response.PaymentHistoryDTOs)
                 {
@@ -79,7 +93,7 @@
             </ul>
         </RadzenRow>
         <RadzenRow JustifyContent="JustifyContent.Left">
-            <RadzenButton Text="ثبت" ButtonStyle="ButtonStyle.Success" Style="width: 200px" />
+            <RadzenButton Click="onFinalSubmit" Text="ثبت" ButtonStyle="ButtonStyle.Success" Style="width: 200px" />
         </RadzenRow>
 
 
@@ -92,6 +106,65 @@
 </MudRTLProvider>
 
 @code {
+    private bool popup = false;
+    private async Task onFinalSubmit()
+    {
+        try
+        {
+            var request = new AddInvoiceRequest(InvoiceId, newPayments.Select(a => new Tuple<string, long>(a.TrackCode, a.PaidAmount)).ToList());
+            var response = await mediator.Send(request);
+            dialogService.Close();
+        }            
+        catch (Exception e)
+        {
+            error = "خطا در ذخیره سازی اطلاعات";
+        }
+    }
+    private void RemoveNewPayment(GetInvoicePaymentInfo_InvoicePaymentHistoryDTO item)
+    {
+        newPayments.Remove(item);
+    }
+    private string error = "";
+    class AddPaymentModel
+    {
+        public string TrackCode { get; set; }
+        public string Amount { get; set; }
+    }
+    private List<GetInvoicePaymentInfo_InvoicePaymentHistoryDTO> newPayments = new();
+    private AddPaymentModel addPaymentModel = new()
+        {
+            Amount = "",
+            TrackCode = ""
+        };
+    private void OnInvalidSubmit()
+    {
+    }
+    private void OnSubmit()
+    {
+        AddNewPayment();
+    }
+    private void AddNewPayment()
+    {
+        try
+        {
+            newPayments.Add(new()
+                {
+                    InvoiceId = InvoiceId,
+                    InvoicePaymentId = Guid.NewGuid(),
+                    PaidAmount = long.Parse(addPaymentModel.Amount),
+                    TrackCode = addPaymentModel.TrackCode,
+                    PaidDate = DateTime.Now
+                });
+                addPaymentModel.TrackCode = "";
+                addPaymentModel.Amount = "";
+        }
+        catch (Exception e)
+        {
+            error = "خطا در انجام عملیات";
+        }
+
+
+    }
     [Parameter]
     public Guid InvoiceId { get; set; }
     public GetInvoicePaymentInfoResponse? Response { get; set; }
@@ -103,9 +176,9 @@
             var response = await mediator.Send(request);
             Response = response;
         }
-      
-       
-      catch (Exception e)
+
+
+        catch (Exception e)
         {
 
             throw e;

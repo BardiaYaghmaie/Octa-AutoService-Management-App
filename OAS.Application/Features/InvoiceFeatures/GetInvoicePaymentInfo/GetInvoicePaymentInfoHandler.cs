@@ -38,6 +38,7 @@ namespace OAS.Application.Features.InvoiceFeatures.GetInvoicePaymentInfo
             response.InvoiceId = invoice.Id;
             response.InvoiceType = invoice.Type;
             response.SellerName = invoice.SerllerName;
+            response.InvoiceCode = invoice.Code.ToString();
             if (invoice == null) throw new Exception("");
             if (invoice.CustomerId.HasValue)
             {
@@ -46,11 +47,22 @@ namespace OAS.Application.Features.InvoiceFeatures.GetInvoicePaymentInfo
                 response.CustomerId = customer.Id;
                 response.CustomerName = customer.FirstName + " " + customer.LastName;
             }
+            else
+            {
+                response.CustomerName = "";
+            }
 
             if (invoice.VehicleId.HasValue)
             {
                 vehicle = await _vehicleRepository.GetByIdAsync(invoice.VehicleId.Value);
                 if (vehicle == null) throw new Exception("");
+                response.VehicleId = vehicle.Id;
+                response.VehicleName = "";
+                response.VehiclePlate = "";
+                response.VehicleColor = "";
+            }
+            else
+            {
                 response.VehicleId = vehicle.Id;
                 response.VehicleName = vehicle.Name;
                 response.VehiclePlate = vehicle.Plate;

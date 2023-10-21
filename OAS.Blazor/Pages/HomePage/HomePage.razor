@@ -19,8 +19,16 @@
                     AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
                     AllowSorting="true">
         <Columns>
-            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="RowNumber" Title="ردیف" />
-            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="InvoiceCode" Title="شماره فاکتور" />
+            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO"  Title="ردیف">
+                <Template Context="item">
+                    @item.RowNumber.ToString("#,##0").En2Fa()
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Title="شماره فاکتور">
+                <Template Context="item">
+                    @item.InvoiceCode.En2Fa()
+                </Template>
+            </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="CustomerName" Title=" مشتری" />
             <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="VehicleName" Title="خودرو" />
             <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Title="عملیات">
@@ -42,18 +50,18 @@
 <br />
 <p class="text-danger">@error</p>
 
-<p>---صفحه ها ها---</p>
-<RadzenRow>
+@*<p>---صفحه ها ها---</p>
+<RadzenRow>*@
     @*<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" Text="OpenDeleteConfirmation" />*@
     @*<RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" Text="OpenPaySellInvoice" />*@
-    <RadzenButton Click=@OpenEditInventoryItemDialog ButtonStyle="ButtonStyle.Info" Text="OpenEditInventoryItemDialog" />
+@*    <RadzenButton Click=@OpenEditInventoryItemDialog ButtonStyle="ButtonStyle.Info" Text="OpenEditInventoryItemDialog" />
 </RadzenRow>
 <p>---آیکون ها---</p>
 <RadzenRow>
     <RadzenButton Icon="print"></RadzenButton>
     <RadzenButton Icon="edit"></RadzenButton>
     <RadzenButton Icon="backspace"></RadzenButton>
-</RadzenRow>
+</RadzenRow>*@
     
 
 @code {

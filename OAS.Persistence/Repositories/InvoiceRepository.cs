@@ -211,22 +211,23 @@ namespace OAS.Persistence.Repositories
 
         }
 
-        public async Task<List<GetSellInvoiceInventoryItems_DTO>> GetSellInvoiceInventoryItemsAsync(Guid invoiceId)
+        public async Task<List<InvoiceInventoryItem>> GetSellInvoiceInventoryItemsAsync(Guid invoiceId)
         {
             var data = await _dbContext.InvoiceInventoryItems.Include(a => a.InventoryItem).Where(a => a.InvoiceId == invoiceId).ToListAsync();
-            var answer = data.Select((a, i) => new GetSellInvoiceInventoryItems_DTO
-            (
-                RowNumber: i + 1,
-                InventoryItemCode: a.InventoryItem.Code.ToString(),
-                InvoiceInventoryItemId: a.Id,
-                InventoryItemId: a.InventoryItemId,
-                InventoryItemName: a.InventoryItem.Name,
-                InventoryItemCount:a.Count,
-                UnitBuyPrice: a.InventoryItem.BuyPrice.Value,
-                UnitSellPrice: a.InventoryItem.SellPrice.Value,
-                TotalPrice: a.Count * a.InventoryItem.SellPrice.Value
-            )).ToList();
-            return answer;
+            return data;
+            //var answer = data.Select((a, i) => new GetSellInvoiceInventoryItems_DTO
+            //(
+            //    RowNumber: i + 1,
+            //    InventoryItemCode: a.InventoryItem.Code.ToString(),
+            //    InvoiceInventoryItemId: a.Id,
+            //    InventoryItemId: a.InventoryItemId,
+            //    InventoryItemName: a.InventoryItem.Name,
+            //    InventoryItemCount:a.Count,
+            //    UnitBuyPrice: a.InventoryItem.BuyPrice.Value,
+            //    UnitSellPrice: a.InventoryItem.SellPrice.Value,
+            //    TotalPrice: a.Count * a.InventoryItem.SellPrice.Value
+            //)).ToList();
+            //return answer;
         }
 
         public async Task<List<GetSellInvoices_InvoiceDTO>> GetSellInvoicesAsync()

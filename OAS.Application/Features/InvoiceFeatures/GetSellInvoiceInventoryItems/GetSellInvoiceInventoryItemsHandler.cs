@@ -20,7 +20,19 @@ namespace OAS.Application.Features.InvoiceFeatures.GetSellInvoiceInventoryItems
         public async Task<GetSellInvoiceInventoryItemsResponse> Handle(GetSellInvoiceInventoryItemsRequest request, CancellationToken cancellationToken)
         {
             var data = await _invoiceRepository.GetSellInvoiceInventoryItemsAsync(request.InvoiceId);
-            var response = new GetSellInvoiceInventoryItemsResponse(Data:data);
+            var answer = data.Select((a, i) => new GetSellInvoiceInventoryItems_DTO
+            (
+                RowNumber: i + 1,
+                InventoryItemCode: a.InventoryItem.Code.ToString(),
+                InvoiceInventoryItemId: a.Id,
+                InventoryItemId: a.InventoryItemId,
+                InventoryItemName: a.InventoryItem.Name,
+                InventoryItemCount: a.Count,
+                UnitBuyPrice: a.InventoryItem.BuyPrice.Value,
+                UnitSellPrice: a.InventoryItem.SellPrice.Value,
+                TotalPrice: a.Count * a.InventoryItem.SellPrice.Value
+            )).ToList();
+            var response = new GetSellInvoiceInventoryItemsResponse(Data: answer);
             return response;
         
         }

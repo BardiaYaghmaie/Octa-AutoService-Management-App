@@ -23,7 +23,7 @@ namespace OAS.Application.Repositories
         Task<GetInvoiceReportInfoResponse> GetInvoiceReportInfoAsync(Guid invoiceId);
         Task<List<Invoice>> GetDailySellInvoicesAsync();
         Task<List<GetSellInvoiceServices_DTO>> GetSellInvoicesServicesAsync(Guid invoiceId);
-        Task<List<GetSellInvoiceInventoryItems_DTO>> GetSellInvoiceInventoryItemsAsync(Guid invoiceId);
+        Task<List<InvoiceInventoryItem>> GetSellInvoiceInventoryItemsAsync(Guid invoiceId);
         Task<List<GetSellInvoices_InvoiceDTO>> GetSellInvoicesAsync(); 
         //Task<List<GetBuyInvoices_InvoiceDTO>> GetBuyInvoicesAsync(); 
         Task AddAsync(Invoice entity);

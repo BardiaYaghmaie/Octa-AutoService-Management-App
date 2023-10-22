@@ -126,22 +126,23 @@ namespace OAS.Persistence.Repositories
             return await _dbContext.Invoices.FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public async Task<List<GetDailySellInvoices_DTO>> GetDailySellInvoicesAsync()
+        public async Task<List<Invoice>> GetDailySellInvoicesAsync()
         {
             var data = await _dbContext.Invoices
                 .Include(a => a.Customer).Include(a => a.Vehicle).ThenInclude(a => a.Customer).Include(a => a.InvoiceInventoryItems).Include(a => a.InvoicePayments).Include(a => a.InvoiceServices).Where(a => a.Type == Domain.Enums.InvoiceType.Sell)
                 .Where(a => a.RegisterDate.Date == DateTime.Now.Date)
                 .ToListAsync();
-            var data1 = data.Where(a => a.VehicleId.HasValue || a.CustomerId.HasValue)
-            .Select((a, i) => new GetDailySellInvoices_DTO(
-                a.Id,
-                a.Code.ToString(),
-                a.VehicleId.HasValue ? a.Vehicle.Name : "",
-                a.VehicleId.HasValue ? (a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName) : a.CustomerId.HasValue ? (a.Customer.FirstName + " " + a.Customer.LastName) : "",
-                i + 1
+            //var data1 = data.Where(a => a.VehicleId.HasValue || a.CustomerId.HasValue)
+            //.Select((a, i) => new GetDailySellInvoices_DTO(
+            //    a.Id,
+            //    a.Code.ToString(),
+            //    a.VehicleId.HasValue ? a.Vehicle.Name : "",
+            //    a.VehicleId.HasValue ? (a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName) : a.CustomerId.HasValue ? (a.Customer.FirstName + " " + a.Customer.LastName) : "",
+            //    i + 1
 
-            )).ToList();
-            return data1;
+            //)).ToList();
+            //return data1;
+            return data;
         }
 
 

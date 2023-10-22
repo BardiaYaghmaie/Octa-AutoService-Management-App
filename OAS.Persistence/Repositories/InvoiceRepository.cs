@@ -121,7 +121,7 @@ namespace OAS.Persistence.Repositories
                 a.Id,
                 a.Code.ToString(),
                 a.VehicleId.HasValue ? a.Vehicle.Name : "",
-                a.VehicleId.HasValue ? (a.Vehicle.Customer.FirstName + a.Vehicle.Customer.LastName) : a.CustomerId.HasValue ? (a.Customer.FirstName + " " + a.Customer.LastName) : "",
+                a.VehicleId.HasValue ? (a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName) : a.CustomerId.HasValue ? (a.Customer.FirstName + " " + a.Customer.LastName) : "",
                 i + 1
 
             )).ToList();

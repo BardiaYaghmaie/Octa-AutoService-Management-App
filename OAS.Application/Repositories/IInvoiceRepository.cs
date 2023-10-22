@@ -24,7 +24,7 @@ namespace OAS.Application.Repositories
         Task<List<Invoice>> GetDailySellInvoicesAsync();
         Task<List<GetSellInvoiceServices_DTO>> GetSellInvoicesServicesAsync(Guid invoiceId);
         Task<List<InvoiceInventoryItem>> GetSellInvoiceInventoryItemsAsync(Guid invoiceId);
-        Task<List<GetSellInvoices_InvoiceDTO>> GetSellInvoicesAsync(); 
+        Task<List<Invoice>> GetSellInvoicesAsync(); 
         //Task<List<GetBuyInvoices_InvoiceDTO>> GetBuyInvoicesAsync(); 
         Task AddAsync(Invoice entity);
         void Delete(Invoice entity);

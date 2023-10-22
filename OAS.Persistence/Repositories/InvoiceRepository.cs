@@ -230,40 +230,41 @@ namespace OAS.Persistence.Repositories
             //return answer;
         }
 
-        public async Task<List<GetSellInvoices_InvoiceDTO>> GetSellInvoicesAsync()
+        public async Task<List<Invoice>> GetSellInvoicesAsync()
         {
             var invoices = await _dbContext.Invoices.Include(a => a.Vehicle).ThenInclude(a => a.Customer).Include(a => a.Customer).ToListAsync();
-            var inventoryItemHistories = await _dbContext.InventoryItemHistories.ToListAsync();
-            var invoicePayments = await _dbContext.InvoicePayments.ToListAsync();
-            var invoiceInventoryItems = await _dbContext.InvoiceInventoryItems.ToListAsync();
-            var data = invoices.Where(a => a.Type == Domain.Enums.InvoiceType.Sell).Select((a, i) =>
-            {
-                long paidAmount = invoicePayments.Where(b => b.InvoiceId == a.Id).Select(b => b.PaidAmount).Sum();
-                float total = 0;
-                foreach (var invoiceInventoryItem in invoiceInventoryItems.Where(b => b.InvoiceId == a.Id).ToList())
-                {
-                    float count = invoiceInventoryItem.Count;
-                    DateTime registerDate = invoiceInventoryItem.RegisterDate;
-                    var inventoryItemId = invoiceInventoryItem.InventoryItemId;
-                    var buyPrice = inventoryItemHistories.Where(b => b.InventoryItemId == inventoryItemId && b.BuyPrice.HasValue && b.UpdateDate <= registerDate).OrderByDescending(b => b.UpdateDate).Select(b => a.UseBuyPrice.HasValue && a.UseBuyPrice.Value ? b.BuyPrice : b.SellPrice.Value).FirstOrDefault() ?? 0;
-                    total += (count * buyPrice);
-                }
+            return invoices;
+            //var inventoryItemHistories = await _dbContext.InventoryItemHistories.ToListAsync();
+            //var invoicePayments = await _dbContext.InvoicePayments.ToListAsync();
+            //var invoiceInventoryItems = await _dbContext.InvoiceInventoryItems.ToListAsync();
+            //var data = invoices.Where(a => a.Type == Domain.Enums.InvoiceType.Sell).Select((a, i) =>
+            //{
+            //    long paidAmount = invoicePayments.Where(b => b.InvoiceId == a.Id).Select(b => b.PaidAmount).Sum();
+            //    float total = 0;
+            //    foreach (var invoiceInventoryItem in invoiceInventoryItems.Where(b => b.InvoiceId == a.Id).ToList())
+            //    {
+            //        float count = invoiceInventoryItem.Count;
+            //        DateTime registerDate = invoiceInventoryItem.RegisterDate;
+            //        var inventoryItemId = invoiceInventoryItem.InventoryItemId;
+            //        var buyPrice = inventoryItemHistories.Where(b => b.InventoryItemId == inventoryItemId && b.BuyPrice.HasValue && b.UpdateDate <= registerDate).OrderByDescending(b => b.UpdateDate).Select(b => a.UseBuyPrice.HasValue && a.UseBuyPrice.Value ? b.BuyPrice : b.SellPrice.Value).FirstOrDefault() ?? 0;
+            //        total += (count * buyPrice);
+            //    }
 
-                return new GetSellInvoices_InvoiceDTO
-                (
-                    InvoiceCode: a.Code.ToString(),
-                    InvoiceDate: a.RegisterDate,
-                    InvoiceDateString: a.RegisterDate.ToString(),
-                    InvoiceId: a.Id,
-                    RowNumber: i + 1,
-                    InvoiceTotalPrice: total,
-                    InvoicePaidAmount: paidAmount,
-                    VehicleName: a.Vehicle?.Name,
-                    CustomerName: a.VehicleId.HasValue ? (a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName) : (a.CustomerId.HasValue ? (a.Customer.FirstName + " " + a.Customer.LastName) : (""))
+            //    return new GetSellInvoices_InvoiceDTO
+            //    (
+            //        InvoiceCode: a.Code.ToString(),
+            //        InvoiceDate: a.RegisterDate,
+            //        InvoiceDateString: a.RegisterDate.ToString(),
+            //        InvoiceId: a.Id,
+            //        RowNumber: i + 1,
+            //        InvoiceTotalPrice: total,
+            //        InvoicePaidAmount: paidAmount,
+            //        VehicleName: a.Vehicle?.Name,
+            //        CustomerName: a.VehicleId.HasValue ? (a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName) : (a.CustomerId.HasValue ? (a.Customer.FirstName + " " + a.Customer.LastName) : (""))
 
-                );
-            }).ToList();
-            return data;
+            //    );
+            //}).ToList();
+            //return data;
         }
 
         public async Task<List<GetSellInvoiceServices_DTO>> GetSellInvoicesServicesAsync(Guid invoiceId)

@@ -10,7 +10,8 @@ namespace OAS.Application.Repositories
 {
     public interface IVehicleRepository
     {
-        Task<List<GetVehiclesMinimal_DTO>> Get();
+        Task<List<Vehicle>> GetAllAsync();
+        //Task<List<GetVehiclesMinimal_DTO>> Get();
         Task<Vehicle?> GetByIdAsync(Guid id);
     }
 }

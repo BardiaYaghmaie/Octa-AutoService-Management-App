@@ -24,6 +24,11 @@ namespace OAS.Persistence.Repositories
             await _context.InventoryItemHistories.AddAsync(entity);
         }
 
+        public async Task<List<InventoryItemHistory>> GetAllAsync()
+        {
+            return await _context.InventoryItemHistories.ToListAsync();
+        }
+
         public async Task<InventoryItemHistory?> GetLatestByInventoryItemIdAndDateAsync(Guid inventoryItemId, DateTime dateTime)
         {
             var data = await _context.InventoryItemHistories.Where(a => a.InventoryItemId == inventoryItemId && a.UpdateDate <= dateTime).OrderByDescending(a => a.UpdateDate).FirstOrDefaultAsync();

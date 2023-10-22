@@ -19,7 +19,7 @@ namespace OAS.Application.Features.CustomerFeatures.GetCustomersMinimal
 
         public async Task<GetCustomersMinimalResponse> Handle(GetCustomersMinimalRequest request, CancellationToken cancellationToken)
         {
-            var data =await  _customerRepository.Get();
+            var data =(await  _customerRepository.GetAllAsync()).Select(a => new GetCustomersMinimal_DTO(a.Id, a.Code, a.FirstName + " " + a.LastName)).ToList();
             var response = new GetCustomersMinimalResponse(data);
             return response;
         }

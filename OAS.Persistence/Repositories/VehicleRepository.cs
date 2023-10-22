@@ -19,12 +19,15 @@ namespace OAS.Persistence.Repositories
         {
             _dbContext = dbContext;
         }
-
-        public async Task<List<GetVehiclesMinimal_DTO>> Get()
+        public async Task <List<Vehicle>> GetAllAsync()
         {
-            var data = await _dbContext.Vehicles.Select(a => new GetVehiclesMinimal_DTO(a.Id, a.Code, a.Name)).ToListAsync();
-            return data;
+            return await _dbContext.Vehicles.ToListAsync();
         }
+        //public async Task<List<GetVehiclesMinimal_DTO>> Get()
+        //{
+        //    var data = await _dbContext.Vehicles.Select(a => new GetVehiclesMinimal_DTO(a.Id, a.Code, a.Name)).ToListAsync();
+        //    return data;
+        //}
 
         public Task<Vehicle?> GetByIdAsync(Guid id)
         {

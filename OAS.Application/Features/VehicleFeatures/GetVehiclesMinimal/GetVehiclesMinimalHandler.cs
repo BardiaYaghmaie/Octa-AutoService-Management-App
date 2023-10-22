@@ -19,7 +19,7 @@ namespace OAS.Application.Features.VehicleFeatures.GetVehiclesMinimal
 
         public async Task<GetVehiclesMinimalResponse> Handle(GetVehiclesMinimalRequest request, CancellationToken cancellationToken)
         {
-            var data = await _vehicleRepository.Get();
+            var data = (await _vehicleRepository.GetAllAsync()).Select(a => new GetVehiclesMinimal_DTO(a.Id, a.Code, a.Name)).ToList();
             var response = new GetVehiclesMinimalResponse(data);
             return response;
         }

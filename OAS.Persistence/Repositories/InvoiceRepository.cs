@@ -70,40 +70,56 @@ namespace OAS.Persistence.Repositories
             }
         }
 
-        public async Task<List<GetBuyInvoices_InvoiceDTO>> GetBuyInvoicesAsync()
+        public Task<List<Invoice>> GetAllAsync()
         {
-            var invoices = await _dbContext.Invoices.ToListAsync();
-            var inventoryItemHistories = await _dbContext.InventoryItemHistories.ToListAsync();
-            var invoicePayments = await _dbContext.InvoicePayments.ToListAsync();
-            var invoiceInventoryItems = await _dbContext.InvoiceInventoryItems.ToListAsync();
-            var data = invoices.Where(a => a.Type == Domain.Enums.InvoiceType.Buy).Select((a, i) =>
-            {
-                long paidAmount = invoicePayments.Where(b => b.InvoiceId == a.Id).Select(b => b.PaidAmount).Sum();
-                float total = 0;
-                foreach (var invoiceInventoryItem in invoiceInventoryItems.Where(b => b.InvoiceId == a.Id).ToList())
-                {
-                    float count = invoiceInventoryItem.Count;
-                    DateTime registerDate = invoiceInventoryItem.RegisterDate;
-                    var inventoryItemId = invoiceInventoryItem.InventoryItemId;
-                    var buyPrice = inventoryItemHistories.Where(b => b.InventoryItemId == inventoryItemId && b.BuyPrice.HasValue && b.UpdateDate <= registerDate).OrderByDescending(b => b.UpdateDate).Select(b => b.BuyPrice.Value).First();
-                    total += (count * buyPrice);
-                }
-
-                return new GetBuyInvoices_InvoiceDTO
-                (
-                    SellerName: a.SerllerName,
-                    InvoiceCode: a.Code.ToString(),
-                    InvoiceDate: a.RegisterDate,
-                    InvoiceDateString: a.RegisterDate.ToString(),
-                    InvoiceId: a.Id,
-                    RowNumber: i + 1,
-                    InvoiceTotalPrice: total,
-                    InvoicePaidAmount: paidAmount
-
-                );
-            }).ToList();
-            return data;
+            return _dbContext.Invoices.ToListAsync();
         }
+
+        public Task<List<InvoiceInventoryItem>> GetAllInvoiceInventoryItemsAsync()
+        {
+            return _dbContext.InvoiceInventoryItems.ToListAsync();
+        }
+
+        public Task<List<InvoicePayment>> GetAllInvoicePaymentsAsync()
+        {
+            return _dbContext.InvoicePayments.ToListAsync();
+
+        }
+
+        //public async Task<List<GetBuyInvoices_InvoiceDTO>> GetBuyInvoicesAsync()
+        //{
+        //    var invoices = await _dbContext.Invoices.ToListAsync();
+        //    var inventoryItemHistories = await _dbContext.InventoryItemHistories.ToListAsync();
+        //    var invoicePayments = await _dbContext.InvoicePayments.ToListAsync();
+        //    var invoiceInventoryItems = await _dbContext.InvoiceInventoryItems.ToListAsync();
+        //    var data = invoices.Where(a => a.Type == Domain.Enums.InvoiceType.Buy).Select((a, i) =>
+        //    {
+        //        long paidAmount = invoicePayments.Where(b => b.InvoiceId == a.Id).Select(b => b.PaidAmount).Sum();
+        //        float total = 0;
+        //        foreach (var invoiceInventoryItem in invoiceInventoryItems.Where(b => b.InvoiceId == a.Id).ToList())
+        //        {
+        //            float count = invoiceInventoryItem.Count;
+        //            DateTime registerDate = invoiceInventoryItem.RegisterDate;
+        //            var inventoryItemId = invoiceInventoryItem.InventoryItemId;
+        //            var buyPrice = inventoryItemHistories.Where(b => b.InventoryItemId == inventoryItemId && b.BuyPrice.HasValue && b.UpdateDate <= registerDate).OrderByDescending(b => b.UpdateDate).Select(b => b.BuyPrice.Value).First();
+        //            total += (count * buyPrice);
+        //        }
+
+        //        return new GetBuyInvoices_InvoiceDTO
+        //        (
+        //            SellerName: a.SerllerName,
+        //            InvoiceCode: a.Code.ToString(),
+        //            InvoiceDate: a.RegisterDate,
+        //            InvoiceDateString: a.RegisterDate.ToString(),
+        //            InvoiceId: a.Id,
+        //            RowNumber: i + 1,
+        //            InvoiceTotalPrice: total,
+        //            InvoicePaidAmount: paidAmount
+
+        //        );
+        //    }).ToList();
+        //    return data;
+        //}
 
         public async Task<Invoice?> GetById(Guid id)
         {

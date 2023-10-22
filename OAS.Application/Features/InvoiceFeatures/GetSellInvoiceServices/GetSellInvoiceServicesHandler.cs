@@ -23,7 +23,18 @@ namespace OAS.Application.Features.InvoiceFeatures.GetSellInvoiceServices
         {
 
             var data = await _invoiceRepository.GetSellInvoicesServicesAsync(request.InvoiceId);
-            var response = new GetSellInvoiceServicesResponse(Data: data);
+            var answer = data.Select((a, i) => new GetSellInvoiceServices_DTO
+          (
+              Code: a.Service.Code.ToString(),
+              ServiceId: a.ServiceId,
+              InvoiceServiceId: a.Id,
+              RowNumber: i + 1,
+              ServiceName: a.Service.Name,
+              Count: 1, //todo
+              UnitPrice: a.Price,
+              TotalPrice: a.Price
+          )).ToList();
+            var response = new GetSellInvoiceServicesResponse(Data: answer);
             return response;
 
         }

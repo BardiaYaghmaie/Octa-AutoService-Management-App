@@ -267,21 +267,22 @@ namespace OAS.Persistence.Repositories
             //return data;
         }
 
-        public async Task<List<GetSellInvoiceServices_DTO>> GetSellInvoicesServicesAsync(Guid invoiceId)
+        public async Task<List<InvoiceService>> GetSellInvoicesServicesAsync(Guid invoiceId)
         {
             var data = await _dbContext.InvoiceServices.Include(a => a.Service).Where(a => a.InvoiceId == invoiceId).ToListAsync();
-            var answer = data.Select((a, i) => new GetSellInvoiceServices_DTO
-            (
-                Code: a.Service.Code.ToString(),
-                ServiceId: a.ServiceId,
-                InvoiceServiceId: a.Id,
-                RowNumber: i + 1,
-                ServiceName: a.Service.Name,
-                Count: 1, //todo
-                UnitPrice: a.Price,
-                TotalPrice: a.Price
-            )).ToList();
-            return answer;
+            return data;
+            //var answer = data.Select((a, i) => new GetSellInvoiceServices_DTO
+            //(
+            //    Code: a.Service.Code.ToString(),
+            //    ServiceId: a.ServiceId,
+            //    InvoiceServiceId: a.Id,
+            //    RowNumber: i + 1,
+            //    ServiceName: a.Service.Name,
+            //    Count: 1, //todo
+            //    UnitPrice: a.Price,
+            //    TotalPrice: a.Price
+            //)).ToList();
+            //return answer;
 
         }
 

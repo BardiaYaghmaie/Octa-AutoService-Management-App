@@ -31,6 +31,11 @@
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="CustomerName" Title=" مشتری" />
             <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="VehicleName" Title="خودرو" />
+            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO"  Title="قیمت کل">
+                <Template Context="item">
+                    @item.Total.ToString("#,##0").En2Fa()
+                </Template>
+            </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Title="عملیات">
                 <Template Context="item">
                     <RadzenButton Click="() => OnEditInvoice(item.InvoiceId)" Icon="edit"></RadzenButton>

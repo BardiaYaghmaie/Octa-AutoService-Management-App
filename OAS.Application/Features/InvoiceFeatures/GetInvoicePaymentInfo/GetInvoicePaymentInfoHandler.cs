@@ -4,6 +4,8 @@ using OAS.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,16 +27,34 @@ namespace OAS.Application.Features.InvoiceFeatures.GetInvoicePaymentInfo
             _inventoryItemHistoryRepository = inventoryItemHistoryRepository;
             _serviceHistoryRepository = serviceHistoryRepository;
         }
+        private async Task<float> CalculateInvoiceTotalCost(Guid invoiceId)
+        {
+            float total = 0;
+            var invoice = await _invoiceRepository.GetById(invoiceId);
+            bool invoiceUseBuyPrice = invoice.UseBuyPrice.HasValue ? invoice.UseBuyPrice.Value : false;
+            var invoiceInventoryItems = await _invoiceRepository.GetInvoiceInventoryItemsByInvoiceId(invoiceId);
+            var invoiceServiceItems = await _invoiceRepository.GetInvoiceServicesByInvoiceIdAsync(invoiceId);
+            foreach (var item in invoiceInventoryItems)
+            {
+                var inventoryItemHistory = await _inventoryItemHistoryRepository.GetLatestByInventoryItemIdAndDateAsync(item.InventoryItemId, item.RegisterDate);
+                total += invoiceUseBuyPrice ? (item.Count * inventoryItemHistory.BuyPrice.Value) : (item.Count * inventoryItemHistory.SellPrice.Value);
+            }
 
+            foreach (var item in invoiceServiceItems)
+            {
+                var serviceHistory = await _serviceHistoryRepository.GetLatestServiceHistoryByServiceIdAndDate(item.ServiceId, item.RegisterDate);
+                total += (1 * item.Price);
+            }
+            return total;
+        }
         public async Task<GetInvoicePaymentInfoResponse> Handle(GetInvoicePaymentInfoRequest request, CancellationToken cancellationToken)
         {
             Customer? customer = null;
             Vehicle? vehicle = null;
-            float total = 0;
-            bool invoiceUseBuyPrice = false;
+    
             var invoice = await _invoiceRepository.GetById(request.InvoiceId);
             var response = new GetInvoicePaymentInfoResponse();
-            invoiceUseBuyPrice = invoice.UseBuyPrice.HasValue ? invoice.UseBuyPrice.Value : false;
+
             response.InvoiceId = invoice.Id;
             response.InvoiceType = invoice.Type;
             response.SellerName = invoice.SerllerName;
@@ -72,20 +92,8 @@ namespace OAS.Application.Features.InvoiceFeatures.GetInvoicePaymentInfo
             var invoicePayments = await _invoiceRepository.GetInvoicePaymentsByInvoiceIdAsync(request.InvoiceId);
             var totalPaid = invoicePayments.Sum(a => a.PaidAmount);
             response.PaidAmoutSoFar = totalPaid;
-            var invoiceInventoryItems = await _invoiceRepository.GetInvoiceInventoryItemsByInvoiceId(request.InvoiceId);
-            var invoiceServiceItems = await _invoiceRepository.GetInvoiceServicesByInvoiceIdAsync(request.InvoiceId);
-            foreach (var item in invoiceInventoryItems)
-            {
-                var inventoryItemHistory = await _inventoryItemHistoryRepository.GetLatestByInventoryItemIdAndDateAsync(item.InventoryItemId, item.RegisterDate);
-                total += invoiceUseBuyPrice ? (item.Count * inventoryItemHistory.BuyPrice.Value) : (item.Count * inventoryItemHistory.SellPrice.Value);
-            }
-
-            foreach (var item in invoiceServiceItems)
-            {
-                var serviceHistory = await _serviceHistoryRepository.GetLatestServiceHistoryByServiceIdAndDate(item.ServiceId, item.RegisterDate);
-                total += (1 * item.Price);
-            }
-            response.Total = total;
+           
+            response.Total =await  this.CalculateInvoiceTotalCost(invoice.Id);
             response.PaymentHistoryDTOs = invoicePayments.Select(a => new GetInvoicePaymentInfo_InvoicePaymentHistoryDTO()
             {
                 InvoiceId = a.InvoiceId,

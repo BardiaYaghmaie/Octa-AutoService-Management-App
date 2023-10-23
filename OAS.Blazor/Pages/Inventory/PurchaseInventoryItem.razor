@@ -83,7 +83,7 @@
                         <RadzenTextBox Name="Count" @bind-Value="@addNewInvoiceInventoryItemModel.Count" />
                         <RadzenRequiredValidator Component="Count" Text="تعداد خرید را وارد کنید" Popup=@popup Style="position: absolute;top:40px" />
                     </RadzenFormField>
-                    
+
                     @* <RadzenFormField Text="حداقل موجودی" Variant="Variant.Outlined"> *@
                     @*     <RadzenTextBox Name="Limit" @bind-Value="@addNewInvoiceInventoryItemModel.Limit" /> *@
                     @*     <RadzenRequiredValidator Component="Limit" Text="حداقل موجودی  را وارد کنید" Popup=@popup Style="position: absolute;top:40px" /> *@
@@ -112,6 +112,7 @@
                 <tr>
                     <th>نام کالا</th>
                     <th>کد</th>
+                    <th>تعداد</th>
                     <th>قمیت خرید</th>
                     <th>قیمت فروش</th>
                     <th></th>
@@ -123,16 +124,17 @@
                     <tr>
                         <td>@item.Title</td>
                         <td>@item.Code.En2Fa()</td>
+                        <td>@float.Parse(item.Count).ToString("#,##0").En2Fa()</td>
                         <td>@long.Parse(item.BuyPrice).ToString("#,##0").En2Fa().AppendRialIran()</td>
                         <td>@long.Parse(item.SellPrice).ToString("#,##0").En2Fa().AppendRialIran()</td>
-                        @* Here in buy invoice, the sell price is not needed 
-                        and the important missing thing is "BuyCount" not the whole 
-                        count in inventory, but the specefic invoice buy items
-                        
-                        for example there are 80 of A in inventory, if now there is 85
-                        the buy count is 5
-                        <td></td>
-                        *@
+                        @* Here in buy invoice, the sell price is not needed
+                    and the important missing thing is "BuyCount" not the whole
+                    count in inventory, but the specefic invoice buy items
+
+                    for example there are 80 of A in inventory, if now there is 85
+                    the buy count is 5
+                    <td></td>
+                    *@
                         <td class="text-danger" @onclick="() => RemoveInvoiceInventoryItem(item.InventoryItemId)">X</td>
                     </tr>
                 }
@@ -187,6 +189,8 @@
         public string Code { get; set; }
         public string BuyPrice { get; set; }
         public string SellPrice { get; set; }
+        public string Count { get; set; }
+
     }
     private void OnClickCancel()
     {
@@ -329,7 +333,7 @@
                 error = "لطفا کالای تکراری ثبت نکنید";
                 return;
             }
-            CreateBuyInvoice_InventoryItemDTO dto = new(addNewInvoiceInventoryItemModel.Id, long.Parse(addNewInvoiceInventoryItemModel.BuyPrice), long.Parse(addNewInvoiceInventoryItemModel.SellPrice), float.Parse(addNewInvoiceInventoryItemModel.Count) , 0);
+            CreateBuyInvoice_InventoryItemDTO dto = new(addNewInvoiceInventoryItemModel.Id, long.Parse(addNewInvoiceInventoryItemModel.BuyPrice), long.Parse(addNewInvoiceInventoryItemModel.SellPrice), float.Parse(addNewInvoiceInventoryItemModel.Count), 0);
             invoiceInventoryItems.Add(dto);
             gridData.Add(new GridDataModel()
                 {
@@ -337,7 +341,8 @@
                     Title = addNewInvoiceInventoryItemModel.Title,
                     Code = addNewInvoiceInventoryItemModel.Code,
                     BuyPrice = addNewInvoiceInventoryItemModel.BuyPrice,
-                    SellPrice = addNewInvoiceInventoryItemModel.SellPrice
+                    SellPrice = addNewInvoiceInventoryItemModel.SellPrice,
+                    Count = addNewInvoiceInventoryItemModel.Count
                 });
             error = "";
         }

@@ -116,7 +116,7 @@
     {
         try
         {
-            var request = new AddInvoiceRequest(InvoiceId, newPayments.Select(a => new Tuple<string, long>(a.TrackCode, a.PaidAmount)).ToList());
+            var request = new AddInvoicePaymentRequest(InvoiceId, newPayments.Select(a => new Tuple<string, long>(a.TrackCode, a.PaidAmount)).ToList());
             var response = await mediator.Send(request);
             dialogService.Close();
         }            

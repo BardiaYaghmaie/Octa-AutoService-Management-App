@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace OAS.Application.Features.InvoiceFeatures.AddSellInvoicePayment
 {
-    public sealed record AddInvoiceResponse(Guid InvoiceId);    
+    public sealed record AddInvoicePaymentResponse(Guid InvoiceId);    
 }

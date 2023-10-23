@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace OAS.Application.Features.InvoiceFeatures.AddSellInvoicePayment
 {
-    public sealed class AddInvoiceHandler : IRequestHandler<AddInvoiceRequest, AddInvoiceResponse>
+    public sealed class AddInvoicePaymentHandler : IRequestHandler<AddInvoicePaymentRequest, AddInvoicePaymentResponse>
     {
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IInventoryItemHistoryRepository  _inventoryItemHistoryRepository;
         private readonly IServiceHistoryRepository  _serviceHistoryRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddInvoiceHandler(IInvoiceRepository invoiceRepository, IUnitOfWork unitOfWork, IInventoryItemHistoryRepository inventoryItemHistoryRepository, IServiceHistoryRepository serviceHistoryRepository)
+        public AddInvoicePaymentHandler(IInvoiceRepository invoiceRepository, IUnitOfWork unitOfWork, IInventoryItemHistoryRepository inventoryItemHistoryRepository, IServiceHistoryRepository serviceHistoryRepository)
         {
             _invoiceRepository = invoiceRepository;
             _unitOfWork = unitOfWork;
@@ -24,7 +24,7 @@ namespace OAS.Application.Features.InvoiceFeatures.AddSellInvoicePayment
             _serviceHistoryRepository = serviceHistoryRepository;
         }
 
-        public async Task<AddInvoiceResponse> Handle(AddInvoiceRequest request, CancellationToken cancellationToken)
+        public async Task<AddInvoicePaymentResponse> Handle(AddInvoicePaymentRequest request, CancellationToken cancellationToken)
         {
             Invoice? invoice = await _invoiceRepository.GetById(request.InvoiceId);
             if (invoice == null)
@@ -62,7 +62,7 @@ namespace OAS.Application.Features.InvoiceFeatures.AddSellInvoicePayment
 
             await _invoiceRepository.AddInvoicePaymentsAsync(invoicePayments);
             await _unitOfWork.SaveAsync(cancellationToken);
-            var response = new AddInvoiceResponse(invoice.Id);
+            var response = new AddInvoicePaymentResponse(invoice.Id);
             return response;
 
         }

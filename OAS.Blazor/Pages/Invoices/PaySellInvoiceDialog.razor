@@ -28,6 +28,7 @@
 
                 </RadzenText>
             }
+            <RadzenButton Click="OnQuickPay" Text="پرداخت آنی" ButtonStyle="ButtonStyle.Warning" Style="width: 200px;margin-top:30px" />
         </RadzenRow>
         <br />
         <span class="text-danger">@error</span>
@@ -107,6 +108,10 @@
 
 @code {
     private bool popup = false;
+    private void OnQuickPay()
+    {
+        addPaymentModel.Amount = (Response.Total - Response.PaidAmoutSoFar).ToString();
+    }
     private async Task onFinalSubmit()
     {
         try
@@ -184,6 +189,4 @@
             throw e;
         }
     }
-    public string test;
-
 }

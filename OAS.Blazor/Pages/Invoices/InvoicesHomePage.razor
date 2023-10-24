@@ -1,5 +1,6 @@
 @page "/invoices"
 @inject DialogService DialogService
+@inject NavigationManager NavigationManager
 
 @inject IMediator mediator;
 <MudRTLProvider RightToLeft="true">
@@ -33,9 +34,12 @@
                         @item.InvoiceTotalPrice.ToString("#,##0").En2Fa().AppendRialIran()
                     </Template>
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Title="قیمت کل">
+                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Title="عملیات">
                     <Template Context="item">
                         <RadzenButton Click="() => OpenPaySellInvoice(item.InvoiceId)">$</RadzenButton>
+                        <RadzenButton Click="() => OnPrintInvoice(item.InvoiceId)" Icon="print"></RadzenButton>
+                        
+
                     </Template>
                 </RadzenDataGridColumn>
                 @*                <RadzenDataGridColumn TItem="GetSellInvoices_InvoiceDTO" Property="State" Title="وضعیت" />
@@ -117,6 +121,10 @@
         {
             error = "خطا هنگام خواندن اطلاعات";
         }
+    }
+    private void OnPrintInvoice(Guid invoiceId)
+    {
+        NavigationManager.NavigateTo($"/printInvoice/{invoiceId}");
     }
 
 }

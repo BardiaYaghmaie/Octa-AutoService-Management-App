@@ -1,15 +1,14 @@
-
 @inject Radzen.DialogService dialogService
 @inject IMediator mediator;
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
         <RadzenFormField Text="کد اشتراک خودرو" Variant="Variant.Outlined">
-            <RadzenTextBox @bind-Value="@VehicleCode"/>
+            <RadzenTextBox @bind-Value="@VehicleCode" />
         </RadzenFormField>
     </RadzenRow>
-    <br/>
+    <br />
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-        <RadzenButton Text="ثبت فاکتور" Click="CreateSellInvoice" ButtonStyle="ButtonStyle.Success" Style="width: 200px"/>
+        <RadzenButton Text="ثبت فاکتور" Click="CreateSellInvoice" ButtonStyle="ButtonStyle.Success" Style="width: 200px" />
         <RadzenButton Text="ثبت فاکتور متفرقه" Click="CreateMiscellaneousSellInvoice" ButtonStyle="ButtonStyle.Info" Variant="Variant.Outlined" Style="width: 180px" />
     </RadzenRow>
     <p class="text-danger">@error</p>
@@ -19,13 +18,21 @@
     public Func<Task> RefreshGridData { get; set; }
     private async Task CreateMiscellaneousSellInvoice()
     {
-        var request = new CreateMiscellaneousSellInvoiceRequest();
-        var response = await mediator.Send(request);
-        await RefreshGridData();
-        dialogService.Close();
+        try
+        {
+            var request = new CreateMiscellaneousSellInvoiceRequest();
+            var response = await mediator.Send(request);
+            await RefreshGridData();
+            dialogService.Close();
+        }
+
+        catch (Exception e)
+        {
+            error = "خطا در ساخت فاکتور متفرقه";
+        }
     }
     public string VehicleCode { get; set; }
-    private List<GetVehiclesMinimal_DTO> vehicles = new ();
+    private List<GetVehiclesMinimal_DTO> vehicles = new();
     private string error = "";
     protected override async Task OnInitializedAsync()
     {
@@ -51,7 +58,7 @@
             error = "";
             await RefreshGridData();
             dialogService.Close(true);
-        
+
         }
         catch (ArgumentNullException e)
         {

@@ -25,7 +25,7 @@ namespace OAS.Application.Features.InvoiceFeatures.CreateMiscellaneousSellInvoic
         {            
             Invoice invoice = new();
             invoice.Id = Guid.NewGuid();
-            invoice.CustomerId= Guid.Parse("245db4b9-4aed-43e5-a02a-001202523e86");
+            invoice.CustomerId= Guid.Parse("e7ee7b39-c393-4c5a-85f9-35568138943b");
             invoice.RegisterDate = DateTime.Now;
             invoice.Code = await _invoiceRepository.GetNewInvoiceCode();
             invoice.Type = Domain.Enums.InvoiceType.Sell;

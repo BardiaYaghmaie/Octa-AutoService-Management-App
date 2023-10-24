@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using OAS.Application.Repositories;
+using OAS.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace OAS.Application.Features.CustomerFeatures.GetCustomers
                 Code = a.Code.ToString(),
                 FirstName = a.FirstName,
                 LastName = a.LastName,
-                RowNumber = i + 1
+                RowNumber = i + 1,
+                CustomerPhoneNumber = a.PhoneNumber
             }).ToList();
             var response = new GetCustomersResponse
             {

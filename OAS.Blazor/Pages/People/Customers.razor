@@ -20,7 +20,7 @@
               </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="کد">
                 <Template Context="item">
-                    @item.Code.ToString().En2Fa()
+                    @item.CustomerPhoneNumber.ToString().En2Fa()
                 </Template>
             </RadzenDataGridColumn>
 

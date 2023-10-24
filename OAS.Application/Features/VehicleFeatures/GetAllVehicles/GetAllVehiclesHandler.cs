@@ -36,7 +36,7 @@ namespace OAS.Application.Features.VehicleFeatures.GetAllVehicles
                     RowNumber = i,
                     VehicleCode = vehicle.Code.ToString(),
                     VehicleId = vehicle.Id,
-                    VehicleName = vehicle.Name,
+                    VehicleName = vehicle.Name
                 });
                 i++;
             }

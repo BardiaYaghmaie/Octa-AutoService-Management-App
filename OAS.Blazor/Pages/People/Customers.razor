@@ -1,38 +1,44 @@
 ﻿@page "/Customers"
+@using OAS.Application.Features.CustomerFeatures.GetCustomers;
 @inject IMediator mediator
 
 <MudRTLProvider RightToLeft="true">
-    
-    @* <RadzenDataGrid Data="_customers" TItem="GetCustomersMinimal_DTO" AllowVirtualization="false" Style="height:400px" *@
-    @*                 AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or" *@
-    @*                 AllowSorting="true"> *@
-    @*     <Columns> *@
-    @*         <RadzenDataGridColumn TItem="GetCustomersMinimal_DTO" Title="ردیف"> *@
-    @*             <Template Context="item"> *@
-    @*                 @item.FirstName.ToString().En2Fa() *@
-    @*             </Template> *@
-    @*         </RadzenDataGridColumn> *@
-    @*         <RadzenDataGridColumn TItem="GetCustomersMinimal_DTO" Title="نام و نام خانوادگی"> *@
-    @*             <Template Context="item"> *@
-    @*                 @item.FirstName.ToString().En2Fa() *@
-    @*             </Template> *@
-    @*         </RadzenDataGridColumn> *@
-    @* *@
-    @*         $1$ <RadzenDataGridColumn TItem="GetCustomersMinimal_DTO" Title="عملیات"> #1# *@
-    @*         $1$     <Template Context="item"> #1# *@
-    @*         $1$         <RadzenButton Click=@OpenRegisterCustomer>+</RadzenButton> #1# *@
-    @*         $1$     </Template> #1# *@
-    @*         $1$ </RadzenDataGridColumn> #1# *@
-    @* *@
-    @*     </Columns> *@
-    @* </RadzenDataGrid> *@
 
-    <ul>
+    <RadzenDataGrid Data="_customers" TItem="GetCustomersResponse_DTO" AllowVirtualization="false" Style="height:400px"
+                    AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"  
+                      AllowSorting="true">  
+          <Columns>
+            <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="ردیف">
+                <Template Context="item">  
+                      @item.RowNumber.ToString().En2Fa()  
+                  </Template>  
+              </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="نام و نام خانوادگی">
+                <Template Context="item">
+                    @(item.FirstName.ToString().En2Fa() + " " + @item.LastName.ToString().En2Fa())
+                </Template>  
+              </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="کد">
+                <Template Context="item">
+                    @item.Code.ToString().En2Fa()
+                </Template>
+            </RadzenDataGridColumn>
+
+           @*  <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="عملیات">
+                <Template Context="item"> 
+                     <RadzenButton Click=@OpenRegisterCustomer>+</RadzenButton> 
+                  </Template> 
+               </RadzenDataGridColumn> *@
+       
+          </Columns>  
+      </RadzenDataGrid>  
+
+    @*<ul>
         @foreach (var c in _customers)
         {
             <li>@c.Name -- @c.Code -- @c.Id</li>
         }
-    </ul>
+    </ul>*@
     <p class="text-danger">@error</p>
 
 </MudRTLProvider>
@@ -40,14 +46,14 @@
 
 
 @code {
-    private List<GetCustomersMinimal_DTO> _customers = new();
+    private List<GetCustomersResponse_DTO> _customers = new();
     private string error = "";
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            var request = new GetCustomersMinimalRequest();
+            var request = new GetCustomersRequest();
             var response = await mediator.Send(request);
 
             var customers = response.Data;

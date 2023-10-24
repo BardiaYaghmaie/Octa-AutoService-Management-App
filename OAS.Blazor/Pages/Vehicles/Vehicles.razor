@@ -1,20 +1,67 @@
 ﻿@page "/Vehicles"
+@using OAS.Application.Features.VehicleFeatures.GetAllVehicles;
 @inject IMediator mediator
-
+@*
 <MudRTLProvider RightToLeft="true">
     <ul>
-        @foreach (var c in _customers)
+        @foreach (var c in _vehicles)
         {
             <li>@c.Name -- @c.Code -- @c.Id</li>
         }
     </ul>
     <p class="text-danger">@error</p>
 </MudRTLProvider>
+*@
+<MudRTLProvider RightToLeft="true">
 
+    <RadzenDataGrid Data="_vehicles" TItem="GetAllVehiclesResponse_DTO" AllowVirtualization="false" Style="height:400px"
+                    AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
+                    AllowSorting="true">
+        <Columns>
+            <RadzenDataGridColumn TItem="GetAllVehiclesResponse_DTO" Title="ردیف">
+                <Template Context="item">
+                    @item.RowNumber.ToString().En2Fa()
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="GetAllVehiclesResponse_DTO" Title="نام خودرو">
+                <Template Context="item">
+                    @item.VehicleName.ToString().En2Fa()
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="GetAllVehiclesResponse_DTO" Title="کد خودرو">
+                <Template Context="item">
+                    @item.VehicleCode.ToString().En2Fa()
+                </Template>
+            </RadzenDataGridColumn>
+           
+            <RadzenDataGridColumn TItem="GetAllVehiclesResponse_DTO" Title="نام مالک">
+                <Template Context="item">
+                    @(item.FirstName.ToString().En2Fa() + " " + @item.LastName.ToString().En2Fa())
+                </Template>
+            </RadzenDataGridColumn>        
+
+            @*  <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="عملیات">
+            <Template Context="item">
+            <RadzenButton Click=@OpenRegisterCustomer>+</RadzenButton>
+            </Template>
+            </RadzenDataGridColumn> *@
+
+        </Columns>
+    </RadzenDataGrid>
+
+    @*<ul>
+    @foreach (var c in _customers)
+    {
+    <li>@c.Name -- @c.Code -- @c.Id</li>
+    }
+    </ul>*@
+    <p class="text-danger">@error</p>
+
+</MudRTLProvider>
 
 
 @code {
-    private List<GetVehiclesMinimal_DTO> _customers = new();
+    private List<GetAllVehiclesResponse_DTO> _vehicles = new();
     private string error = "";
     protected override async Task OnInitializedAsync()
     {
@@ -22,11 +69,11 @@
         {
 
 
-            var request = new GetVehiclesMinimalRequest();
+            var request = new GetAllVehiclesRequest();
             var response = await mediator.Send(request);
 
-            var customers = response.Data;
-            _customers = customers;
+            var vehicles = response.Data;
+            _vehicles = vehicles;
         }
         catch (Exception)
         {

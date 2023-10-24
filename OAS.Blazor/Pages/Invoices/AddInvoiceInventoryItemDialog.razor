@@ -112,7 +112,7 @@
         {
             if (inventoryItems.First(a => a.Id == model.InventoryItemId).Count < float.Parse(model.Count))
             {
-                error = $"موجودی در انبار ${float.Parse(model.Count)} عدد است ، تعداد وارد شده غیر مجاز است";
+                error = $"موجودی در انبار {inventoryItems.First(a => a.Id == model.InventoryItemId).Count} عدد است ، تعداد وارد شده غیر مجاز است";
                 return;
 
             }

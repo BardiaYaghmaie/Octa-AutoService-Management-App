@@ -93,6 +93,28 @@
 
     </RadzenRow>
     <br />
+    <RadzenRow JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenFormField Text="کیلومتراژ فعلی" Variant="Variant.Outlined">
+            <RadzenTextBox Name=""  />
+        </RadzenFormField>
+        <RadzenFormField Text="کیلومتراژ سرویس بعدی روغن موتور" Variant="Variant.Outlined">
+            <RadzenTextBox Name=""  />
+        </RadzenFormField>
+        <RadzenFormField Text="کیلومتراژ سرویس بعدی روغن گیربکس" Variant="Variant.Outlined">
+            <RadzenTextBox Name=""  />
+        </RadzenFormField>
+        <RadzenFormField Text="کیلومتراژ سرویس بعدی روغن فرمون" Variant="Variant.Outlined">
+            <RadzenTextBox Name=""  />
+        </RadzenFormField>
+    </RadzenRow>
+    <br/>
+    <RadzenRow>
+        <RadzenFormField Text="توضیحات بیشتر" Variant="Variant.Outlined">
+            <RadzenTextBox Name=""  Style="width: 500px; height: 100px"/>
+        </RadzenFormField>
+        
+    </RadzenRow>
+    <br/>
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
         <RadzenColumn>
             <RadzenCheckBox @bind-Value=@useBuyPrice Name="BuyPrice_CB" />

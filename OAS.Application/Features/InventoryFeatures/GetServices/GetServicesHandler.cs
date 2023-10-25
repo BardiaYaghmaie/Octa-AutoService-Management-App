@@ -21,7 +21,7 @@ namespace OAS.Application.Features.Inventory.GetServices
         public async Task<GetServicesResponse> Handle(GetServicesRequest request, CancellationToken cancellationToken)
         {
             var services = await _serviceRepository.GetAllAsync();
-            var serviceDTOs = services.Select((item, index) =>
+            var serviceDTOs = services.OrderBy(a=> a.Code).Select((item, index) =>
             {
                 return new ServiceDTO(
                     RowNumber: index + 1,

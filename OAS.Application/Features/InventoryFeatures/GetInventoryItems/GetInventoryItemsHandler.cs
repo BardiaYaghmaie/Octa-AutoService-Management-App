@@ -21,7 +21,7 @@ namespace OAS.Application.Features.Inventory.GetInventoryItems
         public async Task<GetInventoryItemsResponse> Handle(GetInventoryItemsRequest request, CancellationToken cancellationToken)
         {
             var inventories = await _inventoryItemRepository.GetAllAsync();
-            var inventoryItemDTOs=inventories.Select((item, index) =>
+            var inventoryItemDTOs=inventories.OrderBy(a=> a.Code).Select((item, index) =>
             {
                 return new InventoryItemDTO(RowNumber: index + 1,
                     Code: item.Code.ToString(),

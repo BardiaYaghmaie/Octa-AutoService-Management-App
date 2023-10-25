@@ -36,6 +36,7 @@ namespace OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInven
                 throw new Exception("invalid invoice");
             invoice.UseBuyPrice = request.UseBuyPrice;
             invoice.UpdateDate = datetimeNow;
+            invoice.Description = request.Description;
             List<InvoiceService> invoiceServices = request.ServiceIdsAndPrices.Select(a => new InvoiceService
             {
                 Id = Guid.NewGuid(),

@@ -178,7 +178,6 @@ namespace OAS.Persistence.Repositories
             List<GetInvoiceReportInfo_ItemDTO> items = new();
             int rowNumber = 1;
             float invoiceTotal = 0;
-            float invoiceTax = 0;
             float invoiceDiscount = invoice.DiscountAmount.HasValue ? invoice.DiscountAmount.Value : 0;
             foreach (var item in invoiceInventoryItems)
             {
@@ -194,7 +193,9 @@ namespace OAS.Persistence.Repositories
                 rowNumber++;
                 invoiceTotal += 1 * unitPrice;
             }
-            var answer = new GetInvoiceReportInfoResponse(invoiceCode, vehicleCode, customerName, vehicleName, vehiclePlate, vehicleColor, invoiceDate, invoiceTotal, invoiceDiscount, invoiceTax, (invoiceTotal - invoiceTax - invoiceDiscount), items);
+            float invoiceTax = 9f/100f * (invoiceTotal);
+
+            var answer = new GetInvoiceReportInfoResponse(invoiceCode, vehicleCode, customerName, vehicleName, vehiclePlate, vehicleColor, invoiceDate, invoiceTotal, invoiceDiscount, invoiceTax, (invoiceTotal + invoiceTax - invoiceDiscount),invoice.Description, items);
             return answer;
 
         }

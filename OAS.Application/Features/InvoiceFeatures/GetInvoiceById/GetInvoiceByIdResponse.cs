@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace OAS.Application.Features.InvoiceFeatures.GetInvoiceById
 {
-    public sealed record GetInvoiceByIdResponse(Guid Id  , string Code,bool UseBuyPrice);    
+    public sealed record GetInvoiceByIdResponse(Guid Id  , string Code,bool UseBuyPrice , string Description);    
 }

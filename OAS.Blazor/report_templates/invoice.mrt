@@ -6,7 +6,7 @@
     <DataSources isList="true" count="2">
       <InvoiceInfo Ref="2" type="Stimulsoft.Report.Dictionary.StiBusinessObjectSource" isKey="true">
         <Alias>InvoiceInfo</Alias>
-        <Columns isList="true" count="11">
+        <Columns isList="true" count="16">
           <value>ORIGINAL,CustomerName,CustomerName,CustomerName,System.String,_x0034_f05b0f9fdf34bdab544bc4bb154349c</value>
           <value>ORIGINAL,VehicleName,VehicleName,VehicleName,System.String,f73b348f7d814a808934f5e8007174c1</value>
           <value>ORIGINAL,VehicleCode,VehicleCode,VehicleCode,System.String,_x0036_e3e5b97cfe04e91a7e6c42dce5f7b67</value>
@@ -18,6 +18,11 @@
           <value>ToPay,System.String</value>
           <value>VehiclePlate,System.String</value>
           <value>VehicleColor,System.String</value>
+          <value>Description,System.String</value>
+          <value>MileageOfTheNextSteeringOilService,System.String</value>
+          <value>MileageOfTheNextGearboxOilService,System.String</value>
+          <value>CurrentMileage,System.String</value>
+          <value>MileageOfTheNextEngineOilService,System.String</value>
         </Columns>
         <Dictionary isRef="1" />
         <Key>8a7f46fb316e43978188be88053df2fc</Key>
@@ -52,7 +57,7 @@
     <Page1 Ref="4" type="Page" isKey="true">
       <Border>None;Black;2;Solid;False;4;Black</Border>
       <Brush>Transparent</Brush>
-      <Components isList="true" count="7">
+      <Components isList="true" count="8">
         <PageHeaderBand1 Ref="5" type="PageHeaderBand" isKey="true">
           <Brush>Transparent</Brush>
           <ClientRectangle>0,0.2,7.72,1</ClientRectangle>
@@ -63,13 +68,24 @@
           <Page isRef="4" />
           <Parent isRef="4" />
         </PageHeaderBand1>
-        <PageHeaderBand2 Ref="6" type="PageHeaderBand" isKey="true">
+        <PageFooterBand1 Ref="6" type="PageFooterBand" isKey="true">
           <Brush>Transparent</Brush>
-          <ClientRectangle>0,1.6,7.72,1</ClientRectangle>
-          <Components isList="true" count="3">
-            <Text11 Ref="7" type="Text" isKey="true">
+          <ClientRectangle>0,12.21,7.72,2.1</ClientRectangle>
+          <Components isList="true" count="0" />
+          <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
+          <Name>PageFooterBand1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </PageFooterBand1>
+        <DataBand4 Ref="7" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,1.6,7.72,0.3</ClientRectangle>
+          <Components isList="true" count="1">
+            <Text11 Ref="8" type="Text" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>1.7,0.1,4.4,0.5</ClientRectangle>
+              <ClientRectangle>1.6,0,4.4,0.5</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Expressions isList="true" count="0" />
               <Font>Vazirmatn Black,12</Font>
@@ -77,103 +93,92 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text11</Name>
               <Page isRef="4" />
-              <Parent isRef="6" />
+              <Parent isRef="7" />
               <Text>حضور محترم {InvoiceInfo.CustomerName} - خودرو : {InvoiceInfo.VehicleName} کد {InvoiceInfo.VehicleCode}</Text>
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text11>
-            <Text12 Ref="8" type="Text" isKey="true">
-              <Brush>Transparent</Brush>
-              <ClientRectangle>0.2,0.7,3.4,0.2</ClientRectangle>
-              <Conditions isList="true" count="0" />
-              <Expressions isList="true" count="0" />
-              <Font>Vazirmatn Black,12</Font>
-              <HorAlignment>Center</HorAlignment>
-              <Margins>0,0,0,0</Margins>
-              <Name>Text12</Name>
-              <Page isRef="4" />
-              <Parent isRef="6" />
-              <Text>تاریخ صدور : {InvoiceInfo.InvoiceDate}</Text>
-              <TextBrush>Black</TextBrush>
-              <Type>Expression</Type>
-              <VertAlignment>Center</VertAlignment>
-            </Text12>
-            <Text13 Ref="9" type="Text" isKey="true">
-              <Brush>Transparent</Brush>
-              <ClientRectangle>5.1,0.7,2.5,0.2</ClientRectangle>
-              <Conditions isList="true" count="0" />
-              <Expressions isList="true" count="0" />
-              <Font>Vazirmatn Black,12</Font>
-              <HorAlignment>Center</HorAlignment>
-              <Margins>0,0,0,0</Margins>
-              <Name>Text13</Name>
-              <Page isRef="4" />
-              <Parent isRef="6" />
-              <Text>کد فاکتور : {InvoiceInfo.InvoiceCode}</Text>
-              <TextBrush>Black</TextBrush>
-              <Type>Expression</Type>
-              <VertAlignment>Center</VertAlignment>
-            </Text13>
           </Components>
           <Conditions isList="true" count="0" />
+          <DataRelationName isNull="true" />
+          <DataSourceName>InvoiceInfo</DataSourceName>
           <Expressions isList="true" count="0" />
-          <Name>PageHeaderBand2</Name>
+          <Filters isList="true" count="0" />
+          <Name>DataBand4</Name>
           <Page isRef="4" />
           <Parent isRef="4" />
-        </PageHeaderBand2>
-        <Text3 Ref="10" type="Text" isKey="true">
+          <Sort isList="true" count="0" />
+        </DataBand4>
+        <DataBand3 Ref="9" type="DataBand" isKey="true">
+          <Border>None;Black;2;Solid;False;4;Black</Border>
           <Brush>Transparent</Brush>
-          <ClientRectangle>4.8,4.4,2.9,0.3</ClientRectangle>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,2.3,7.72,0.5</ClientRectangle>
+          <Components isList="true" count="1">
+            <Panel1 Ref="10" type="Panel" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.3,0.1,7.1,0.36</ClientRectangle>
+              <Components isList="true" count="2">
+                <Text12 Ref="11" type="Text" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>0.1,0.1,3,0.2</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Vazirmatn Black,12</Font>
+                  <HorAlignment>Center</HorAlignment>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text12</Name>
+                  <Page isRef="4" />
+                  <Parent isRef="10" />
+                  <Text>تاریخ صدور : {InvoiceInfo.InvoiceDate}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text12>
+                <Text13 Ref="12" type="Text" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>4.7,0.1,2.2,0.2</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Vazirmatn Black,12</Font>
+                  <HorAlignment>Center</HorAlignment>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text13</Name>
+                  <Page isRef="4" />
+                  <Parent isRef="10" />
+                  <Text>کد فاکتور : {InvoiceInfo.InvoiceCode}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text13>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>Panel1</Name>
+              <Page isRef="4" />
+              <Parent isRef="9" />
+            </Panel1>
+          </Components>
           <Conditions isList="true" count="0" />
+          <DataRelationName isNull="true" />
+          <DataSourceName>InvoiceInfo</DataSourceName>
           <Expressions isList="true" count="0" />
-          <Font>Vazirmatn Black,12</Font>
-          <Margins>0,0,0,0</Margins>
-          <Name>Text3</Name>
+          <Filters isList="true" count="0" />
+          <Name>DataBand3</Name>
           <Page isRef="4" />
           <Parent isRef="4" />
-          <Text>جمع کل : {InvoiceInfo.TotalPrice}
-</Text>
-          <TextBrush>Black</TextBrush>
-          <Type>Expression</Type>
-        </Text3>
-        <Text9 Ref="11" type="Text" isKey="true">
-          <Brush>Transparent</Brush>
-          <ClientRectangle>4.8,5.2,2.9,0.3</ClientRectangle>
-          <Conditions isList="true" count="0" />
-          <Expressions isList="true" count="0" />
-          <Font>Vazirmatn Black,12</Font>
-          <Margins>0,0,0,0</Margins>
-          <Name>Text9</Name>
-          <Page isRef="4" />
-          <Parent isRef="4" />
-          <Text>قابل پرداخت : {InvoiceInfo.ToPay}</Text>
-          <TextBrush>Black</TextBrush>
-          <Type>Expression</Type>
-        </Text9>
-        <Text10 Ref="12" type="Text" isKey="true">
-          <Brush>Transparent</Brush>
-          <ClientRectangle>4.8,4.8,2.9,0.3</ClientRectangle>
-          <Conditions isList="true" count="0" />
-          <Expressions isList="true" count="0" />
-          <Font>Vazirmatn Black,12</Font>
-          <Margins>0,0,0,0</Margins>
-          <Name>Text10</Name>
-          <Page isRef="4" />
-          <Parent isRef="4" />
-          <Text>مالیات بر ارزش افزوده : {InvoiceInfo.Tax}
-</Text>
-          <TextBrush>Black</TextBrush>
-          <Type>Expression</Type>
-        </Text10>
+          <Sort isList="true" count="0" />
+        </DataBand3>
         <HeaderBand1 Ref="13" type="HeaderBand" isKey="true">
           <Brush>Transparent</Brush>
-          <ClientRectangle>0,3,7.72,0.4</ClientRectangle>
+          <ClientRectangle>0,3.2,7.72,0.4</ClientRectangle>
           <Components isList="true" count="5">
             <Text4 Ref="14" type="Text" isKey="true">
               <Border>Left;White;1;Solid;False;4;Black</Border>
               <Brush>[127:127:127]</Brush>
-              <ClientRectangle>2.1,0.1,1.7,0.4</ClientRectangle>
+              <ClientRectangle>1.4,0.1,1.5,0.4</ClientRectangle>
               <ComponentStyle>Red Headers</ComponentStyle>
               <Conditions isList="true" count="0" />
               <Expressions isList="true" count="0" />
@@ -184,7 +189,7 @@
               <Page isRef="4" />
               <Parent isRef="13" />
               <Tag>HEADER</Tag>
-              <Text>قیمت واحد</Text>
+              <Text>قیمت واحد (ریال)</Text>
               <TextBrush>White</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -193,7 +198,7 @@
             <Text42 Ref="15" type="Text" isKey="true">
               <Border>Left;White;1;Solid;False;4;Black</Border>
               <Brush>[127:127:127]</Brush>
-              <ClientRectangle>5.3,0.1,1.4,0.4</ClientRectangle>
+              <ClientRectangle>3.6,0.1,3.3,0.4</ClientRectangle>
               <ComponentStyle>Red Headers</ComponentStyle>
               <Conditions isList="true" count="0" />
               <Expressions isList="true" count="0" />
@@ -204,7 +209,7 @@
               <Page isRef="4" />
               <Parent isRef="13" />
               <Tag>HEADER</Tag>
-              <Text>کالا/خدمت</Text>
+              <Text>کالا/خدمات</Text>
               <TextBrush>White</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -213,7 +218,7 @@
             <Text43 Ref="16" type="Text" isKey="true">
               <Border>Left;White;1;Solid;False;4;Black</Border>
               <Brush>[127:127:127]</Brush>
-              <ClientRectangle>6.7,0.1,0.97,0.4</ClientRectangle>
+              <ClientRectangle>6.9,0.1,0.57,0.4</ClientRectangle>
               <ComponentStyle>Red Headers</ComponentStyle>
               <Conditions isList="true" count="0" />
               <Expressions isList="true" count="0" />
@@ -233,7 +238,7 @@
             <Text41 Ref="17" type="Text" isKey="true">
               <Border>Left;White;1;Solid;False;4;Black</Border>
               <Brush>[127:127:127]</Brush>
-              <ClientRectangle>3.8,0.1,1.5,0.4</ClientRectangle>
+              <ClientRectangle>2.9,0.1,0.7,0.4</ClientRectangle>
               <ComponentStyle>Red Headers</ComponentStyle>
               <Conditions isList="true" count="0" />
               <Expressions isList="true" count="0" />
@@ -253,7 +258,7 @@
             <Text6 Ref="18" type="Text" isKey="true">
               <Border>Left;White;1;Solid;False;4;Black</Border>
               <Brush>[127:127:127]</Brush>
-              <ClientRectangle>0.4,0.1,1.7,0.4</ClientRectangle>
+              <ClientRectangle>0.2,0.1,1.2,0.4</ClientRectangle>
               <ComponentStyle>Red Headers</ComponentStyle>
               <Conditions isList="true" count="0" />
               <Expressions isList="true" count="0" />
@@ -264,7 +269,7 @@
               <Page isRef="4" />
               <Parent isRef="13" />
               <Tag>HEADER</Tag>
-              <Text>جمع</Text>
+              <Text>جمع (ریال)</Text>
               <TextBrush>White</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -281,14 +286,14 @@
           <Border>None;[43:43:43];1;Solid;False;4;Black</Border>
           <Brush>Transparent</Brush>
           <BusinessObjectGuid isNull="true" />
-          <ClientRectangle>0,3.8,7.72,0.5</ClientRectangle>
+          <ClientRectangle>0,4,7.72,0.5</ClientRectangle>
           <ComponentPlacement>d.Page1</ComponentPlacement>
           <Components isList="true" count="5">
             <Text5 Ref="20" type="Text" isKey="true">
               <Border>All;[43:43:43];1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
-              <ClientRectangle>2.1,0,1.7,0.3</ClientRectangle>
+              <ClientRectangle>1.4,0,1.5,0.3</ClientRectangle>
               <ComponentPlacement>d.DataBand1</ComponentPlacement>
               <ComponentStyle>Black Data</ComponentStyle>
               <Conditions isList="true" count="0" />
@@ -311,7 +316,7 @@
               <Border>All;[43:43:43];1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
-              <ClientRectangle>3.8,0,1.5,0.3</ClientRectangle>
+              <ClientRectangle>2.9,0,0.7,0.3</ClientRectangle>
               <ComponentPlacement>d.DataBand1</ComponentPlacement>
               <ComponentStyle>Black Data</ComponentStyle>
               <Conditions isList="true" count="0" />
@@ -339,7 +344,7 @@
               <Border>All;[43:43:43];1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
-              <ClientRectangle>5.3,0,1.4,0.3</ClientRectangle>
+              <ClientRectangle>3.6,0,3.3,0.3</ClientRectangle>
               <ComponentPlacement>d.DataBand1</ComponentPlacement>
               <ComponentStyle>Black Data</ComponentStyle>
               <Conditions isList="true" count="0" />
@@ -369,7 +374,7 @@
               <Border>All;[43:43:43];1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
-              <ClientRectangle>6.7,0,0.97,0.3</ClientRectangle>
+              <ClientRectangle>6.9,0,0.57,0.3</ClientRectangle>
               <ComponentPlacement>d.DataBand1</ComponentPlacement>
               <ComponentStyle>Black Data</ComponentStyle>
               <Conditions isList="true" count="0" />
@@ -392,7 +397,7 @@
               <Border>All;[43:43:43];1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
-              <ClientRectangle>0.4,0,1.7,0.3</ClientRectangle>
+              <ClientRectangle>0.2,0,1.2,0.3</ClientRectangle>
               <ComponentPlacement>d.DataBand1</ComponentPlacement>
               <ComponentStyle>Black Data</ComponentStyle>
               <Conditions isList="true" count="0" />
@@ -423,6 +428,211 @@
           <Parent isRef="4" />
           <Sort isList="true" count="0" />
         </DataBand1>
+        <DataBand2 Ref="27" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,4.9,7.72,1.5</ClientRectangle>
+          <Components isList="true" count="3">
+            <Text9 Ref="28" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.3,1,2.9,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Vazirmatn Black,12</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text9</Name>
+              <Page isRef="4" />
+              <Parent isRef="27" />
+              <Text>قابل پرداخت : {InvoiceInfo.ToPay}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text9>
+            <Text10 Ref="29" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.3,0.6,2.9,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Vazirmatn Black,12</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text10</Name>
+              <Page isRef="4" />
+              <Parent isRef="27" />
+              <Text>مالیات بر ارزش افزوده : {InvoiceInfo.Tax}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text10>
+            <Text3 Ref="30" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.3,0.2,2.9,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Vazirmatn Black,12</Font>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text3</Name>
+              <Page isRef="4" />
+              <Parent isRef="27" />
+              <Text>جمع کل : {InvoiceInfo.TotalPrice}
+</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text3>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataRelationName isNull="true" />
+          <DataSourceName>InvoiceInfo</DataSourceName>
+          <Expressions isList="true" count="0" />
+          <Filters isList="true" count="0" />
+          <Name>DataBand2</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <Sort isList="true" count="0" />
+        </DataBand2>
+        <DataBand5 Ref="31" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <CanBreak>True</CanBreak>
+          <CanShrink>True</CanShrink>
+          <ClientRectangle>0,6.8,7.72,2.6</ClientRectangle>
+          <Components isList="true" count="2">
+            <Panel2 Ref="32" type="Panel" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <CanBreak>True</CanBreak>
+              <CanGrow>True</CanGrow>
+              <CanShrink>True</CanShrink>
+              <ClientRectangle>0.2,0.3,7.4,2.8</ClientRectangle>
+              <Components isList="true" count="5">
+                <Text1 Ref="33" type="Text" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <CanBreak>True</CanBreak>
+                  <CanGrow>True</CanGrow>
+                  <CanShrink>True</CanShrink>
+                  <ClientRectangle>3.1,0.1,4,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Vazirmatn Black,10</Font>
+                  <HorAlignment>Right</HorAlignment>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text1</Name>
+                  <Page isRef="4" />
+                  <Parent isRef="32" />
+                  <Text>کیلومتراژ سرویس فعلی : {InvoiceInfo.CurrentMileage}
+</Text>
+                  <TextBrush>Black</TextBrush>
+                  <Type>Expression</Type>
+                </Text1>
+                <Text2 Ref="34" type="Text" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <CanBreak>True</CanBreak>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>0.4,0.5,6.7,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Vazirmatn Black,10</Font>
+                  <HorAlignment>Right</HorAlignment>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text2</Name>
+                  <Page isRef="4" />
+                  <Parent isRef="32" />
+                  <Text>کیلومتراژ سرویس بعدی تعویض روغن موتور : {InvoiceInfo.MileageOfTheNextEngineOilService}
+</Text>
+                  <TextBrush>Black</TextBrush>
+                  <Type>Expression</Type>
+                </Text2>
+                <Text8 Ref="35" type="Text" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <CanBreak>True</CanBreak>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>0.4,0.9,6.7,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Vazirmatn Black,10</Font>
+                  <HorAlignment>Right</HorAlignment>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text8</Name>
+                  <Page isRef="4" />
+                  <Parent isRef="32" />
+                  <Text>کیلومتراژ سرویس بعدی تعویض روغن گیربکس : {InvoiceInfo.MileageOfTheNextGearboxOilService}
+</Text>
+                  <TextBrush>Black</TextBrush>
+                  <Type>Expression</Type>
+                </Text8>
+                <Text14 Ref="36" type="Text" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <CanBreak>True</CanBreak>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>0.4,1.3,6.7,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Vazirmatn Black,10</Font>
+                  <HorAlignment>Right</HorAlignment>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text14</Name>
+                  <Page isRef="4" />
+                  <Parent isRef="32" />
+                  <Text>کیلومتراژ سرویس بعدی تعویض روغن هیدرولیک فرمان : {InvoiceInfo.MileageOfTheNextSteeringOilService}
+</Text>
+                  <TextBrush>Black</TextBrush>
+                  <Type>Expression</Type>
+                </Text14>
+                <Text15 Ref="37" type="Text" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <CanBreak>True</CanBreak>
+                  <CanGrow>True</CanGrow>
+                  <ClientRectangle>0.5,1.7,6.6,0.4</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Expressions isList="true" count="0" />
+                  <Font>Vazirmatn Black,10</Font>
+                  <HorAlignment>Right</HorAlignment>
+                  <LineSpacing>1.15</LineSpacing>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text15</Name>
+                  <Page isRef="4" />
+                  <Parent isRef="32" />
+                  <Text>{InvoiceInfo.Description}
+</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+                  <Type>Expression</Type>
+                </Text15>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Name>Panel2</Name>
+              <Page isRef="4" />
+              <Parent isRef="31" />
+            </Panel2>
+            <Text16 Ref="38" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.6,0.1,1,0.1</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Vazirmatn Black,8</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text16</Name>
+              <Page isRef="4" />
+              <Parent isRef="31" />
+              <Text>توضیحات</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text16>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataRelationName isNull="true" />
+          <DataSourceName>InvoiceInfo</DataSourceName>
+          <Expressions isList="true" count="0" />
+          <Filters isList="true" count="0" />
+          <Name>DataBand5</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+          <Sort isList="true" count="0" />
+        </DataBand5>
       </Components>
       <Conditions isList="true" count="0" />
       <Expressions isList="true" count="0" />
@@ -446,10 +656,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>10/18/2023 2:45:50 AM</ReportChanged>
+  <ReportChanged>10/26/2023 1:38:22 AM</ReportChanged>
   <ReportCreated>10/16/2023 11:13:40 PM</ReportCreated>
   <ReportFile>D:\projects\Octa-AutoService\OAS.Blazor\report_templates\invoice.mrt</ReportFile>
-  <ReportGuid>393b034756ee4c609533bc740c55c42e</ReportGuid>
+  <ReportGuid>33e3ac48fe4a4bf8b52a36a54486ed39</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Inches</ReportUnit>
   <ReportVersion>2023.1.1.0</ReportVersion>

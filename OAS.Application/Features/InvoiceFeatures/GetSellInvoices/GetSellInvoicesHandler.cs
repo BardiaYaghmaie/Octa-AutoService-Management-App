@@ -12,8 +12,8 @@ namespace OAS.Application.Features.InvoiceFeatures.GetSellInvoices
     public sealed class GetSellInvoicesHandler : IRequestHandler<GetSellInvoicesRequest, GetSellInvoicesResponse>
     {
         private readonly IInvoiceRepository _invoiceRepository;
-        private readonly IInventoryItemRepository  _inventoryItemRepository;
-        private readonly IInventoryItemHistoryRepository  _inventoryItemHistoryRepository;
+        private readonly IInventoryItemRepository _inventoryItemRepository;
+        private readonly IInventoryItemHistoryRepository _inventoryItemHistoryRepository;
         private readonly IServiceHistoryRepository _serviceHistoryRepository;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -52,26 +52,44 @@ namespace OAS.Application.Features.InvoiceFeatures.GetSellInvoices
             var inventoryItemHistories = await _inventoryItemHistoryRepository.GetAllAsync();
             var invoicePayments = await _invoiceRepository.GetAllInvoicePaymentsAsync();
             var invoiceInventoryItems = await _invoiceRepository.GetAllInvoiceInventoryItemsAsync();
-            var data = invoices.Where(a => a.Type == Domain.Enums.InvoiceType.Sell).Select(async (a, i) =>
+            List<GetSellInvoices_InvoiceDTO> answer = new();
+            int i = 0;
+            foreach (var item in invoices.Where(a => a.Type == Domain.Enums.InvoiceType.Sell))
             {
-                long paidAmount = invoicePayments.Where(b => b.InvoiceId == a.Id).Select(b => b.PaidAmount).Sum();
-                float total = await this.CalculateInvoiceTotalCost(a.Id);
-
-                return new GetSellInvoices_InvoiceDTO
+                long paidAmount = invoicePayments.Where(b => b.InvoiceId == item.Id).Select(b => b.PaidAmount).Sum();
+                float total = await this.CalculateInvoiceTotalCost(item.Id);
+                answer.Add(new GetSellInvoices_InvoiceDTO
                 (
-                    InvoiceCode: a.Code.ToString(),
-                    InvoiceDate: a.RegisterDate,
-                    InvoiceDateString: a.RegisterDate.ToString(),
-                    InvoiceId: a.Id,
+                    InvoiceCode: item.Code.ToString(),
+                    InvoiceDate: item.RegisterDate,
+                    InvoiceDateString: item.RegisterDate.ToString(),
+                    InvoiceId: item.Id,
                     RowNumber: i + 1,
                     InvoiceTotalPrice: total,
                     InvoicePaidAmount: paidAmount,
-                    VehicleName: a.Vehicle?.Name,
-                    CustomerName: a.VehicleId.HasValue ? (a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName) : (a.CustomerId.HasValue ? (a.Customer.FirstName + " " + a.Customer.LastName) : (""))
+                    VehicleName: item.Vehicle?.Name,
+                    CustomerName: item.VehicleId.HasValue ? (item.Vehicle.Customer.FirstName + " " + item.Vehicle.Customer.LastName) : (item.CustomerId.HasValue ? (item.Customer.FirstName + " " + item.Customer.LastName) : (""))
+                ));
+            }
+            //var data = invoices.Where(a => a.Type == Domain.Enums.InvoiceType.Sell).Select(async (a, i) =>
+            //{
 
-                );
-            }).ToList();
-            var response = new GetSellInvoicesResponse(Data: (await Task.WhenAll(data)).ToList());
+
+            //    return new GetSellInvoices_InvoiceDTO
+            //    (
+            //        InvoiceCode: a.Code.ToString(),
+            //        InvoiceDate: a.RegisterDate,
+            //        InvoiceDateString: a.RegisterDate.ToString(),
+            //        InvoiceId: a.Id,
+            //        RowNumber: i + 1,
+            //        InvoiceTotalPrice: total,
+            //        InvoicePaidAmount: paidAmount,
+            //        VehicleName: a.Vehicle?.Name,
+            //        CustomerName: a.VehicleId.HasValue ? (a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName) : (a.CustomerId.HasValue ? (a.Customer.FirstName + " " + a.Customer.LastName) : (""))
+
+            //    );
+            //}).ToList();
+            var response = new GetSellInvoicesResponse(Data:answer);
             return response;
         }
     }

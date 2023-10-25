@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 namespace OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInventoryItems
 {
     public sealed record UpdateInvoiceServicesAndInventoryItemsRequest(Guid InvoiceId , List<(Guid,float)> InventoryItemIdsAndCounts,
-        List<(Guid , long)> ServiceIdsAndPrices,List<Guid> ToRemoveInvoiceInventoryItemIds , List<Guid> ToRemoveInvoiceServiceIds , bool UseBuyPrice):IRequest<UpdateInvoiceServicesAndInventoryItemsResponse>;    
+        List<(Guid , long)> ServiceIdsAndPrices,List<Guid> ToRemoveInvoiceInventoryItemIds , List<Guid> ToRemoveInvoiceServiceIds , bool UseBuyPrice , string Description):IRequest<UpdateInvoiceServicesAndInventoryItemsResponse>;    
 }

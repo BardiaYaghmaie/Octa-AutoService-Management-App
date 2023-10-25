@@ -1,4 +1,5 @@
 @page "/OpenInvoiceEditPage/{InvoiceId:guid}"
+@using Newtonsoft.Json;
 
 @inject Radzen.DialogService DialogService;
 @inject IMediator mediator
@@ -94,27 +95,29 @@
     </RadzenRow>
     <br />
     <RadzenRow JustifyContent="JustifyContent.SpaceBetween">
+
+
         <RadzenFormField Text="کیلومتراژ فعلی" Variant="Variant.Outlined">
-            <RadzenTextBox Name=""  />
+            <RadzenTextBox @bind-value="invoiceDescriptionModel.CurrentMileage" Name="" />
         </RadzenFormField>
         <RadzenFormField Text="کیلومتراژ سرویس بعدی روغن موتور" Variant="Variant.Outlined">
-            <RadzenTextBox Name=""  />
+            <RadzenTextBox @bind-value="invoiceDescriptionModel.MileageOfTheNextEngineOilService" Name="" />
         </RadzenFormField>
         <RadzenFormField Text="کیلومتراژ سرویس بعدی روغن گیربکس" Variant="Variant.Outlined">
-            <RadzenTextBox Name=""  />
+            <RadzenTextBox @bind-value="invoiceDescriptionModel.MileageOfTheNextGearboxOilService" Name="" />
         </RadzenFormField>
         <RadzenFormField Text="کیلومتراژ سرویس بعدی روغن فرمون" Variant="Variant.Outlined">
-            <RadzenTextBox Name=""  />
+            <RadzenTextBox @bind-value="invoiceDescriptionModel.MileageOfTheNextSteeringOilService" Name="" />
         </RadzenFormField>
     </RadzenRow>
-    <br/>
+    <br />
     <RadzenRow>
         <RadzenFormField Text="توضیحات بیشتر" Variant="Variant.Outlined">
-            <RadzenTextBox Name=""  Style="width: 500px; height: 100px"/>
+            <RadzenTextArea Rows="4" Cols="40" @bind-value="invoiceDescriptionModel.Description" Style="resize:none" />
         </RadzenFormField>
-        
+
     </RadzenRow>
-    <br/>
+    <br />
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
         <RadzenColumn>
             <RadzenCheckBox @bind-Value=@useBuyPrice Name="BuyPrice_CB" />
@@ -129,6 +132,7 @@
 </MudRTLProvider>
 <br />
 @code {
+    private InvoiceDescriptionModel invoiceDescriptionModel = new();
     //first one : invoice inventory item id , 2nd : inventory item id , 3rd : invoiceinventoryitemcount
     private List<(Guid, Guid, float)> inventoryItemIdsAndCounts = new();
     // invoice service id , service id , service price
@@ -146,8 +150,8 @@
     {
         try
         {
-
-            var request = new UpdateInvoiceServicesAndInventoryItemsRequest(InvoiceId, inventoryItemIdsAndCounts.Select(a => (a.Item2, a.Item3)).ToList(), serviceIdsAndPrices.Select(a => (a.Item2, a.Item3)).ToList(), toRemoveInvoiceInventoryItemIds, toRemoveInvoiceServiceIds, useBuyPrice);
+            var description = JsonConvert.SerializeObject(invoiceDescriptionModel);
+            var request = new UpdateInvoiceServicesAndInventoryItemsRequest(InvoiceId, inventoryItemIdsAndCounts.Select(a => (a.Item2, a.Item3)).ToList(), serviceIdsAndPrices.Select(a => (a.Item2, a.Item3)).ToList(), toRemoveInvoiceInventoryItemIds, toRemoveInvoiceServiceIds, useBuyPrice, description);
             var response = await mediator.Send(request);
             NavigationManager.NavigateTo("/");
 
@@ -212,8 +216,8 @@
             var request3 = new GetInvoiceByIdRequest(InvoiceId);
             var response3 = await mediator.Send(request3);
             invoiceCode = response3.Code;
-
             useBuyPrice = response3.UseBuyPrice;
+            invoiceDescriptionModel = string.IsNullOrEmpty(response3.Description) ? new InvoiceDescriptionModel() : JsonConvert.DeserializeObject<InvoiceDescriptionModel>(response3.Description);
         }
 
         catch (Exception e)
@@ -244,10 +248,10 @@
         servicesGridData.Add(dto);
         return 0;
     }
-    private int AddItemToSellInvoiceGrid(Guid invoiceInventoryItemId, Guid inventoryItemId, string inventoryItemCode, string inventoryItemName, float count, long unitBuyPrice,long unitSellPrice)
+    private int AddItemToSellInvoiceGrid(Guid invoiceInventoryItemId, Guid inventoryItemId, string inventoryItemCode, string inventoryItemName, float count, long unitBuyPrice, long unitSellPrice)
     {
         var dto = new GetSellInvoiceInventoryItems_DTO(
-            inventoryItemId, invoiceInventoryItemId, inventoryItemCode, -1, inventoryItemName, count, unitBuyPrice,unitSellPrice,0
+            inventoryItemId, invoiceInventoryItemId, inventoryItemCode, -1, inventoryItemName, count, unitBuyPrice, unitSellPrice, 0
         );
         inventoryItemsGridData.Add(dto);
         //StateHasChanged();
@@ -273,11 +277,11 @@
     {
         await DialogService.OpenAsync<AddInvoiceInventoryItemDialog>("اضافه کردن کالا",
            new Dictionary<string, object>()
-                                           {
+                                                           {
                { "AddInvoiceInventoryItemId",AddInvoiceInventoryItemId },
                { "AddItemToSellInvoiceGrid",AddItemToSellInvoiceGrid }
 
-                                           },
+                                                           },
            new Radzen.DialogOptions()
                {
                    Width = "600px",

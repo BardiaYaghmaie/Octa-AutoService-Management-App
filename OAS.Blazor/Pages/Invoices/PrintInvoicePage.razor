@@ -1,4 +1,5 @@
 ﻿@page "/printInvoice/{InvoiceId:guid}"
+@using Newtonsoft.Json;
 
 @inject IMediator mediator;
 <p>@error</p>
@@ -27,11 +28,11 @@
 
             var request = new GetInvoiceReportInfoRequest(InvoiceId);
             var response = await mediator.Send(request);
-            
+            var invoiceDescriptionModel = string.IsNullOrEmpty(response.Description) ? new InvoiceDescriptionModel() : JsonConvert.DeserializeObject<InvoiceDescriptionModel>(response.Description);
             stiReport.RegData("InvoiceItem", response.Items.Select(a=> a with {
                 RowNumber = a.RowNumber.En2Fa(),
-                UnitPrice = a.UnitPrice.En2Fa().AppendRialIran(),
-                TotalPrice = a.TotalPrice.En2Fa().AppendRialIran(),
+                UnitPrice = a.UnitPrice.En2Fa(),
+                TotalPrice = a.TotalPrice.En2Fa(),
                 Count = a.Count.En2Fa()
             }));
             stiReport.RegData("InvoiceInfo", new
@@ -41,12 +42,17 @@
                 VehicleCode = response.VehicleCode.En2Fa(),
                 InvoiceCode = response.InvoiceCode.En2Fa(),
                 ToPay = response.ToPay.ToString("#,##0").En2Fa().AppendRialIran(),
-                Tax = response.Tax.ToString("#,##0").En2Fa().AppendRialIran(),
+                Tax = Math.Floor(response.Tax).ToString("#,##0").En2Fa().AppendRialIran(),
                 Discount = response.Discount.ToString("#,##0").En2Fa().AppendRialIran(),
                 TotalPrice = response.TotalPrice.ToString("#,##0").En2Fa().AppendRialIran(),
                 VehiclePlate = response.VehiclePlate.En2Fa(),
                 VehicleColor = response.VehicleColor,
-                InvoiceDate = response.InvoiceDate.ToPersianDateString().En2Fa()
+                InvoiceDate = response.InvoiceDate.ToPersianDateString().En2Fa(),
+                MileageOfTheNextEngineOilService = invoiceDescriptionModel.MileageOfTheNextEngineOilService.En2Fa(),
+                CurrentMileage = invoiceDescriptionModel.CurrentMileage.En2Fa(),
+                MileageOfTheNextGearboxOilService = invoiceDescriptionModel.MileageOfTheNextGearboxOilService.En2Fa(),
+                MileageOfTheNextSteeringOilService = invoiceDescriptionModel.MileageOfTheNextSteeringOilService.En2Fa(),
+                Description = invoiceDescriptionModel.Description.En2Fa()
             });
             this.stiReport.Load("report_templates/invoice.mrt");
         }

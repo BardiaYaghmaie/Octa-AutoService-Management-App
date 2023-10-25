@@ -21,5 +21,7 @@ public class Invoice
     public virtual Vehicle? Vehicle { get; set; }
     public virtual Customer? Customer{ get; set; }
 
+    public string? Description { get; set; }
+
 
 }

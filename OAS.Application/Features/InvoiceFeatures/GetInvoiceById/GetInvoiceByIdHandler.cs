@@ -25,7 +25,7 @@ namespace OAS.Application.Features.InvoiceFeatures.GetInvoiceById
             {
                 throw new Exception("invoice not found!");
             }
-            var response = new GetInvoiceByIdResponse(invoice.Id, invoice.Code.ToString(),invoice.UseBuyPrice.HasValue?invoice.UseBuyPrice.Value:false);
+            var response = new GetInvoiceByIdResponse(invoice.Id, invoice.Code.ToString(),invoice.UseBuyPrice.HasValue?invoice.UseBuyPrice.Value:false,invoice.Description);
             return response;
         }
     }

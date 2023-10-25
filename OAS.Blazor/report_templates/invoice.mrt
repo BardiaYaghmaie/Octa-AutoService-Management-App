@@ -94,7 +94,7 @@
               <Name>Text11</Name>
               <Page isRef="4" />
               <Parent isRef="7" />
-              <Text>حضور محترم {InvoiceInfo.CustomerName} - خودرو : {InvoiceInfo.VehicleName} کد {InvoiceInfo.VehicleCode}</Text>
+              <Text>حضور محترم {InvoiceInfo.CustomerName} - خودرو : {InvoiceInfo.VehicleName}  کد  {InvoiceInfo.VehicleCode}</Text>
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
@@ -656,10 +656,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>10/26/2023 1:38:22 AM</ReportChanged>
+  <ReportChanged>10/26/2023 2:19:38 AM</ReportChanged>
   <ReportCreated>10/16/2023 11:13:40 PM</ReportCreated>
   <ReportFile>D:\projects\Octa-AutoService\OAS.Blazor\report_templates\invoice.mrt</ReportFile>
-  <ReportGuid>33e3ac48fe4a4bf8b52a36a54486ed39</ReportGuid>
+  <ReportGuid>661bedacf6ed443dacb324f98ac76a75</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Inches</ReportUnit>
   <ReportVersion>2023.1.1.0</ReportVersion>

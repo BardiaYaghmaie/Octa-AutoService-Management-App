@@ -21,3 +21,5 @@ OAS.Persistence/obj/
 OAS.Blazor/appsettings.json
 
 octa-publish/
+
+DB_SCRIPTS

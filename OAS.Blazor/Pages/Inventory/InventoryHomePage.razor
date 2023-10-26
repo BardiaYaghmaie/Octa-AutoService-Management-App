@@ -64,7 +64,7 @@
                     <Template Context="item">@item.Code.ToString().En2Fa()</Template>
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="ServiceDTO" Property="Title" Title="عنوان" />
-                <RadzenDataGridColumn TItem="ServiceDTO" Title="قیمت خرید">
+                <RadzenDataGridColumn TItem="ServiceDTO" Title="قیمت پایه">
                     <Template Context="item">
                         @item.Price.ToString("#,##0").En2Fa().AppendRialIran()
                     </Template>

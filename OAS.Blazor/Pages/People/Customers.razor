@@ -18,11 +18,17 @@
                     @(item.FirstName.ToString().En2Fa() + " " + @item.LastName.ToString().En2Fa())
                 </Template>  
               </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="کد">
-                <Template Context="item">
-                    @item.CustomerPhoneNumber.ToString().En2Fa()
-                </Template>
-            </RadzenDataGridColumn>
+              <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="کد">
+                  <Template Context="item">
+                      @item.CustomerPhoneNumber.ToString().En2Fa()
+                  </Template>
+              </RadzenDataGridColumn>
+              <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="عملیات">
+                  <Template Context="item">
+                      <RadzenButton Click="() => {}" Icon="edit"></RadzenButton>
+                  </Template>
+              </RadzenDataGridColumn>
+              
 
            @*  <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="عملیات">
                 <Template Context="item"> 

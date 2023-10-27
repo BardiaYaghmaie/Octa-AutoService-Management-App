@@ -14,9 +14,10 @@
 *@
 <MudRTLProvider RightToLeft="true">
 
-    <RadzenDataGrid Data="_vehicles" TItem="GetAllVehiclesResponse_DTO" AllowVirtualization="false" Style="height:400px"
+    <RadzenDataGrid Data="_vehicles" TItem="GetAllVehiclesResponse_DTO" AllowVirtualization="false" Style="height:700px"
                     AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
-                    AllowSorting="true">
+                    AllowSorting="true" FilterMode="FilterMode.Simple" PageSize="20" AllowPaging="true">
+        
         <Columns>
             <RadzenDataGridColumn TItem="GetAllVehiclesResponse_DTO" Title="ردیف">
                 <Template Context="item">
@@ -33,12 +34,12 @@
                     @item.VehicleCode.ToString().En2Fa()
                 </Template>
             </RadzenDataGridColumn>
-           
+
             <RadzenDataGridColumn TItem="GetAllVehiclesResponse_DTO" Title="نام مالک">
                 <Template Context="item">
                     @(item.FirstName.ToString().En2Fa() + " " + @item.LastName.ToString().En2Fa())
                 </Template>
-            </RadzenDataGridColumn>        
+            </RadzenDataGridColumn>
 
             @*  <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="عملیات">
             <Template Context="item">

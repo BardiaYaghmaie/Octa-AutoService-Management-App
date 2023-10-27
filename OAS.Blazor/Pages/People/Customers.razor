@@ -4,40 +4,41 @@
 
 <MudRTLProvider RightToLeft="true">
 
-    <RadzenDataGrid Data="_customers" TItem="GetCustomersResponse_DTO" AllowVirtualization="false" Style="height:400px"
-                    AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"  
-                      AllowSorting="true">  
-          <Columns>
+    <RadzenDataGrid Data="_customers" TItem="GetCustomersResponse_DTO" AllowVirtualization="false" Style="height:700px"
+                    AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
+                    AllowSorting="true" FilterMode="FilterMode.Simple" PageSize="20" AllowPaging="true">
+        
+        <Columns>
             <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="ردیف">
-                <Template Context="item">  
-                      @item.RowNumber.ToString().En2Fa()  
-                  </Template>  
-              </RadzenDataGridColumn>
+                <Template Context="item">
+                    @item.RowNumber.ToString().En2Fa()
+                </Template>
+            </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="نام و نام خانوادگی">
                 <Template Context="item">
                     @(item.FirstName.ToString().En2Fa() + " " + @item.LastName.ToString().En2Fa())
-                </Template>  
-              </RadzenDataGridColumn>
-              <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="کد">
-                  <Template Context="item">
-                      @item.CustomerPhoneNumber.ToString().En2Fa()
-                  </Template>
-              </RadzenDataGridColumn>
-              <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="عملیات">
-                  <Template Context="item">
-                      <RadzenButton Click="() => {}" Icon="edit"></RadzenButton>
-                  </Template>
-              </RadzenDataGridColumn>
-              
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="کد">
+                <Template Context="item">
+                    @item.CustomerPhoneNumber.ToString().En2Fa()
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="عملیات">
+                <Template Context="item">
+                    <RadzenButton Click="() => { }" Icon="edit"></RadzenButton>
+                </Template>
+            </RadzenDataGridColumn>
 
-           @*  <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="عملیات">
+
+            @*  <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="عملیات">
                 <Template Context="item"> 
                      <RadzenButton Click=@OpenRegisterCustomer>+</RadzenButton> 
                   </Template> 
                </RadzenDataGridColumn> *@
-       
-          </Columns>  
-      </RadzenDataGrid>  
+
+        </Columns>
+    </RadzenDataGrid>  
 
     @*<ul>
         @foreach (var c in _customers)

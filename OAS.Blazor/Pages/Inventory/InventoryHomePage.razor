@@ -3,6 +3,7 @@
 @inject NavigationManager NavigationManager
 @inject DialogService DialogService
 @inject IMediator mediator;
+
 <MudRTLProvider RightToLeft="true">
 
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
@@ -19,9 +20,9 @@
         <RadzenText Text="لیست موجودی انبار" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif" />
     </RadzenRow>
     <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-        <RadzenDataGrid Data="inventoryItems" TItem="InventoryItemDTO" AllowVirtualization="false" Style="height:300px"
+        <RadzenDataGrid Data="inventoryItems" TItem="InventoryItemDTO" AllowVirtualization="false" Style="height:700px"
                         AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
-                        AllowSorting="true">
+                        AllowSorting="true" FilterMode="FilterMode.Simple" PageSize="20" AllowPaging="true">
             <Columns>
                 <RadzenDataGridColumn TItem="InventoryItemDTO" Title="ردیف">
                     <Template Context="item">@item.RowNumber.ToString().En2Fa()</Template>
@@ -47,6 +48,7 @@
                 </RadzenDataGridColumn>
             </Columns>
         </RadzenDataGrid>
+        
     </RadzenRow>
     <br />
     <RadzenRow>
@@ -166,5 +168,6 @@
                 CloseDialogOnOverlayClick = true
             });
     }
+    
 }
 

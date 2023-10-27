@@ -70,7 +70,7 @@
         </PageHeaderBand1>
         <PageFooterBand1 Ref="6" type="PageFooterBand" isKey="true">
           <Brush>Transparent</Brush>
-          <ClientRectangle>0,12.21,7.72,2.1</ClientRectangle>
+          <ClientRectangle>0,14.25,7.72,2.1</ClientRectangle>
           <Components isList="true" count="0" />
           <Conditions isList="true" count="0" />
           <Expressions isList="true" count="0" />
@@ -94,7 +94,7 @@
               <Name>Text11</Name>
               <Page isRef="4" />
               <Parent isRef="7" />
-              <Text>حضور محترم {InvoiceInfo.CustomerName} - خودرو : {InvoiceInfo.VehicleName}  کد  {InvoiceInfo.VehicleCode}</Text>
+              <Text>حضور محترم {InvoiceInfo.CustomerName} - خودرو : {InvoiceInfo.VehicleName}  - کد اشتراک   {InvoiceInfo.VehicleCode}</Text>
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
@@ -656,10 +656,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>10/26/2023 2:19:38 AM</ReportChanged>
+  <ReportChanged>10/28/2023 12:17:42 AM</ReportChanged>
   <ReportCreated>10/16/2023 11:13:40 PM</ReportCreated>
   <ReportFile>D:\projects\Octa-AutoService\OAS.Blazor\report_templates\invoice.mrt</ReportFile>
-  <ReportGuid>661bedacf6ed443dacb324f98ac76a75</ReportGuid>
+  <ReportGuid>99dbb9d35c80449c9f8a6e0e77114c21</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Inches</ReportUnit>
   <ReportVersion>2023.1.1.0</ReportVersion>

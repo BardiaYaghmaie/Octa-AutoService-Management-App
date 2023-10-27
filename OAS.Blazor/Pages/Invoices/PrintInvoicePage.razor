@@ -22,27 +22,30 @@
         try
         {
             StiLicense.Key = "6vJhGtLLLz2GNviWmUTrhSqnOItdDwjBylQzQcAOiHl2AD0gPVknKsaW0un+3PuM6TTcPMUAWEURKXNso0e5OFPaZYasFtsxNoDemsFOXbvf7SIcnyAkFX/4u37NTfx7g+0IqLXw6QIPolr1PvCSZz8Z5wjBNakeCVozGGOiuCOQDy60XNqfbgrOjxgQ5y/u54K4g7R/xuWmpdx5OMAbUbcy3WbhPCbJJYTI5Hg8C/gsbHSnC2EeOCuyA9ImrNyjsUHkLEh9y4WoRw7lRIc1x+dli8jSJxt9C+NYVUIqK7MEeCmmVyFEGN8mNnqZp4vTe98kxAr4dWSmhcQahHGuFBhKQLlVOdlJ/OT+WPX1zS2UmnkTrxun+FWpCC5bLDlwhlslxtyaN9pV3sRLO6KXM88ZkefRrH21DdR+4j79HA7VLTAsebI79t9nMgmXJ5hB1JKcJMUAgWpxT7C7JUGcWCPIG10NuCd9XQ7H4ykQ4Ve6J2LuNo9SbvP6jPwdfQJB6fJBnKg4mtNuLMlQ4pnXDc+wJmqgw25NfHpFmrZYACZOtLEJoPtMWxxwDzZEYYfT";
-            StiFontCollection.AddFontFile("wwwroot/css/fonts/VazirMatn/fonts/ttf/Vazirmatn-Black.ttf","Vazirmatn");
+            StiFontCollection.AddFontFile("wwwroot/css/fonts/VazirMatn/fonts/ttf/Vazirmatn-Black.ttf", "Vazirmatn");
 
             await base.OnInitializedAsync();
 
             var request = new GetInvoiceReportInfoRequest(InvoiceId);
             var response = await mediator.Send(request);
             var invoiceDescriptionModel = string.IsNullOrEmpty(response.Description) ? new InvoiceDescriptionModel() : JsonConvert.DeserializeObject<InvoiceDescriptionModel>(response.Description);
-            stiReport.RegData("InvoiceItem", response.Items.Select(a=> a with {
-                RowNumber = a.RowNumber.En2Fa(),
-                UnitPrice = a.UnitPrice.En2Fa(),
-                TotalPrice = a.TotalPrice.En2Fa(),
-                Count = a.Count.En2Fa()
-            }));
+            stiReport.RegData("InvoiceItem", response.Items.Select(a => a with
+                {
+                    RowNumber = a.RowNumber.En2Fa(),
+                    UnitPrice = a.UnitPrice.En2Fa(),
+                    TotalPrice = a.TotalPrice.En2Fa(),
+                    Count = a.Count.En2Fa()
+                }));
             stiReport.RegData("InvoiceInfo", new
             {
                 CustomerName = response.CustomerTitle,
                 VehicleName = response.VehicleTitle,
                 VehicleCode = response.VehicleCode.En2Fa(),
                 InvoiceCode = response.InvoiceCode.En2Fa(),
-                ToPay = response.ToPay.ToString("#,##0").En2Fa().AppendRialIran(),
-                Tax = Math.Floor(response.Tax).ToString("#,##0").En2Fa().AppendRialIran(),
+                ToPay = response.TotalPrice.ToString("#,##0").En2Fa().AppendRialIran(),
+                //ToPay = response.ToPay.ToString("#,##0").En2Fa().AppendRialIran(),
+                Tax = "0".En2Fa().AppendRialIran(),
+                //Tax = Math.Floor(response.Tax).ToString("#,##0").En2Fa().AppendRialIran(),
                 Discount = response.Discount.ToString("#,##0").En2Fa().AppendRialIran(),
                 TotalPrice = response.TotalPrice.ToString("#,##0").En2Fa().AppendRialIran(),
                 VehiclePlate = response.VehiclePlate.En2Fa(),

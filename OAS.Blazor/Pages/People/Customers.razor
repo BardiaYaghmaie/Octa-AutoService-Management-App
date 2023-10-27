@@ -3,58 +3,70 @@
 @inject IMediator mediator
 
 <MudRTLProvider RightToLeft="true">
+    @if (isLoading)
+    {
+        <p>loading ....</p>
+    }
+    else
+    {
 
-    <RadzenDataGrid Data="_customers" TItem="GetCustomersResponse_DTO" AllowVirtualization="false" Style="height:700px"
-                    AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
-                    AllowSorting="true" FilterMode="FilterMode.Simple" PageSize="20" AllowPaging="true">
-        
-        <Columns>
-            <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="ردیف">
-                <Template Context="item">
-                    @item.RowNumber.ToString().En2Fa()
-                </Template>
-            </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="نام و نام خانوادگی">
-                <Template Context="item">
-                    @(item.FirstName.ToString().En2Fa() + " " + @item.LastName.ToString().En2Fa())
-                </Template>
-            </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="کد">
-                <Template Context="item">
-                    @item.CustomerPhoneNumber.ToString().En2Fa()
-                </Template>
-            </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="عملیات">
-                <Template Context="item">
-                    <RadzenButton Click="() => { }" Icon="edit"></RadzenButton>
-                </Template>
-            </RadzenDataGridColumn>
+        <RadzenDataGrid @ref="grid" Data="_customers" TItem="GetCustomersResponse_DTO" AllowVirtualization="false" Style="height:700px"
+                        AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
+                        AllowSorting="true" FilterMode="FilterMode.Simple" PageSize="20" AllowPaging="true">
+
+            <Columns>
+                <RadzenDataGridColumn TItem="GetCustomersResponse_DTO"  Property="RowNumber" Title="ردیف" >
+                 
+                    <Template Context="item">
+                        @item.RowNumber.ToString().En2Fa()
+                    </Template>
+
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Property="FullName" FilterProperty="FullName" Title="نام و نام خانوادگی">
+                    <Template Context="item">
+                        @(item.FullName.ToString().En2Fa())
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Property="CustomerPhoneNumber" FilterProperty="CustomerPhoneNumber" Title="کد">
+                    <Template Context="item">
+                        @item.CustomerPhoneNumber.ToString().En2Fa()
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="عملیات">
+                    <Template Context="item">
+                        <RadzenButton Click="() => { }" Icon="edit"></RadzenButton>
+                    </Template>
+                </RadzenDataGridColumn>
 
 
-            @*  <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="عملیات">
-                <Template Context="item"> 
-                     <RadzenButton Click=@OpenRegisterCustomer>+</RadzenButton> 
-                  </Template> 
-               </RadzenDataGridColumn> *@
+                @*  <RadzenDataGridColumn TItem="GetCustomersResponse_DTO" Title="عملیات">
+            <Template Context="item">
+            <RadzenButton Click=@OpenRegisterCustomer>+</RadzenButton>
+            </Template>
+            </RadzenDataGridColumn> *@
 
-        </Columns>
-    </RadzenDataGrid>  
+            </Columns>
+        </RadzenDataGrid>
 
-    @*<ul>
-        @foreach (var c in _customers)
-        {
-            <li>@c.Name -- @c.Code -- @c.Id</li>
-        }
+        @*<ul>
+    @foreach (var c in _customers)
+    {
+    <li>@c.Name -- @c.Code -- @c.Id</li>
+    }
     </ul>*@
-    <p class="text-danger">@error</p>
+        <p class="text-danger">@error</p>
+    }
 
 </MudRTLProvider>
 
 
 
 @code {
-    private List<GetCustomersResponse_DTO> _customers = new();
+    RadzenDataGrid<GetCustomersResponse_DTO> grid;
+    private string filterRowText = "";
+    IEnumerable<GetCustomersResponse_DTO> _customers;
     private string error = "";
+    private bool isLoading = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,8 +75,8 @@
             var request = new GetCustomersRequest();
             var response = await mediator.Send(request);
 
-            var customers = response.Data;
-            _customers = customers;
+            _customers = response.Data;
+            isLoading = false;
 
         }
         catch (Exception)

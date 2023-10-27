@@ -16,5 +16,6 @@ namespace OAS.Application.Features.VehicleFeatures.GetAllVehicles
         public string VehicleCode { get; set; }
         public string CustomerCode { get; set; }
         public string VehicleName { get; set; }
+        public string FullName => FirstName + " " + LastName;
     }
 }

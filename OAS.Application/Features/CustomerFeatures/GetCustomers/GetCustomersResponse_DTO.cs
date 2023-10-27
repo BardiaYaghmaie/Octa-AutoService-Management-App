@@ -13,6 +13,7 @@ namespace OAS.Application.Features.CustomerFeatures.GetCustomers
         public string LastName { get; set; }
         public string Code { get; set; }
         public string CustomerPhoneNumber { get; set; }
+        public string FullName => FirstName + " " + LastName;
 
     }
 }

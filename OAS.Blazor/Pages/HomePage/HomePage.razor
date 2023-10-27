@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using System.Configuration
+
 
 @inject DialogService DialogService
 @inject IMediator mediator;
@@ -64,6 +66,7 @@
     <RadzenButton Icon="edit"></RadzenButton>
     <RadzenButton Icon="backspace"></RadzenButton>
 </RadzenRow>*@
+<br/><p>@css</p>
     
 
 @code {
@@ -217,6 +220,7 @@
         }
         
     }
+    public string css { get; set; }
     protected override async Task OnInitializedAsync()
     {
         //await CheckInternetConnection();
@@ -238,7 +242,11 @@
         }
 
         await RefreshGridData();
+        
     }
+
+      
+    
 
 
 }

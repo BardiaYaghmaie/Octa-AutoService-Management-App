@@ -33,7 +33,7 @@
                 <RadzenDataGridColumn TItem="InventoryItemDTO" Property="Title" Title="عنوان " />
                 <RadzenDataGridColumn TItem="InventoryItemDTO" Title="تعداد">
                     <Template Context="item">
-                        @(item.Count.HasValue ? item.Count.Value.ToString("#,##0").En2Fa() : "")
+                        @(item.Count.HasValue ? item.Count.Value.ToString().En2Fa() : "")
                     </Template>
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="InventoryItemDTO" Title="قیمت خرید">

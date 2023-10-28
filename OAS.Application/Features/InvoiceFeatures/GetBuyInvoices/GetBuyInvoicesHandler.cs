@@ -32,7 +32,7 @@ namespace OAS.Application.Features.InvoiceFeatures.GetBuyInvoices
             foreach (var item in invoiceInventoryItems)
             {
                 var inventoryItemHistory = await _inventoryItemHistoryRepository.GetLatestByInventoryItemIdAndDateAsync(item.InventoryItemId, item.RegisterDate);
-                total += invoiceUseBuyPrice ? (item.Count * inventoryItemHistory.BuyPrice.Value) : (item.Count * inventoryItemHistory.SellPrice.Value);
+                total += item.Count * inventoryItemHistory.BuyPrice.Value;
             }
 
             foreach (var item in invoiceServiceItems)

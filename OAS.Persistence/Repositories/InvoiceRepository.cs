@@ -188,7 +188,7 @@ namespace OAS.Persistence.Repositories
                 
                 var inventoryItemHistory = await _inventoryItemHistoryRepository.GetLatestByInventoryItemIdAndDateAsync(item.InventoryItemId, item.RegisterDate);
                 float unitPrice = invoice.UseBuyPrice.HasValue && invoice.UseBuyPrice.Value ? (inventoryItemHistory.BuyPrice.Value) : (inventoryItemHistory.SellPrice.Value);
-                items.Add(new GetInvoiceReportInfo_ItemDTO(rowNumber.ToString(), item.InventoryItem.Name, item.Count.ToString("#,##0"), unitPrice.ToString("#,##0"), (item.Count * unitPrice).ToString("#,##0")));
+                items.Add(new GetInvoiceReportInfo_ItemDTO(rowNumber.ToString(), item.InventoryItem.Name, item.Count.ToString(""), unitPrice.ToString("#,##0"), (item.Count * unitPrice).ToString("#,##0")));
                 rowNumber++;
                 invoiceTotal += item.Count * unitPrice;
             }

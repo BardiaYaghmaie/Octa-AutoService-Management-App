@@ -124,7 +124,7 @@
                     <tr>
                         <td>@item.Title</td>
                         <td>@item.Code.En2Fa()</td>
-                        <td>@float.Parse(item.Count).ToString("#,##0").En2Fa()</td>
+                        <td>@float.Parse(item.Count).ToString("").En2Fa()</td>
                         <td>@long.Parse(item.BuyPrice).ToString("#,##0").En2Fa().AppendRialIran()</td>
                         <td>@long.Parse(item.SellPrice).ToString("#,##0").En2Fa().AppendRialIran()</td>
                         @* Here in buy invoice, the sell price is not needed

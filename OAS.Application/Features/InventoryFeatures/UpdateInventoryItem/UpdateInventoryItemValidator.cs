@@ -17,17 +17,17 @@ namespace OAS.Application.Features.InventoryFeatures.UpdateInventoryItem
                 MaximumLength(255);
             RuleFor(x => x.SellPrice)
                 .NotNull()
-            .GreaterThan(0);
+            .GreaterThanOrEqualTo(0);
             RuleFor(x => x.BuyPrice)
        .NotNull()
-   .GreaterThan(0);
+   .GreaterThanOrEqualTo(0);
 
             RuleFor(x => x.CountLowerBound)
-       .NotNull()
-   .GreaterThanOrEqualTo(0);
+       .NotNull();
+   //.GreaterThanOrEqualTo(0);
             RuleFor(x => x.Count)
-.NotNull()
-.GreaterThanOrEqualTo(0);
+.NotNull();
+//.GreaterThanOrEqualTo(0);
 
         }
     }

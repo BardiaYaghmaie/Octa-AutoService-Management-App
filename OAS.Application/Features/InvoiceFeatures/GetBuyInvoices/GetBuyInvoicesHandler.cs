@@ -48,24 +48,27 @@ namespace OAS.Application.Features.InvoiceFeatures.GetBuyInvoices
             var inventoryItemHistories = await _inventoryItemHistoryRepository.GetAllAsync();
             var invoicePayments = await _invoiceRepository.GetAllInvoicePaymentsAsync();
             var invoiceInventoryItems = await _invoiceRepository.GetAllInvoiceInventoryItemsAsync();
-            var data = invoices.Where(a => a.Type == Domain.Enums.InvoiceType.Buy).Select(async (a, i) =>
+            var data = invoices.Where(a => a.Type == Domain.Enums.InvoiceType.Buy).ToList();
+            var answer = new List<GetBuyInvoices_InvoiceDTO>();
+            int i = 0;
+            foreach (var a in data)
             {
                 long paidAmount = invoicePayments.Where(b => b.InvoiceId == a.Id).Select(b => b.PaidAmount).Sum();
                 float total = await this.CalculateInvoiceTotalCost(a.Id);
-                return new GetBuyInvoices_InvoiceDTO
-                (
-                    SellerName: a.SerllerName,
-                    InvoiceCode: a.Code.ToString(),
-                    InvoiceDate: a.RegisterDate,
-                    InvoiceDateString: a.RegisterDate.ToString(),
-                    InvoiceId: a.Id,
-                    RowNumber: i + 1,
-                    InvoiceTotalPrice: total,
-                    InvoicePaidAmount: paidAmount
+                answer.Add(new GetBuyInvoices_InvoiceDTO
+                 (
+                     SellerName: a.SerllerName,
+                     InvoiceCode: a.Code.ToString(),
+                     InvoiceDate: a.RegisterDate,
+                     InvoiceDateString: a.RegisterDate.ToString(),
+                     InvoiceId: a.Id,
+                     RowNumber: i + 1,
+                     InvoiceTotalPrice: total,
+                     InvoicePaidAmount: paidAmount
 
-                );
-            }).ToList();
-            var response = new GetBuyInvoicesResponse(Data:(await Task.WhenAll(data)).ToList());
+                 ));
+            }
+            var response = new GetBuyInvoicesResponse(Data: answer);
             return response;
             //var data = await _invoiceRepository.GetBuyInvoicesAsync();
             //return response;

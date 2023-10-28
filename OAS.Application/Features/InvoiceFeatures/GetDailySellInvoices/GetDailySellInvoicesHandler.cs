@@ -44,20 +44,25 @@ namespace OAS.Application.Features.InvoiceFeatures.GetDailySellInvoices
 
         public async Task<GetDailySellInvoicesResponse> Handle(GetDailySellInvoicesRequest request, CancellationToken cancellationToken)
         {
+            List<GetDailySellInvoices_DTO> answers = new List<GetDailySellInvoices_DTO>();
             var data = await _invoiceRepository.GetDailySellInvoicesAsync();
-            var data1 = data.Where(a => a.VehicleId.HasValue || a.CustomerId.HasValue)
-            .Select(async (a, i) => new GetDailySellInvoices_DTO(
+            var data1 = data.Where(a => a.VehicleId.HasValue || a.CustomerId.HasValue).ToList();
+            int i = 0;
+            foreach (var a in data1)
+            {
+                answers.Add(new GetDailySellInvoices_DTO(
                 a.Id,
                 a.Code.ToString(),
                 a.VehicleId.HasValue ? a.Vehicle.Name : "",
                 a.VehicleId.HasValue ? (a.Vehicle.Customer.FirstName + " " + a.Vehicle.Customer.LastName) : a.CustomerId.HasValue ? (a.Customer.FirstName + " " + a.Customer.LastName) : "",
                 i + 1,
-                
+
                  await this.CalculateInvoiceTotalCost(a.Id)
 
-            )).ToList();
-            var x = (await Task.WhenAll(data1)).ToList();
-            var response = new GetDailySellInvoicesResponse(x);
+                ));
+            }
+          
+            var response = new GetDailySellInvoicesResponse(answers);
             return response;
         }
     }

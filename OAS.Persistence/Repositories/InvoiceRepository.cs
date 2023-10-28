@@ -20,10 +20,13 @@ namespace OAS.Persistence.Repositories
     public class InvoiceRepository : IInvoiceRepository
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IInventoryItemHistoryRepository _inventoryItemHistoryRepository;
 
-        public InvoiceRepository(ApplicationDbContext dbContext)
+
+        public InvoiceRepository(ApplicationDbContext dbContext, IInventoryItemHistoryRepository inventoryItemHistoryRepository)
         {
             _dbContext = dbContext;
+            _inventoryItemHistoryRepository = inventoryItemHistoryRepository;
         }
 
 
@@ -173,6 +176,7 @@ namespace OAS.Persistence.Repositories
             string vehiclePlate = invoice.VehicleId.HasValue ? (invoice.Vehicle.Plate) : ("");
             string vehicleColor = invoice.VehicleId.HasValue ? (invoice.Vehicle.Color) : ("");
             string vehicleCode = invoice.VehicleId.HasValue ? (invoice.Vehicle.Code.ToString()) : ("");
+
             var invoiceInventoryItems = await _dbContext.InvoiceInventoryItems.Include(a => a.InventoryItem).AsNoTracking().Where(a => a.InvoiceId == invoiceId).ToListAsync();
             var invoiceServices = await _dbContext.InvoiceServices.Include(a => a.Service).AsNoTracking().Where(a => a.InvoiceId == invoiceId).ToListAsync();
             List<GetInvoiceReportInfo_ItemDTO> items = new();
@@ -181,7 +185,9 @@ namespace OAS.Persistence.Repositories
             float invoiceDiscount = invoice.DiscountAmount.HasValue ? invoice.DiscountAmount.Value : 0;
             foreach (var item in invoiceInventoryItems)
             {
-                float unitPrice = invoice.UseBuyPrice.HasValue && invoice.UseBuyPrice.Value ? (item.InventoryItem.BuyPrice.Value) : (item.InventoryItem.SellPrice.Value);
+                
+                var inventoryItemHistory = await _inventoryItemHistoryRepository.GetLatestByInventoryItemIdAndDateAsync(item.InventoryItemId, item.RegisterDate);
+                float unitPrice = invoice.UseBuyPrice.HasValue && invoice.UseBuyPrice.Value ? (inventoryItemHistory.BuyPrice.Value) : (inventoryItemHistory.SellPrice.Value);
                 items.Add(new GetInvoiceReportInfo_ItemDTO(rowNumber.ToString(), item.InventoryItem.Name, item.Count.ToString("#,##0"), unitPrice.ToString("#,##0"), (item.Count * unitPrice).ToString("#,##0")));
                 rowNumber++;
                 invoiceTotal += item.Count * unitPrice;
@@ -189,7 +195,7 @@ namespace OAS.Persistence.Repositories
             foreach (var item in invoiceServices)
             {
                 float unitPrice = item.Price;
-                items.Add(new GetInvoiceReportInfo_ItemDTO(rowNumber.ToString(), item.Service.Name, "1", unitPrice.ToString(), (1 * unitPrice).ToString()));
+                items.Add(new GetInvoiceReportInfo_ItemDTO(rowNumber.ToString(), item.Service.Name, "1", unitPrice.ToString("#,##0"), (1 * unitPrice).ToString("#,##0")));
                 rowNumber++;
                 invoiceTotal += 1 * unitPrice;
             }

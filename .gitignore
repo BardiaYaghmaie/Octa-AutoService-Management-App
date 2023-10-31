@@ -24,3 +24,4 @@ octa-publish/
 
 DB_SCRIPTS
 /OAS.Blazor/OAS.Blazor.csproj.user
+appsetting*

@@ -24,10 +24,12 @@
             {
                 <RadzenText Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H5">
 
-                    فاکتور @Response.InvoiceCode - @Response.VehicleName - @Response.CustomerName
+                    فاکتور @Response.InvoiceCode - @Response.VehicleName 
 
                 </RadzenText>
             }
+        </RadzenRow>
+        <RadzenRow JustifyContent="JustifyContent.Left" AlignItems="AlignItems.Center">
             <RadzenButton Click="OnQuickPay" Text="پرداخت آنی" ButtonStyle="ButtonStyle.Warning" Style="width: 200px;margin-top:30px" />
         </RadzenRow>
         <br />
@@ -63,11 +65,11 @@
                 <RadzenFormField Text="شماره رهگیری" Variant="Variant.Outlined">
                     <RadzenTextBox @bind-Value="addPaymentModel.TrackCode" />                   
                 </RadzenFormField>
-                
-                <RadzenButton ButtonType="Radzen.ButtonType.Submit" Text="ثبت" ButtonStyle="ButtonStyle.Success" Style="width: 200px;margin-top:30px" />
             </RadzenTemplateForm>
+                    <RadzenButton ButtonType="Radzen.ButtonType.Submit" Text="ثبت" ButtonStyle="ButtonStyle.Success" Style="width: 200px;margin-top:30px" />
 
         </RadzenRow>
+
         <br />
 
         <br />

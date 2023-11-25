@@ -1,5 +1,4 @@
 @inject Radzen.DialogService dialogService
-@inject IMediator mediator;
 @inject NavigationManager navigationManager;
 
 <MudRTLProvider RightToLeft="true">
@@ -86,19 +85,19 @@
     }
     private async Task OnSubmit()
     {
-        try
-        {
-            var request = new UpdateInventoryItemRequest(editInvoiceInventoryItemModel.Id, editInvoiceInventoryItemModel.Title,
+        var request = new UpdateInventoryItemRequest(editInvoiceInventoryItemModel.Id, editInvoiceInventoryItemModel.Title,
        long.Parse(editInvoiceInventoryItemModel.BuyPrice), long.Parse(editInvoiceInventoryItemModel.SellPrice),
        float.Parse(editInvoiceInventoryItemModel.Count), float.Parse(editInvoiceInventoryItemModel.Limit));
-            var response = await mediator.Send(request);
-            await RefreshInventoryItemsGridData();
-            dialogService.Close();
-        }
-        catch (Exception e)
+        var httpResponse = await httpRequestSender.SendAsync(request, "/UpdateInventoryItem", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا در بروزرسانی اطلاعات";
+            return;
         }
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateInventoryItemResponse>(responseContent);
+        await RefreshInventoryItemsGridData();
+        dialogService.Close();
 
     }
     private void OnClickCancel()
@@ -108,7 +107,15 @@
     private async Task FetchInventoryData()
     {
         var request = new GetInventoryItemsRequest();
-        var response = await mediator.Send(request);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/GetInventoryItems", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
+        {
+            error = "خطا در خواندن اطلاعات";
+            return;
+        }
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetInventoryItemsResponse>(responseContent);
+
         inventoryItems = response.InventoryItemDTOs;
     }
     private void InventoryItemNameAutoCompleteTextChanged(string newValue)

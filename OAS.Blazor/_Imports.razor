@@ -7,6 +7,7 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.JSInterop
 @using OAS.Blazor
+@using OAS.Blazor.Services
 @using OAS.Blazor.Shared
 @using Radzen
 @using Radzen.Blazor
@@ -14,36 +15,38 @@
 @using AlignItems = Radzen.AlignItems
 @using DialogOptions = Radzen.DialogOptions
 @using DialogService = Radzen.DialogService
-@using OAS.Application.Features.InvoiceFeatures.CreateMiscellaneousSellInvoice;
-@using OAS.Application.Features.InvoiceFeatures.GetDailySellInvoices;
+@using OAS.Blazor.Models.InvoiceModels.GetDailySellInvoices;
 @using OAS.Blazor.Pages.Inventory
 @using OAS.Blazor.Pages.Shared
 @using OAS.Blazor.Pages.Invoices
 @using Variant = Radzen.Variant
-@using OAS.Application.DomainModels;
-@using OAS.Application.Features.CustomerFeatures.AddCustomer;
-@using OAS.Application.Features.InvoiceFeatures.GetInvoiceById;
-@using OAS.Application.Features.InvoiceFeatures.CreateInvoice;
-@using Application.Features.VehicleFeatures.GetVehiclesMinimal
-@using OAS.Application.Features.Inventory.GetInventoryItems;
-@using OAS.Application.Features.InventoryFeatures.AddInventoryItem;
-@using OAS.Application.Features.InventoryFeatures.UpdateInventoryItem;
-@using OAS.Application.Features.InvoiceFeatures.CreateBuyInvoice;
-@using OAS.Application.Features.InventoryFeatures.AddService;
-@using OAS.Application.Features.InventoryFeatures.UpdateService;
-@using OAS.Application.Features.Inventory.GetServices;
-@using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceInventoryItems;
-@using OAS.Application.Features.InvoiceFeatures.GetBuyInvoices;
-@using OAS.Application.Features.InvoiceFeatures.GetSellInvoices;
+@using OAS.Blazor.Models.CustomerModels.AddCustomer;
+@using OAS.Blazor.Models.InvoiceModels.GetInvoiceById;
+@using OAS.Blazor.Models.InvoiceModels.CreateBuyInvoice;
+@using OAS.Blazor.Models.InvoiceModels.CreateSellInvoice;
+@using OAS.Blazor.Models.InvoiceModels.CreateMiscellaneousSellInvoice;
+@using OAS.Blazor.Models.VehicleModels.GetVehiclesMinimal
+@using OAS.Blazor.Models.InventoryItemModels.GetInventoryItems;
+@using OAS.Blazor.Models.InventoryItemModels.AddInventoryItem;
+@using OAS.Blazor.Models.InventoryItemModels.UpdateInventoryItem;
+@using OAS.Blazor.Models.InventoryItemModels.AddService;
+@using OAS.Blazor.Models.InventoryItemModels.UpdateService;
+@using OAS.Blazor.Models.InventoryItemModels.GetServices;
+@using OAS.Blazor.Models.InvoiceModels.GetSellInvoiceInventoryItems;
+@using OAS.Blazor.Models.InvoiceModels.GetBuyInvoices;
+@using OAS.Blazor.Models.InvoiceModels.GetSellInvoices;
+@using OAS.Blazor.Models.InvoiceModels.GetSellInvoiceServices;
+@using OAS.Blazor.Models.InvoiceModels.UpdateInvoiceServicesAndInventoryItems;
+@using OAS.Blazor.Models.InvoiceModels.GetInvoiceReportInfo;
+@using OAS.Blazor.Models.InvoiceModels.DeleteSellInvoice;
+@using OAS.Blazor.Models.CustomerModels.GetCustomersMinimal;
 @using OAS.Blazor.Utils;
-@using OAS.Application.Features.InvoiceFeatures.GetSellInvoiceServices;
-@using OAS.Application.Features.InvoiceFeatures.UpdateInvoiceServicesAndInventoryItems;
 @using static OAS.Blazor.Pages.Invoices.AddInvoiceInventoryItemDialog;
-@using OAS.Application.Features.InvoiceFeatures.GetInvoiceReportInfo;
 @using Stimulsoft.Base
 @using Stimulsoft.Report
 @using Stimulsoft.Report.Blazor
 @using Stimulsoft.Report.Dictionary;
-@using OAS.Application.Features.CustomerFeatures.GetCustomersMinimal
-@using OAS.Application.Features.InvoiceFeatures.DeleteSellInvoiuce;
-@using MediatR;
+@using System.Text.Json
+@using OAS.Blazor.Models
+
+@inject IHttpRequestSender httpRequestSender;

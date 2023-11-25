@@ -1,6 +1,5 @@
-@using OAS.Application.Features.InvoiceFeatures.AddSellInvoicePayment;
-@using OAS.Application.Features.InvoiceFeatures.GetInvoicePaymentInfo;
-@inject IMediator mediator
+@using OAS.Blazor.Models.InvoiceModels.AddSellInvoicePayment
+@using OAS.Blazor.Models.InvoiceModels.GetInvoicePaymentInfo
 @inject Radzen.DialogService dialogService
 
 <MudRTLProvider RightToLeft="true">
@@ -12,7 +11,7 @@
     {
 
         <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-            @if (Response.InvoiceType == Domain.Enums.InvoiceType.Buy)
+            @if (Response.InvoiceType == InvoiceType.Buy)
             {
                 <RadzenText Style="font-family: Vazirmatn, serif" TextStyle="TextStyle.H5">
 
@@ -116,16 +115,16 @@
     }
     private async Task onFinalSubmit()
     {
-        try
+        var request = new AddInvoicePaymentRequest(InvoiceId, newPayments.Select(a => new Tuple<string, long>(a.TrackCode, a.PaidAmount)).ToList());
+        var httpResponse = await httpRequestSender.SendAsync(request, "/AddInvoicePayment", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            var request = new AddInvoicePaymentRequest(InvoiceId, newPayments.Select(a => new Tuple<string, long>(a.TrackCode, a.PaidAmount)).ToList());
-            var response = await mediator.Send(request);
-            dialogService.Close();
-        }            
-        catch (Exception e)
-        {
-            error = "خطا در ذخیره سازی اطلاعات";
+            error = "خطا در خواندن اطلاعات";
+            return;
         }
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<AddInvoicePaymentResponse>(responseContent);
+        dialogService.Close();
     }
     private void RemoveNewPayment(GetInvoicePaymentInfo_InvoicePaymentHistoryDTO item)
     {
@@ -162,8 +161,8 @@
                     TrackCode = addPaymentModel.TrackCode,
                     PaidDate = DateTime.Now
                 });
-                addPaymentModel.TrackCode = "";
-                addPaymentModel.Amount = "";
+            addPaymentModel.TrackCode = "";
+            addPaymentModel.Amount = "";
         }
         catch (Exception e)
         {
@@ -177,18 +176,16 @@
     public GetInvoicePaymentInfoResponse? Response { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        try
+        var request = new GetInvoicePaymentInfoRequest(InvoiceId);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/GetInvoicePaymentInfo", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            var request = new GetInvoicePaymentInfoRequest(InvoiceId);
-            var response = await mediator.Send(request);
-            Response = response;
+            error = "خطا در خواندن اطلاعات";
+            return;
         }
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetInvoicePaymentInfoResponse>(responseContent);
 
-
-        catch (Exception e)
-        {
-
-            throw e;
-        }
+        Response = response;
     }
 }

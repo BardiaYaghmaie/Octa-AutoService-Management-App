@@ -1,9 +1,6 @@
 ﻿@page "/"
 @using System.Configuration
-
-
 @inject DialogService DialogService
-@inject IMediator mediator;
 @inject NavigationManager NavigationManager
 @inject IHostEnvironment HostEnvironment
 <PageTitle>صفحه اصلی</PageTitle>
@@ -21,7 +18,7 @@
                     AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" LogicalFilterOperator="LogicalFilterOperator.Or"
                     AllowSorting="true">
         <Columns>
-            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO"  Title="ردیف">
+            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Title="ردیف">
                 <Template Context="item">
                     @item.RowNumber.ToString("#,##0").En2Fa()
                 </Template>
@@ -33,7 +30,7 @@
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="CustomerName" Title=" مشتری" />
             <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Property="VehicleName" Title="خودرو" />
-            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO"  Title="قیمت کل">
+            <RadzenDataGridColumn TItem="GetDailySellInvoices_DTO" Title="قیمت کل">
                 <Template Context="item">
                     @item.Total.ToString("#,##0").En2Fa()
                 </Template>
@@ -57,8 +54,8 @@
 
 @*<p>---صفحه ها ها---</p>
 <RadzenRow>*@
-    @*<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" Text="OpenDeleteConfirmation" />*@
-    @*<RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" Text="OpenPaySellInvoice" />*@
+@*<RadzenButton Click=@OpenDeleteConfirmation ButtonStyle="ButtonStyle.Dark" Text="OpenDeleteConfirmation" />*@
+@*<RadzenButton Click=@OpenPaySellInvoice ButtonStyle="ButtonStyle.Secondary" Text="OpenPaySellInvoice" />*@
 @*    <RadzenButton Click=@OpenEditInventoryItemDialog ButtonStyle="ButtonStyle.Info" Text="OpenEditInventoryItemDialog" />
 </RadzenRow>
 <p>---آیکون ها---</p>
@@ -67,7 +64,7 @@
     <RadzenButton Icon="edit"></RadzenButton>
     <RadzenButton Icon="backspace"></RadzenButton>
 </RadzenRow>*@
-    
+
 
 @code {
     private string error = "";
@@ -85,32 +82,31 @@
 
     private async Task OnDeleteInvoice(Guid invoiceId)
     {
-        try
+        var request = new GetInvoiceByIdRequest(invoiceId);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/GetInvoiceById", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
-
-            var request = new GetInvoiceByIdRequest(invoiceId);
-            var response = await mediator.Send(request);
-            await DialogService.OpenAsync<InvoiceDeleteConfirmationDialog>("حذف فاکتور",
-            new Dictionary<string, object>() {
+            error = "خطا در خواندن اطلاعات";
+            return;
+        }
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetInvoiceByIdResponse>(responseContent);
+        await DialogService.OpenAsync<InvoiceDeleteConfirmationDialog>("حذف فاکتور",
+          new Dictionary<string, object>() {
             { "InvoiceCode", response.Code },
             { "InvoiceId", invoiceId },
             {"RefreshGridData",RefreshGridData }
 
-                        },
+                              },
 
-        new DialogOptions()
-            {
-                Width = "550px",
-                Height = "260px",
-                Draggable = false,
-                AutoFocusFirstElement = false,
-                CloseDialogOnOverlayClick = true
-            });
-        }
-        catch (Exception e)
-        {
-            error = "خطا در خواندن اطلاعات";
-        }
+      new DialogOptions()
+          {
+              Width = "550px",
+              Height = "260px",
+              Draggable = false,
+              AutoFocusFirstElement = false,
+              CloseDialogOnOverlayClick = true
+          });
 
     }
     private void OnPrintInvoice(Guid invoiceId)
@@ -139,9 +135,9 @@
     {
         await DialogService.OpenAsync<VehicleEntranceDialog>("ورود خودرو",
             new Dictionary<string, object>()
-                            {
+                                {
                 {"RefreshGridData",RefreshGridData }
-                            },
+                                },
 
             new DialogOptions()
                 {
@@ -173,9 +169,9 @@
     {
         await DialogService.OpenAsync<PaySellInvoiceDialog>("پرداخت فاکتور ",
             new Dictionary<string, object>()
-            {
-                {"InvoiceId",InvoiceId}                
-            },
+                {
+                {"InvoiceId",InvoiceId}
+                },
 
             new DialogOptions()
                 {
@@ -201,24 +197,24 @@
 
     private void OnClick(string text)
     {
-    //
+        //
     }
 
     private List<GetDailySellInvoices_DTO> gridData = new();
 
     private async Task RefreshGridData()
     {
-        try
-        {
-            var request = new GetDailySellInvoicesRequest();
-            var response = await mediator.Send(request);
-            gridData = response.Data;
-        }
-        catch (Exception e)
+        var request = new GetDailySellInvoicesRequest();
+        var httpResponse = await httpRequestSender.SendAsync(request, "/GetDailySellInvoices", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا در خواندن اطلاعات";
+            return;
         }
-        
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetDailySellInvoicesResponse>(responseContent);
+
+        gridData = response.Data;
     }
     public string css { get; set; }
     protected override async Task OnInitializedAsync()
@@ -242,11 +238,11 @@
         }
 
         await RefreshGridData();
-        
+
     }
 
-      
-    
+
+
 
 
 }

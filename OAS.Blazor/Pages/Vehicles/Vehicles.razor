@@ -1,6 +1,5 @@
 ﻿@page "/Vehicles"
-@using OAS.Application.Features.VehicleFeatures.GetAllVehicles;
-@inject IMediator mediator
+@using OAS.Blazor.Models.VehicleModels.GetAllVehicles
 @*
 <MudRTLProvider RightToLeft="true">
     <ul>
@@ -66,21 +65,18 @@
     private string error = "";
     protected override async Task OnInitializedAsync()
     {
-        try
+        var request = new GetAllVehiclesRequest();
+        var httpResponse = await httpRequestSender.SendAsync(request, "/GetAllVehicles", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
-
-
-            var request = new GetAllVehiclesRequest();
-            var response = await mediator.Send(request);
-
-            var vehicles = response.Data;
-            _vehicles = vehicles;
+            error = "خطا در خواندن اطلاعات";
+            return;
         }
-        catch (Exception)
-        {
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetAllVehiclesResponse>(responseContent);
 
-            error = "خطا هنگام خواندن اطلاعات";
-        }
+        var vehicles = response.Data;
+        _vehicles = vehicles;
 
     }
 

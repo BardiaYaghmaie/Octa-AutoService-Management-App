@@ -1,6 +1,5 @@
 ﻿@page "/Customers"
-@using OAS.Application.Features.CustomerFeatures.GetCustomers;
-@inject IMediator mediator
+@using OAS.Blazor.Models.CustomerModels.GetCustomers
 
 <MudRTLProvider RightToLeft="true">
     @if (isLoading)
@@ -70,20 +69,18 @@
 
     protected override async Task OnInitializedAsync()
     {
-        try
+        var request = new GetCustomersRequest();
+        var httpResponse = await httpRequestSender.SendAsync(request, "/GetCustomers", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            var request = new GetCustomersRequest();
-            var response = await mediator.Send(request);
-
-            _customers = response.Data;
-            isLoading = false;
-
+            error = "خطا در خواندن اطلاعات";
+            return;
         }
-        catch (Exception)
-        {
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response =Newtonsoft.Json.JsonConvert.DeserializeObject<GetCustomersResponse>(responseContent);
 
-            error = "خطا هنگام خواندن اطلاعات";
-        }
+        _customers = response.Data;
+        isLoading = false;
     }
 
 }

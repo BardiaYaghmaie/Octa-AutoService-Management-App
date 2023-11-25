@@ -1,8 +1,6 @@
 @page "/invoices"
 @inject DialogService DialogService
  @inject NavigationManager NavigationManager
-
-@inject IMediator mediator;
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
         <RadzenText Text="لیست فاکتورهای فروش" TextAlign="TextAlign.Center" TextStyle="TextStyle.H5" Style="font-family: Vazirmatn,serif" />
@@ -108,19 +106,30 @@
     private List<GetSellInvoices_InvoiceDTO> gridDataSell = new List<GetSellInvoices_InvoiceDTO>();
     protected override async Task OnInitializedAsync()
     {
-        try
+        var request = new GetBuyInvoicesRequest();
+        var httpResponse = await httpRequestSender.SendAsync(request, "/GetBuyInvoices", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            var request = new GetBuyInvoicesRequest();
-            var response = await mediator.Send(request);
-            gridDataBuy = response.Data;
-            var request2 = new GetSellInvoicesRequest();
-            var response2 = await mediator.Send(request2);
-            gridDataSell = response2.Data;
+            error = "خطا در خواندن اطلاعات";
+            return;
         }
-        catch (Exception e)
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetBuyInvoicesResponse>(responseContent);
+        gridDataBuy = response.Data;
+
+
+
+        var request2 = new GetSellInvoicesRequest();
+        var httpResponse2 = await httpRequestSender.SendAsync(request, "/GetSellInvoices", HttpMethod.Get);
+        if (!httpResponse2.IsSuccessStatusCode)
         {
-            error = "خطا هنگام خواندن اطلاعات";
+            error = "خطا در خواندن اطلاعات";
+            return;
         }
+        string responseContent2 = await httpResponse.Content.ReadAsStringAsync();
+        var response2 = Newtonsoft.Json.JsonConvert.DeserializeObject<GetSellInvoicesResponse>(responseContent);
+        gridDataSell = response2.Data;
+
     }
     private void OnPrintInvoice(Guid invoiceId)
     {

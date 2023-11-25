@@ -1,6 +1,5 @@
 @page "/purchase/inventoryitem"
 
-@inject IMediator mediator;
 @inject NavigationManager navigationManager;
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
@@ -212,7 +211,15 @@
 
             }
             var request = new CreateBuyInvoiceRequest(invoiceInventoryItems, int.Parse(addNewInvoiceModel.Code), addNewInvoiceModel.Title, addNewInvoiceModel.RegisterDate);
-            var response = await mediator.Send(request);
+            var httpResponse = await httpRequestSender.SendAsync(request, "/CreateBuyInvoice", HttpMethod.Get);
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                error = "خطا در خواندن اطلاعات";
+                return;
+            }
+            string responseContent = await httpResponse.Content.ReadAsStringAsync();
+            var response = Newtonsoft.Json.JsonConvert.DeserializeObject<CreateBuyInvoiceResponse>(responseContent);
+
             navigationManager.NavigateTo("/invoices");
         }
         catch (Exception e)
@@ -293,7 +300,14 @@
     private async Task FetchInventoryData()
     {
         var request = new GetInventoryItemsRequest();
-        var response = await mediator.Send(request);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/GetInventoryItems", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
+        {
+            error = "خطا در خواندن اطلاعات";
+            return;
+        }
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetInventoryItemsResponse>(responseContent);
         inventoryItems = response.InventoryItemDTOs;
     }
     protected override async Task OnInitializedAsync()
@@ -353,19 +367,18 @@
     }
     private async Task AddNewInventoryItem()
     {
-        try
-        {
-
-            var request = new AddInventoryItemRequest(newInventoryItemModel.Title);
-            var response = await mediator.Send(request);
-            newInventoryItemModel.Title = "";
-            await FetchInventoryData();
-            //success
-        }
-        catch (Exception e)
+        var request = new AddInventoryItemRequest(newInventoryItemModel.Title);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/AddInventoryItem", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا در حین انجام عملیات";
+            return;
         }
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<AddInventoryItemResponse>(responseContent);
+
+        newInventoryItemModel.Title = "";
+        await FetchInventoryData();
     }
     private void RemoveInvoiceInventoryItem(Guid inventoryItemId)
     {

@@ -1,7 +1,6 @@
 using MudBlazor.Services;
 using Radzen;
-using OAS.Persistence;
-using OAS.Application;
+using OAS.Blazor.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,8 +10,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 builder.Services.AddRadzenComponents();
-builder.Services.ConfigurePersistence(builder.Configuration);
-builder.Services.ConfigureApplication();
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<IHttpRequestSender,HttpRequestSender>();
 
 
 var app = builder.Build();

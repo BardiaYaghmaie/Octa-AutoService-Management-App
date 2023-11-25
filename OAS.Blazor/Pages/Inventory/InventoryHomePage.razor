@@ -1,8 +1,8 @@
 @page "/inventory"
+@using OAS.Blazor.Models
 
 @inject NavigationManager NavigationManager
 @inject DialogService DialogService
-@inject IMediator mediator;
 
 <MudRTLProvider RightToLeft="true">
 
@@ -83,32 +83,34 @@
     {
         //
     }
-    IEnumerable<InventoryItemDTO> inventoryItems;
-    IEnumerable<ServiceDTO> services;
+    List<InventoryItemDTO> inventoryItems;
+    List<ServiceDTO> services;
     private async Task GetServicesGridData()
     {
-        try
+        var request = new GetServicesRequest();
+        var httpResponse = await httpRequestSender.SendAsync(request, "/GetServices", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            var data = await mediator.Send(new GetServicesRequest());
-            services = data.ServiceDTOs;
+            error = "خطا در خواندن اطلاعات";
+            return;
         }
-        catch (Exception)
-        {
-            error = "خطا هنگام خواندن اطلاعات";
-        }
-
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetServicesResponse>(responseContent);
+        services = response.ServiceDTOs;
     }
     private async Task GetInventoryItemsGridData()
     {
-        try
+        var request = new GetInventoryItemsRequest();
+        var httpResponse = await httpRequestSender.SendAsync(request, "/GetInventoryItems", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            var data = await mediator.Send(new GetInventoryItemsRequest());
-            inventoryItems = data.InventoryItemDTOs;
+            error = "خطا در خواندن اطلاعات";
+            return;
         }
-        catch (Exception)
-        {
-            error = "خطا هنگام خواندن اطلاعات";
-        }
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetInventoryItemsResponse>(responseContent);
+
+        inventoryItems = response.InventoryItemDTOs;
     }
     protected override async Task OnInitializedAsync()
     {

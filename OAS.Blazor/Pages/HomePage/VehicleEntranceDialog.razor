@@ -1,5 +1,4 @@
 @inject Radzen.DialogService dialogService
-@inject IMediator mediator;
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
         <RadzenFormField Text="کد اشتراک خودرو" Variant="Variant.Outlined">
@@ -18,35 +17,33 @@
     public Func<Task> RefreshGridData { get; set; }
     private async Task CreateMiscellaneousSellInvoice()
     {
-        try
-        {
-            var request = new CreateMiscellaneousSellInvoiceRequest();
-            var response = await mediator.Send(request);
-            await RefreshGridData();
-            dialogService.Close();
-        }
-
-        catch (Exception e)
+        var request = new CreateMiscellaneousSellInvoiceRequest();
+        var httpResponse = await httpRequestSender.SendAsync(request, "/CreateMiscellaneousSellInvoice", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا در ساخت فاکتور متفرقه";
+            return;
         }
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<CreateMiscellaneousSellInvoiceResponse>(responseContent);
+        await RefreshGridData();
+        dialogService.Close();
     }
     public string VehicleCode { get; set; }
     private List<GetVehiclesMinimal_DTO> vehicles = new();
     private string error = "";
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            var request = new GetVehiclesMinimalRequest();
-            var response = await mediator.Send(request);
-            vehicles = response.Data;
-        }
-        catch (Exception e)
+        var request = new GetVehiclesMinimalRequest();
+        var httpResponse = await httpRequestSender.SendAsync(request, "/GetVehiclesMinimal", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا در خواندن اطلاعات";
+            return;
         }
-
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetVehiclesMinimalResponse>(responseContent);
+        vehicles = response.Data;
     }
     private async Task CreateSellInvoice()
     {
@@ -54,7 +51,15 @@
         {
             Guid vehicleId = vehicles.First(a => a.Code == int.Parse(VehicleCode)).Id;
             var request = new CreateSellInvoiceRequest(vehicleId);
-            var response = await mediator.Send(request);
+            var httpResponse = await httpRequestSender.SendAsync(request, "/CreateSellInvoice", HttpMethod.Get);
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                error = "خطا در خواندن اطلاعات";
+                return;
+            }
+            string responseContent = await httpResponse.Content.ReadAsStringAsync();
+            var response = Newtonsoft.Json.JsonConvert.DeserializeObject<CreateSellInvoiceResponse>(responseContent);
+
             error = "";
             await RefreshGridData();
             dialogService.Close(true);
@@ -71,11 +76,6 @@
         catch (FormatException e)
         {
             error = "کد خودرو وارد شده نامعتبر است";
-        }
-        catch (Exception e)
-        {
-            error = "خطا در ثبت اطلاعات";
-
         }
     }
 }

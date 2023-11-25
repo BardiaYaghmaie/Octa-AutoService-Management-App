@@ -1,6 +1,4 @@
-﻿
-@inject Radzen.DialogService dialogService
-@inject IMediator mediator;
+﻿@inject Radzen.DialogService dialogService
 <MudRTLProvider RightToLeft="true">
     <RadzenTemplateForm TItem="AddInvoiceInventoryItemModel" Data="addInvoiceInventoryItemModel" Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
 
@@ -48,10 +46,10 @@
     }
 
     [Parameter]
-    public Func<Guid,Guid,float ,Task> AddInvoiceInventoryItemId { get; set; }
+    public Func<Guid, Guid, float, Task> AddInvoiceInventoryItemId { get; set; }
     [Parameter]
 
-    public Func<Guid,Guid, string, string, float, long,long, int> AddItemToSellInvoiceGrid { get; set; }
+    public Func<Guid, Guid, string, string, float, long, long, int> AddItemToSellInvoiceGrid { get; set; }
     private AddInvoiceInventoryItemModel addInvoiceInventoryItemModel = new();
     private string error = "";
 
@@ -62,7 +60,14 @@
     private async Task FetchInventoryData()
     {
         var request = new GetInventoryItemsRequest();
-        var response = await mediator.Send(request);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/GetInventoryItems", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
+        {
+            error = "خطا در خواندن اطلاعات";
+            return;
+        }
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetInventoryItemsResponse>(responseContent);
         inventoryItems = response.InventoryItemDTOs;
     }
     private void InventoryItemNameAutoCompleteTextChanged(string newValue)

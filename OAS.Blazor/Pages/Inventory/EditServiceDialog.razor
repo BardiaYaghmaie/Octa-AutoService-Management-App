@@ -1,6 +1,5 @@
 ﻿
 @inject Radzen.DialogService dialogService
-@inject IMediator mediator;
 <MudRTLProvider RightToLeft="true">
     <RadzenTemplateForm TItem="Model" Data=@model Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
 
@@ -58,23 +57,18 @@
     private string error = "";
     private async void UpdateService()
     {
-        try
+        Guid ServiceId = Services.First(a => a.Title == model.ServiceName).Id;
+        UpdateServiceRequest request = new(ServiceId, model.ServiceName, long.Parse(model.ServicePrice));
+        var httpResponse = await httpRequestSender.SendAsync(request, "/UpdateService", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            Guid ServiceId = Services.First(a => a.Title == model.ServiceName).Id;
-            UpdateServiceRequest request = new(ServiceId, model.ServiceName, long.Parse(model.ServicePrice));
-            var response = await mediator.Send(request);
-            //show success
-            await RefreshServicesGridData();
-            dialogService.Close(true);
-
-        }
-        catch (Exception e)
-        {
-            //show error message
             error = "عملیات با خطا مواجه شد";
-            
+            return;
         }
-
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateServiceResponse>(responseContent);
+        await RefreshServicesGridData();
+        dialogService.Close(true);
     }
 
 

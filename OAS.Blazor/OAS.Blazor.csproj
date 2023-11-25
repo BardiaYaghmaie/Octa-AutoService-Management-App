@@ -11,12 +11,6 @@
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
     <ItemGroup>
       <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
-      <PackageReference Include="MediatR" Version="12.1.1" />
-      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.11">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
       <PackageReference Include="MudBlazor" Version="6.10.0" />
       <PackageReference Include="Radzen.Blazor" Version="4.16.3" />
       <PackageReference Include="Stimulsoft.Reports.Blazor" Version="2023.1.1" />
@@ -26,11 +20,6 @@
     <ItemGroup>
       <Folder Include="Data\" />
       <Folder Include="wwwroot\css\fonts\VazirMatn\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\OAS.Application\OAS.Application.csproj" />
-      <ProjectReference Include="..\OAS.Persistence\OAS.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

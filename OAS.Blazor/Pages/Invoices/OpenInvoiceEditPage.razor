@@ -1,8 +1,6 @@
 @page "/OpenInvoiceEditPage/{InvoiceId:guid}"
-@using Newtonsoft.Json;
 
 @inject Radzen.DialogService DialogService;
-@inject IMediator mediator
 @inject NavigationManager NavigationManager
 
 <MudRTLProvider>
@@ -148,18 +146,17 @@
     }
     private async Task OnFinalSubmit()
     {
-        try
-        {
-            var description = JsonConvert.SerializeObject(invoiceDescriptionModel);
-            var request = new UpdateInvoiceServicesAndInventoryItemsRequest(InvoiceId, inventoryItemIdsAndCounts.Select(a => (a.Item2, a.Item3)).ToList(), serviceIdsAndPrices.Select(a => (a.Item2, a.Item3)).ToList(), toRemoveInvoiceInventoryItemIds, toRemoveInvoiceServiceIds, useBuyPrice, description);
-            var response = await mediator.Send(request);
-            NavigationManager.NavigateTo("/");
-
-        }
-        catch (Exception)
+        var description = Newtonsoft.Json.JsonConvert.SerializeObject(invoiceDescriptionModel);
+        var request = new UpdateInvoiceServicesAndInventoryItemsRequest(InvoiceId, inventoryItemIdsAndCounts.Select(a => (a.Item2, a.Item3)).ToList(), serviceIdsAndPrices.Select(a => (a.Item2, a.Item3)).ToList(), toRemoveInvoiceInventoryItemIds, toRemoveInvoiceServiceIds, useBuyPrice, description);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/AddCustomer", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا هنگام ارسال اطلاعات";
+            return;
         }
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<AddCustomerResponse>(responseContent);
+        NavigationManager.NavigateTo("/");
     }
     private void RemoveInvoiceService(Guid invoiceServiceId)
     {
@@ -203,21 +200,45 @@
     {
         try
         {
-
-
             var request = new GetSellInvoiceInventoryItemsRequest(InvoiceId);
-            var response = await mediator.Send(request);
+            var httpResponse = await httpRequestSender.SendAsync(request, "/GetSellInvoiceInventoryItems", HttpMethod.Get);
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                error = "خطا در خواندن اطلاعات";
+                return;
+            }
+            string responseContent = await httpResponse.Content.ReadAsStringAsync();
+            var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetSellInvoiceInventoryItemsResponse>(responseContent);
+
             inventoryItemsGridData = response.Data;
 
             var request2 = new GetSellInvoicecServicesRequest(InvoiceId);
-            var response2 = await mediator.Send(request2);
+            var httpResponse2 = await httpRequestSender.SendAsync(request, "/GetSellInvoicecServices", HttpMethod.Get);
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                error = "خطا در خواندن اطلاعات";
+                return;
+            }
+            string responseContent2 = await httpResponse.Content.ReadAsStringAsync();
+            var response2 = Newtonsoft.Json.JsonConvert.DeserializeObject<GetSellInvoiceServicesResponse>(responseContent);
+
             servicesGridData = response2.Data;
 
+
             var request3 = new GetInvoiceByIdRequest(InvoiceId);
-            var response3 = await mediator.Send(request3);
+            var httpResponse3 = await httpRequestSender.SendAsync(request, "/GetInvoiceById", HttpMethod.Get);
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                error = "خطا در خواندن اطلاعات";
+                return;
+            }
+            string responseContent3 = await httpResponse.Content.ReadAsStringAsync();
+            var response3 = Newtonsoft.Json.JsonConvert.DeserializeObject<GetInvoiceByIdResponse>(responseContent);
+
+            servicesGridData = response2.Data;
             invoiceCode = response3.Code;
             useBuyPrice = response3.UseBuyPrice;
-            invoiceDescriptionModel = string.IsNullOrEmpty(response3.Description) ? new InvoiceDescriptionModel() : JsonConvert.DeserializeObject<InvoiceDescriptionModel>(response3.Description);
+            invoiceDescriptionModel = string.IsNullOrEmpty(response3.Description) ? new InvoiceDescriptionModel() : Newtonsoft.Json.JsonConvert.DeserializeObject<InvoiceDescriptionModel>(response3.Description);
         }
 
         catch (Exception e)

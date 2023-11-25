@@ -1,5 +1,4 @@
 @inject Radzen.DialogService dialogService
-@inject IMediator mediator
 <MudRTLProvider RightToLeft="true">
     <RadzenRow>
         <RadzenText TextStyle="TextStyle.H6" Style="font-family: Vazirmatn, serif">
@@ -28,18 +27,18 @@
     private string error = "";
     private async Task OnClick()
     {
-        try
-        {
-            var request = new DeleteSellInvoiceRequest(InvoiceId);
-            var response = await mediator.Send(request);
-            await RefreshGridData();
-            dialogService.Close();
-        }
-
-        catch (Exception)
+        var request = new DeleteSellInvoiceRequest(InvoiceId);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/DeleteSellInvoice", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا هنگام حذف فاکتور " + InvoiceCode;
+            return;
         }
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<DeleteSellInvoiceResponse>(responseContent);
+        await RefreshGridData();
+        dialogService.Close();
+
     }
 
 }

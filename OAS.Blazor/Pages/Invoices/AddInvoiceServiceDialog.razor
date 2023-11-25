@@ -1,6 +1,5 @@
 ﻿
 @inject Radzen.DialogService dialogService
-@inject IMediator mediator;
 <MudRTLProvider RightToLeft="true">
     <RadzenTemplateForm TItem="AddInvoiceServiceModel" Data="addInvoiceServiceModel" Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
 
@@ -60,17 +59,17 @@
     bool popup = false;
     private async Task FetchServiceData()
     {
-        try
+        var request = new GetServicesRequest();
+        var httpResponse = await httpRequestSender.SendAsync(request, "/GetServices", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            var request = new GetServicesRequest();
-            var response = await mediator.Send(request);
-            services = response.ServiceDTOs;
+            error = "خطا در خواندن اطلاعات";
+            return;
         }
-        catch (Exception e)
-        {
-            error = "خطا هنگام خواندن اطلاعات";
-        }
-       
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetServicesResponse>(responseContent);
+
+        services = response.ServiceDTOs;       
     }
     private void ServiceNameAutoCompleteTextChanged(string newValue)
     {

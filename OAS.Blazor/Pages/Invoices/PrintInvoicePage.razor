@@ -1,7 +1,5 @@
 ﻿@page "/printInvoice/{InvoiceId:guid}"
-@using Newtonsoft.Json;
 
-@inject IMediator mediator;
 <p>@error</p>
 <StiBlazorViewer Report="@stiReport" />
 @code {
@@ -25,10 +23,17 @@
             StiFontCollection.AddFontFile("wwwroot/css/fonts/VazirMatn/fonts/ttf/Vazirmatn-Black.ttf", "Vazirmatn");
 
             await base.OnInitializedAsync();
-
             var request = new GetInvoiceReportInfoRequest(InvoiceId);
-            var response = await mediator.Send(request);
-            var invoiceDescriptionModel = string.IsNullOrEmpty(response.Description) ? new InvoiceDescriptionModel() : JsonConvert.DeserializeObject<InvoiceDescriptionModel>(response.Description);
+            var httpResponse = await httpRequestSender.SendAsync(request, "/GetInvoiceReportInfo", HttpMethod.Get);
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                error = "خطا در خواندن اطلاعات";
+                return;
+            }
+            string responseContent = await httpResponse.Content.ReadAsStringAsync();
+            var response = Newtonsoft.Json.JsonConvert.DeserializeObject<GetInvoiceReportInfoResponse>(responseContent);
+
+            var invoiceDescriptionModel = string.IsNullOrEmpty(response.Description) ? new InvoiceDescriptionModel() : Newtonsoft.Json.JsonConvert.DeserializeObject<InvoiceDescriptionModel>(response.Description);
             stiReport.RegData("InvoiceItem", response.Items.Select(a => a with
                 {
                     RowNumber = a.RowNumber.En2Fa(),

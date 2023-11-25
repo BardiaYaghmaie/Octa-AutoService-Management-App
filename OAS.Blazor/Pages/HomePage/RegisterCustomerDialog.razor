@@ -1,6 +1,5 @@
 
 @inject Radzen.DialogService dialogService
-@inject IMediator mediator;
 @inject NavigationManager navigationManager;
 <MudRTLProvider RightToLeft="true">
     <RadzenTemplateForm TItem="AddCustomerModel" Data="newCustomerModel" Submit="OnSubmitNewCustomer" InvalidSubmit="OnInvalidSubmitNewCustomer">
@@ -170,21 +169,18 @@
     private async Task AddCustomer()
     {
         AddCustomerRequest request = new(newCustomerModel.FirstName, newCustomerModel.LastName, newCustomerModel.PhoneNumber, DateTime.Now, vehicles);
-        try
+        var httpResponse = await httpRequestSender.SendAsync(request, "/AddCustomer", HttpMethod.Get);
+        if (!httpResponse.IsSuccessStatusCode)
         {
-            var response = await mediator.Send(request);
-            //show success
-            vehicles = response.VehicleDTOs;
-            success = true;
-            //dialogService.Close(true);
-
+            error = "خطا در خواندن اطلاعات";
+            return;
         }
-        catch (Exception e)
-        {
-            error = "خطا هنگام ثبت اطلاعات";
-            //show error message
-
-        }
+        string responseContent = await httpResponse.Content.ReadAsStringAsync();
+        var response = Newtonsoft.Json.JsonConvert.DeserializeObject<AddCustomerResponse>(responseContent);
+        //show success
+        vehicles = response.VehicleDTOs;
+        success = true;
+        //dialogService.Close(true);        
 
     }
 

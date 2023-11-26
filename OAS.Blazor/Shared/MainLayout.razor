@@ -12,6 +12,20 @@
     <main>
         <div class="top-row px-4">
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">درباره اُکتا</a>
+                 <AuthorizeView>
+                <Authorized>
+                    @* <p>@context.User.Claims.First(a=> a.Type == IdentityServerConstants.StandardScopes.Email).Value</p> *@
+                    @* <strong>Hello, @context.User.Identity..Name!</strong> *@
+                    <strong>Hello, @context.User.Claims.FirstOrDefault(a=> a.Type == "Name" || a.Type =="name")?.Value.ToString()</strong>
+
+                    @* <a href="@context.User.FindFirst("bff:logout_url")?.Value">Log out</a> *@
+                    <a href="/LogoutIDP">Log out</a>
+
+                </Authorized>
+                <NotAuthorized>
+                    <a href="/LoginIDP">Log in</a>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
 
         <article class="content px-4">
@@ -19,3 +33,6 @@
         </article>
     </main>
 </div>
+@code {
+    
+}

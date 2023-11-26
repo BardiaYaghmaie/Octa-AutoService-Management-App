@@ -10,7 +10,9 @@
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
     <ItemGroup>
+		<PackageReference Include="BlazorRazor" Version="1.0.0" />
       <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.14" />
       <PackageReference Include="MudBlazor" Version="6.10.0" />
       <PackageReference Include="Radzen.Blazor" Version="4.16.3" />
       <PackageReference Include="Stimulsoft.Reports.Blazor" Version="2023.1.1" />

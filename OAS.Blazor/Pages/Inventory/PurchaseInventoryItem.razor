@@ -211,7 +211,7 @@
 
             }
             var request = new CreateBuyInvoiceRequest(invoiceInventoryItems, int.Parse(addNewInvoiceModel.Code), addNewInvoiceModel.Title, addNewInvoiceModel.RegisterDate);
-            var httpResponse = await httpRequestSender.SendAsync(request, "/CreateBuyInvoice", HttpMethod.Get);
+            var httpResponse = await httpRequestSender.SendAsync(request, "/CreateBuyInvoice", HttpMethod.Post);
             if (!httpResponse.IsSuccessStatusCode)
             {
                 error = "خطا در خواندن اطلاعات";
@@ -368,7 +368,7 @@
     private async Task AddNewInventoryItem()
     {
         var request = new AddInventoryItemRequest(newInventoryItemModel.Title);
-        var httpResponse = await httpRequestSender.SendAsync(request, "/AddInventoryItem", HttpMethod.Get);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/AddInventoryItem", HttpMethod.Post);
         if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا در حین انجام عملیات";

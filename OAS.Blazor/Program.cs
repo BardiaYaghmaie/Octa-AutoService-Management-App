@@ -16,6 +16,7 @@ builder.Services.AddMudServices();
 builder.Services.AddRadzenComponents();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IHttpRequestSender,HttpRequestSender>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(options =>
 {

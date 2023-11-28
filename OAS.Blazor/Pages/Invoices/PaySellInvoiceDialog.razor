@@ -116,7 +116,7 @@
     private async Task onFinalSubmit()
     {
         var request = new AddInvoicePaymentRequest(InvoiceId, newPayments.Select(a => new Tuple<string, long>(a.TrackCode, a.PaidAmount)).ToList());
-        var httpResponse = await httpRequestSender.SendAsync(request, "/AddInvoicePayment", HttpMethod.Get);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/AddInvoicePayment", HttpMethod.Post);
         if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا در خواندن اطلاعات";

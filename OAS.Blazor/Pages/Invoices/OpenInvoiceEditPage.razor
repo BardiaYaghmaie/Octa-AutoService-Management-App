@@ -147,8 +147,8 @@
     private async Task OnFinalSubmit()
     {
         var description = Newtonsoft.Json.JsonConvert.SerializeObject(invoiceDescriptionModel);
-        var request = new UpdateInvoiceServicesAndInventoryItemsRequest(InvoiceId, inventoryItemIdsAndCounts.Select(a => (a.Item2, a.Item3)).ToList(), serviceIdsAndPrices.Select(a => (a.Item2, a.Item3)).ToList(), toRemoveInvoiceInventoryItemIds, toRemoveInvoiceServiceIds, useBuyPrice, description);
-        var httpResponse = await httpRequestSender.SendAsync(request, "/AddCustomer", HttpMethod.Get);
+        var request = new UpdateInvoiceServicesAndInventoryItemsRequest(InvoiceId, inventoryItemIdsAndCounts.Select(a => new Tuple<Guid,float>(a.Item2, a.Item3)).ToList(), serviceIdsAndPrices.Select(a => new Tuple<Guid,long>(a.Item2, a.Item3)).ToList(), toRemoveInvoiceInventoryItemIds, toRemoveInvoiceServiceIds, useBuyPrice, description);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/UpdateInvoiceServicesAndInventoryItems", HttpMethod.Put);
         if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا هنگام ارسال اطلاعات";

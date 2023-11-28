@@ -59,7 +59,7 @@
     {
         Guid ServiceId = Services.First(a => a.Title == model.ServiceName).Id;
         UpdateServiceRequest request = new(ServiceId, model.ServiceName, long.Parse(model.ServicePrice));
-        var httpResponse = await httpRequestSender.SendAsync(request, "/UpdateService", HttpMethod.Get);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/UpdateService", HttpMethod.Put);
         if (!httpResponse.IsSuccessStatusCode)
         {
             error = "عملیات با خطا مواجه شد";

@@ -18,7 +18,7 @@
     private async Task CreateMiscellaneousSellInvoice()
     {
         var request = new CreateMiscellaneousSellInvoiceRequest();
-        var httpResponse = await httpRequestSender.SendAsync(request, "/CreateMiscellaneousSellInvoice", HttpMethod.Get);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/CreateMiscellaneousSellInvoice", HttpMethod.Post);
         if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا در ساخت فاکتور متفرقه";
@@ -51,7 +51,7 @@
         {
             Guid vehicleId = vehicles.First(a => a.Code == int.Parse(VehicleCode)).Id;
             var request = new CreateSellInvoiceRequest(vehicleId);
-            var httpResponse = await httpRequestSender.SendAsync(request, "/CreateSellInvoice", HttpMethod.Get);
+            var httpResponse = await httpRequestSender.SendAsync(request, "/CreateSellInvoice", HttpMethod.Post);
             if (!httpResponse.IsSuccessStatusCode)
             {
                 error = "خطا در خواندن اطلاعات";

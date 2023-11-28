@@ -88,7 +88,7 @@
         var request = new UpdateInventoryItemRequest(editInvoiceInventoryItemModel.Id, editInvoiceInventoryItemModel.Title,
        long.Parse(editInvoiceInventoryItemModel.BuyPrice), long.Parse(editInvoiceInventoryItemModel.SellPrice),
        float.Parse(editInvoiceInventoryItemModel.Count), float.Parse(editInvoiceInventoryItemModel.Limit));
-        var httpResponse = await httpRequestSender.SendAsync(request, "/UpdateInventoryItem", HttpMethod.Get);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/UpdateInventoryItem", HttpMethod.Put);
         if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا در بروزرسانی اطلاعات";

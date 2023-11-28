@@ -56,7 +56,7 @@
     private async void AddService()
     {
         AddServiceRequest request = new(model.ServiceName, long.Parse(model.ServicePrice));
-        var httpResponse = await httpRequestSender.SendAsync(request, "/AddService", HttpMethod.Get);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/AddService", HttpMethod.Post);
         if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا هنگام ثبت اطلاعات";

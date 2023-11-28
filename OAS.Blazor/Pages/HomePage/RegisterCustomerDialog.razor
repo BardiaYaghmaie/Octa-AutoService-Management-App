@@ -169,7 +169,7 @@
     private async Task AddCustomer()
     {
         AddCustomerRequest request = new(newCustomerModel.FirstName, newCustomerModel.LastName, newCustomerModel.PhoneNumber, DateTime.Now, vehicles);
-        var httpResponse = await httpRequestSender.SendAsync(request, "/AddCustomer", HttpMethod.Get);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/AddCustomer", HttpMethod.Post);
         if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا در خواندن اطلاعات";

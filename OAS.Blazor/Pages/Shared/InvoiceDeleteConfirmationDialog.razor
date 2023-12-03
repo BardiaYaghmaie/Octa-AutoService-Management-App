@@ -28,7 +28,7 @@
     private async Task OnClick()
     {
         var request = new DeleteSellInvoiceRequest(InvoiceId);
-        var httpResponse = await httpRequestSender.SendAsync(request, "/DeleteSellInvoice", HttpMethod.Get);
+        var httpResponse = await httpRequestSender.SendAsync(request, "/DeleteSellInvoice", HttpMethod.Delete);
         if (!httpResponse.IsSuccessStatusCode)
         {
             error = "خطا هنگام حذف فاکتور " + InvoiceCode;

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using static Stimulsoft.Report.StiOptions;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Logging;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,28 +16,42 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 builder.Services.AddRadzenComponents();
 builder.Services.AddHttpClient();
-builder.Services.AddScoped<IHttpRequestSender,HttpRequestSender>();
+builder.Services.AddScoped<IHttpRequestSender, HttpRequestSender>();
 builder.Services.AddHttpContextAccessor();
-
+IdentityModelEventSource.ShowPII = true;
 builder.Services.AddAuthentication(options =>
 {
+    
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
 })
               .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
               .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme,
               options =>
-              {
-                  options.Authority = "https://localhost:5000/";
+              {                  
+                  options.MetadataAddress = $"{builder.Configuration.GetSection("AuthorityUrl").Value}/.well-known/openid-configuration"; 
+                  options.RequireHttpsMetadata = false;
+                  options.Authority = builder.Configuration.GetSection("AuthorityUrl").Value;
                   options.ClientId = "client";
                   options.ClientSecret = "secret";
                   options.UsePkce = true;
                   options.ResponseType = "code";
+                  options.ResponseMode = "form_post";
                   options.Scope.Add("openid");
                   options.Scope.Add("profile");
-                  //options.Scope.Add("email");
-                  options.Scope.Add("offline_access");
-
+                  options.Scope.Add("api1");
+                  //options.Scope.Add("offline_access");
+                  options.Events = new OpenIdConnectEvents
+                  {
+                      OnRemoteFailure = context =>
+                      {
+                          Console.WriteLine("Why Here ?!!");
+                          Console.WriteLine("Why?:",context.Failure?.Message);
+                          context.Response.Redirect("/");
+                          context.HandleResponse();
+                          return Task.FromResult(0);
+                      }
+                  };
                   //Scope for accessing API
                   //options.Scope.Add("identityApi"); //invalid scope for client
 
@@ -62,7 +77,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseRouting();

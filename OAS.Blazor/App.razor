@@ -5,15 +5,15 @@
                 @* <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" /> *@
                 @* <FocusOnNavigate RouteData="@routeData" Selector="h1" /> *@
                 <NotAuthorized>
-                    <h1>Sorry, you're not authorized to view this page.</h1>
-                    <p>You may want to try logging in (as someone with the necessary authorization).</p>
+                    <h1>متاسفم ، شما مجاز به دیدن محتوای این صفحه نیستید</h1>
+                    <p>سطح دسترسی شما برای دیدن این صفحه کافی نیست</p>
                 </NotAuthorized>
             </AuthorizeRouteView>
         </Found>
         <NotFound>
             <PageTitle>Not found</PageTitle>
             <LayoutView Layout="@typeof(MainLayout)">
-                <p role="alert">Sorry, there's nothing at this address.</p>
+                <p role="alert">متاسفم ، چیزی برای نمایش وجود ندارد!</p>
             </LayoutView>
         </NotFound>
     </Router>

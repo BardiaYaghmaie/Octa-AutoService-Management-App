@@ -213,27 +213,27 @@
             inventoryItemsGridData = response.Data;
 
             var request2 = new GetSellInvoicecServicesRequest(InvoiceId);
-            var httpResponse2 = await httpRequestSender.SendAsync(request, "/GetSellInvoicecServices", HttpMethod.Get);
-            if (!httpResponse.IsSuccessStatusCode)
+            var httpResponse2 = await httpRequestSender.SendAsync(request, "/GetSellInvoiceServices", HttpMethod.Get);
+            if (!httpResponse2.IsSuccessStatusCode)
             {
                 error = "خطا در خواندن اطلاعات";
                 return;
             }
-            string responseContent2 = await httpResponse.Content.ReadAsStringAsync();
-            var response2 = Newtonsoft.Json.JsonConvert.DeserializeObject<GetSellInvoiceServicesResponse>(responseContent);
+            string responseContent2 = await httpResponse2.Content.ReadAsStringAsync();
+            var response2 = Newtonsoft.Json.JsonConvert.DeserializeObject<GetSellInvoiceServicesResponse>(responseContent2);
 
             servicesGridData = response2.Data;
 
 
             var request3 = new GetInvoiceByIdRequest(InvoiceId);
             var httpResponse3 = await httpRequestSender.SendAsync(request, "/GetInvoiceById", HttpMethod.Get);
-            if (!httpResponse.IsSuccessStatusCode)
+            if (!httpResponse3.IsSuccessStatusCode)
             {
                 error = "خطا در خواندن اطلاعات";
                 return;
             }
-            string responseContent3 = await httpResponse.Content.ReadAsStringAsync();
-            var response3 = Newtonsoft.Json.JsonConvert.DeserializeObject<GetInvoiceByIdResponse>(responseContent);
+            string responseContent3 = await httpResponse3.Content.ReadAsStringAsync();
+            var response3 = Newtonsoft.Json.JsonConvert.DeserializeObject<GetInvoiceByIdResponse>(responseContent3);
 
             servicesGridData = response2.Data;
             invoiceCode = response3.Code;
